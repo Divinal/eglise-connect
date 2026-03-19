@@ -1,26 +1,39 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/hooks/useAuth";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Pages publiques
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
 import DepartementPage from "./pages/DepartementPage";
-import ConsistoiresPage from "./pages/ConsistoiresPage";
-import ConsistoireDetailPage from "./pages/ConsistoireDetailPage";
-import SynodePage from "./pages/SynodePage";
-import ConseilSynodalPage from "./pages/ConseilSynodalPage";
+import PartenairesPage from "./pages/PartenairesPage";
+import FAQPage from "./pages/FAQPage";
 import BureauSynodalPage from "./pages/BureauSynodalPage";
 import ContactPage from "./pages/ContactPage";
 import BlogPage from "./pages/BlogPage";
 import LoginPage from "./pages/LoginPage";
+import NotFound from "./pages/NotFound";
+
+// Institutions
+//import SynodePage from "./pages/institutions/SynodePage";
+//import ConseilSynodalPage from "./pages/institutions/ConseilSynodalPage";
+//import ConsistoiresPublicPage from "./pages/institutions/ConsistoiresPublicPage";
+//import ConsistoireDetailPage from "./pages/institutions/ConsistoireDetailPage";
+
+// Pages admin
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsersPage from "./pages/AdminUsersPage";
+import AdminConsistoiresPage from "./pages/AdminConsistoiresPage";
 import AdminInstitutionsPage from "./pages/AdminInstitutionsPage";
 import AdminDepartmentsPage from "./pages/AdminDepartmentsPage";
-import PartenairesPage from "./pages/PartenairesPage";
-import FAQPage from "./pages/FAQPage";
+
+// Pages coordinateur consistoire
+import ConsistoireParoissesPage from "./pages/ConsistoireParoissesPage";
+import ConsistoireBureauPage from "./pages/ConsistoireBureauPage";
+
+// Page paroisse (secrétaire)
+import ParoissePage from "./pages/ParoissePage";
 
 const queryClient = new QueryClient();
 
@@ -30,27 +43,49 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/departements/:slug" element={<DepartementPage />} />
-            <Route path="/institution/synode" element={<SynodePage />} />
-            <Route path="/institution/conseil-synodal" element={<ConseilSynodalPage />} />
-            <Route path="/institution/bureau-synodal" element={<BureauSynodalPage />} />
-            <Route path="/institution/consistoires" element={<ConsistoiresPage />} />
-            <Route path="/institution/consistoires/:id" element={<ConsistoireDetailPage />} />
-            <Route path="/partenaires" element={<PartenairesPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/users" element={<AdminUsersPage />} />
-            <Route path="/admin/institutions" element={<AdminInstitutionsPage />} />
-            <Route path="/admin/departments" element={<AdminDepartmentsPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
+        <Routes>
+          {/* PUBLIQUES */}
+          <Route path="/" element={<Index />} />
+          <Route path="/departements/:slug" element={<DepartementPage />} />
+          <Route path="/partenaires" element={<PartenairesPage />} />
+          <Route path="/faq" element={<FAQPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/login" element={<LoginPage />} />
+
+          {/* INSTITUTIONS */}
+          {/* <Route path="/institution/synode" element={<SynodePage />} />
+          <Route path="/institution/conseil-synodal" element={<ConseilSynodalPage />} /> */}
+          <Route path="/institution/bureau-synodal" element={<BureauSynodalPage />} />
+          {/* <Route path="/institution/consistoires" element={<ConsistoiresPublicPage />} />
+          <Route path="/institution/consistoires/:id" element={<ConsistoireDetailPage />} /> */}
+
+          {/* ADMIN GÉNÉRAL */}
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<AdminUsersPage />} />
+          <Route path="/admin/consistoires" element={<AdminConsistoiresPage />} />
+          <Route path="/admin/institutions" element={<AdminInstitutionsPage />} />
+          <Route path="/admin/departments" element={<AdminDepartmentsPage />} />
+
+          {/* COORDINATEUR CONSISTOIRE */}
+          <Route path="/admin/consistoire/:id/paroisses" element={<ConsistoireParoissesPage />} />
+          <Route path="/admin/consistoire/:id/bureau" element={<ConsistoireBureauPage />} />
+          <Route path="/admin/consistoire/:id/commissions" element={<ConsistoireBureauPage />} />
+          <Route path="/admin/consistoire/:id/organes" element={<ConsistoireBureauPage />} />
+          <Route path="/admin/consistoire/:id/conseil" element={<ConsistoireBureauPage />} />
+          <Route path="/admin/consistoire/:id/secretaires" element={<ConsistoireBureauPage />} />
+
+          {/* SECRÉTAIRE PAROISSIAL */}
+          <Route path="/admin/paroisse/:id/bureau" element={<ParoissePage />} />
+          <Route path="/admin/paroisse/:id/organes" element={<ParoissePage />} />
+          <Route path="/admin/paroisse/:id/conseil" element={<ParoissePage />} />
+          <Route path="/admin/paroisse/:id/groupes" element={<ParoissePage />} />
+          <Route path="/admin/paroisse/:id/annexes" element={<ParoissePage />} />
+          <Route path="/admin/paroisse/:id/infos" element={<ParoissePage />} />
+
+          {/* 404 */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
