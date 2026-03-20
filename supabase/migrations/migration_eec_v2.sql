@@ -414,3 +414,16 @@ SELECT
   COUNT(*)::TEXT
 FROM pg_policies
 WHERE schemaname = 'public';
+ALTER TABLE user_roles DISABLE ROW LEVEL SECURITY;
+-- 1. Colonne mission dans departments
+ALTER TABLE departments ADD COLUMN IF NOT EXISTS mission text;
+
+-- 2. Colonnes manquantes dans announcements
+ALTER TABLE announcements ADD COLUMN IF NOT EXISTS type text DEFAULT 'annonce';
+ALTER TABLE announcements ADD COLUMN IF NOT EXISTS entity_type text;
+ALTER TABLE announcements ADD COLUMN IF NOT EXISTS entity_id text;
+
+-- 3. Colonnes manquantes dans membres
+ALTER TABLE membres ADD COLUMN IF NOT EXISTS type text DEFAULT 'bureau';
+ALTER TABLE membres ADD COLUMN IF NOT EXISTS entity_type text;
+ALTER TABLE membres ADD COLUMN IF NOT EXISTS entity_id text;

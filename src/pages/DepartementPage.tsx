@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useParams } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -208,6 +210,20 @@ const DepartementPage = () => {
       </Layout>
     );
   }
+  const [annonces, setAnnonces] = useState<any[]>([]);
+    useEffect(() => {
+      // Trouver l'id du département par son slug
+      supabase.from("departments").select("id").eq("slug", slug || "").maybeSingle()
+        .then(({ data }) => {
+          if (!data?.id) return;
+          supabase.from("announcements")
+            .select("*")
+            .eq("entity_type", "departement")
+            .eq("entity_id", data.id)
+            .order("created_at", { ascending: false })
+            .then(({ data: ann }) => setAnnonces(ann || []));
+        });
+    }, [slug]);
 
   return (
     <Layout>
@@ -287,11 +303,37 @@ const DepartementPage = () => {
 
             {/* Annonces */}
             <TabsContent value="annonces">
-              <div className="bg-muted/30 rounded-xl p-8 text-center max-w-md">
-                <Megaphone className="h-12 w-12 text-muted-foreground/40 mx-auto mb-3" />
-                <p className="text-muted-foreground text-sm">
-                  Les annonces et actualités de ce département seront publiées ici par son responsable.
-                </p>
+              <div className="max-w-2xl space-y-3">
+                {annonces.length === 0 ? (
+                  <div className="bg-muted/30 rounded-xl p-8 text-center">
+                    <Megaphone className="h-12 w-12 text-muted-foreground/40 mx-auto mb-3" />
+                    <p className="text-muted-foreground text-sm">
+                      Aucune annonce pour ce département.
+                    </p>
+                  </div>
+                ) : (
+                 annonces.map(a => (
+                <div key={a.id} className="p-4 bg-card border border-border rounded-lg">
+                  {/* Ajoutez ceci pour l'image */}
+            {a.image_url && (
+              <img
+                src={a.image_url}
+                alt={a.title}
+                className="w-full h-48 object-cover rounded-lg mb-3"
+              />
+            )}
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">
+                {a.type || "annonce"}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {new Date(a.created_at).toLocaleDateString("fr-FR")}
+              </span>
+            </div>
+            <p className="font-medium text-sm text-foreground">{a.title}</p>
+            {a.content && <p className="text-xs text-muted-foreground mt-1">{a.content}</p>}
+          </div>
+        )))}
               </div>
             </TabsContent>
           </Tabs>
