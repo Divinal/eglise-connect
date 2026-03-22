@@ -34,6 +34,7 @@ import AdminDepartementPage from "./pages/AdminDepartementPage";
 // Pages coordinateur consistoire
 import ConsistoireParoissesPage from "./pages/ConsistoireParoissesPage";
 import ConsistoireBureauPage from "./pages/ConsistoireBureauPage";
+import ConsistoireParoisseInfoPage from "./pages/ConsistoireParoisseInfoPage";
 
 // Page paroisse (secrétaire)
 import ParoissePage from "./pages/ParoissePage";
@@ -84,6 +85,7 @@ const App = () => (
           <Route path="/admin/departement/:id/infos" element={<AdminDepartementPage />} />
 
           {/* COORDINATEUR CONSISTOIRE */}
+          <Route path="/admin/consistoire/:consistoireId/paroisse/:paroisseId" element={<ConsistoireParoisseInfoPage />} />
           <Route path="/admin/consistoire/:id/paroisses" element={<ConsistoireParoissesPage />} />
           <Route path="/admin/consistoire/:id/bureau" element={<ConsistoireBureauPage />} />
           <Route path="/admin/consistoire/:id/commissions" element={<ConsistoireBureauPage />} />

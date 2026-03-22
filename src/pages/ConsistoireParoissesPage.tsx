@@ -233,7 +233,7 @@ const ConsistoireParoissesPage = () => {
                     <Button variant="ghost" size="icon" onClick={() => startEdit(p)} className="h-8 w-8">
                       <Pencil className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => navigate(`/admin/paroisse/${p.id}/bureau`)} className="h-8 w-8">
+                    <Button variant="ghost" size="icon" onClick={() => navigate(`/admin/consistoire/${consistoireId}/paroisse/${p.id}`)} className="h-8 w-8">
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
