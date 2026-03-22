@@ -3,12 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Users, Building2, Shield, Music, Church, Info, Plus, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Users, Building2, Shield, Music, Church, Info, Plus, Save, Trash2, Megaphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import MembresManager from "./MembresManager";
+import { AnnoncesManager } from "./AdminSynodePage";
 import { useToast } from "@/hooks/use-toast";
 
 // Composant Groupes chantants
@@ -278,7 +279,7 @@ const InfosParoisse = ({ paroisseId }: { paroisseId: string }) => {
   );
 };
 
-type Tab = "bureau" | "organes" | "conseil" | "groupes" | "annexes" | "infos";
+type Tab = "bureau" | "organes" | "conseil" | "groupes" | "annexes" | "annonces" | "infos";
 
 const ParoissePage = () => {
   const { id: paroisseId } = useParams<{ id: string }>();
@@ -304,6 +305,7 @@ const ParoissePage = () => {
     { key: "conseil", label: "Conseil", icon: Shield },
     { key: "groupes", label: "Groupes chantants", icon: Music },
     { key: "annexes", label: "Annexes", icon: Church },
+    { key: "annonces", label: "Annonces", icon: Megaphone },
     { key: "infos", label: "Informations", icon: Info },
   ];
 
@@ -339,6 +341,9 @@ const ParoissePage = () => {
             {activeTab === "conseil" && paroisseId && <MembresManager entityType="paroisse" entityId={paroisseId} memberType="conseil" title="Conseil paroissial" />}
             {activeTab === "groupes" && paroisseId && <GroupesChantants paroisseId={paroisseId} />}
             {activeTab === "annexes" && paroisseId && <AnnexesManager paroisseId={paroisseId} />}
+            {activeTab === "annonces" && paroisseId && (
+              <AnnoncesManager entityType="paroisse" entityId={paroisseId} />
+            )}
             {activeTab === "infos" && paroisseId && <InfosParoisse paroisseId={paroisseId} />}
           </div>
         </div>

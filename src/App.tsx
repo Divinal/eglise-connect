@@ -16,29 +16,26 @@ import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 
 // Institutions publiques
-// import SynodePage from "./pages/institutions/SynodePage";
-// import ConseilSynodalPage from "./pages/institutions/ConseilSynodalPage";
-// import ConsistoiresPublicPage from "./pages/institutions/ConsistoiresPublicPage";
-// import ConsistoireDetailPage from "./pages/institutions/ConsistoireDetailPage";
+import SynodePage from "./pages/institutions/SynodePage";
+import ConseilSynodalPage from "./pages/institutions/ConseilSynodalPage";
+import ConsistoiresPage from "./pages/institutions/ConsistoiresPage";
+import ConsistoireDetailPage from "./pages/institutions/ConsistoireDetailPage";
+import ParoisseDetailPage from "./pages/institutions/ParoisseDetailPage";
 
-// Admin
+// Pages admin
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminConsistoiresPage from "./pages/AdminConsistoiresPage";
 import AdminInstitutionsPage from "./pages/AdminInstitutionsPage";
 import AdminDepartmentsPage from "./pages/AdminDepartmentsPage";
-
-// Admin Synode (structures nationales)
 import AdminSynodePage from "./pages/AdminSynodePage";
-
-// Admin Département
 import AdminDepartementPage from "./pages/AdminDepartementPage";
 
-// Coordinateur Consistoire
+// Pages coordinateur consistoire
 import ConsistoireParoissesPage from "./pages/ConsistoireParoissesPage";
 import ConsistoireBureauPage from "./pages/ConsistoireBureauPage";
 
-// Secrétaire Paroissial
+// Page paroisse (secrétaire)
 import ParoissePage from "./pages/ParoissePage";
 
 const queryClient = new QueryClient();
@@ -60,11 +57,12 @@ const App = () => (
           <Route path="/login" element={<LoginPage />} />
 
           {/* INSTITUTIONS PUBLIQUES */}
-          {/* <Route path="/institution/synode" element={<SynodePage />} />
-          <Route path="/institution/conseil-synodal" element={<ConseilSynodalPage />} /> */}
+          <Route path="/institution/synode" element={<SynodePage />} />
+          <Route path="/institution/conseil-synodal" element={<ConseilSynodalPage />} />
           <Route path="/institution/bureau-synodal" element={<BureauSynodalPage />} />
-          {/* <Route path="/institution/consistoires" element={<ConsistoiresPublicPage />} />
-          <Route path="/institution/consistoires/:id" element={<ConsistoireDetailPage />} /> */}
+          <Route path="/institution/consistoires" element={<ConsistoiresPage />} />
+          <Route path="/institution/consistoires/:id" element={<ConsistoireDetailPage />} />
+          <Route path="/paroisses/:id" element={<ParoisseDetailPage />} />
 
           {/* ADMIN GÉNÉRAL */}
           <Route path="/admin" element={<AdminDashboard />} />
@@ -73,7 +71,7 @@ const App = () => (
           <Route path="/admin/institutions" element={<AdminInstitutionsPage />} />
           <Route path="/admin/departments" element={<AdminDepartmentsPage />} />
 
-          {/* ADMIN SYNODE (structures nationales) */}
+          {/* ADMIN SYNODE */}
           <Route path="/admin/synode/bureau" element={<AdminSynodePage />} />
           <Route path="/admin/synode/commissions" element={<AdminSynodePage />} />
           <Route path="/admin/synode/organes" element={<AdminSynodePage />} />
