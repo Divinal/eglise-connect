@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
+import AnnoncesSection from "@/components/AnnoncesSection";
 import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Church, Users, MapPin, Phone, Mail, ArrowLeft, Music, Calendar } from "lucide-react";
@@ -64,19 +65,16 @@ const ParoisseDetailPage = () => {
     const fetchAll = async () => {
       setLoading(true);
 
-      // Infos paroisse
       const { data: par } = await (supabase as any)
         .from("paroisses").select("*").eq("id", id).maybeSingle();
       setParoisse(par);
 
-      // Nom du consistoire
       if (par?.consistoire_id) {
         const { data: con } = await supabase.from("consistoires")
           .select("name").eq("id", par.consistoire_id).maybeSingle();
         setConsistoireName((con as any)?.name || "");
       }
 
-      // Membres par type
       const { data: allMembres } = await (supabase as any)
         .from("membres").select("*")
         .eq("entity_type", "paroisse")
@@ -89,17 +87,14 @@ const ParoisseDetailPage = () => {
       });
       setMembres(grouped);
 
-      // Groupes chantants
       const { data: grp } = await supabase.from("groupes_chantants")
         .select("*").eq("paroisse_id", id).order("name");
       setGroupes(grp || []);
 
-      // Annexes
       const { data: ann } = await supabase.from("annexes")
         .select("*").eq("paroisse_id", id).order("name");
       setAnnexes(ann || []);
 
-      // Annonces
       const { data: annonceData } = await (supabase as any)
         .from("announcements").select("*")
         .eq("entity_type", "paroisse")
@@ -134,7 +129,6 @@ const ParoisseDetailPage = () => {
 
   return (
     <Layout>
-      {/* Header */}
       <div className="bg-primary py-12">
         <div className="container">
           <button
@@ -150,8 +144,6 @@ const ParoisseDetailPage = () => {
           {paroisse.description && (
             <p className="text-primary-foreground/70 mt-2 max-w-2xl">{paroisse.description}</p>
           )}
-
-          {/* Infos rapides */}
           <div className="flex flex-wrap gap-4 mt-4">
             {paroisse.ville && (
               <div className="flex items-center gap-1.5 text-primary-foreground/70 text-sm">
@@ -184,7 +176,17 @@ const ParoisseDetailPage = () => {
         </div>
       </div>
 
-      {/* Contenu */}
+      {/* Annonces affichées directement */}
+      <section className="py-8 bg-cream/50 border-b border-border">
+        <div className="container max-w-3xl">
+          <h2 className="font-display text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+            📢 Annonces & Circulaires
+          </h2>
+          <AnnoncesSection annonces={annonces} />
+        </div>
+      </section>
+
+      {/* Tabs */}
       <section className="py-8 bg-cream">
         <div className="container">
           <Tabs defaultValue="bureau" className="w-full">
@@ -202,30 +204,23 @@ const ParoisseDetailPage = () => {
                   Annexes ({annexes.length})
                 </TabsTrigger>
               )}
-              <TabsTrigger value="annonces">
-                Annonces {annonces.length > 0 && `(${annonces.length})`}
-              </TabsTrigger>
             </TabsList>
 
-            {/* Bureau */}
             <TabsContent value="bureau">
               <h2 className="font-semibold text-lg mb-4">Bureau Paroissial</h2>
               <MembresList membres={membres.bureau} />
             </TabsContent>
 
-            {/* Conseil */}
             <TabsContent value="conseil">
               <h2 className="font-semibold text-lg mb-4">Conseil Paroissial</h2>
               <MembresList membres={membres.conseil} />
             </TabsContent>
 
-            {/* Organes */}
             <TabsContent value="organes">
               <h2 className="font-semibold text-lg mb-4">Organes Paroissiaux</h2>
               <MembresList membres={membres.organes} />
             </TabsContent>
 
-            {/* Groupes chantants */}
             {groupes.length > 0 && (
               <TabsContent value="groupes">
                 <h2 className="font-semibold text-lg mb-4">Groupes Chantants</h2>
@@ -264,7 +259,6 @@ const ParoisseDetailPage = () => {
               </TabsContent>
             )}
 
-            {/* Annexes */}
             {annexes.length > 0 && (
               <TabsContent value="annexes">
                 <h2 className="font-semibold text-lg mb-4">Annexes</h2>
@@ -290,38 +284,6 @@ const ParoisseDetailPage = () => {
                 </div>
               </TabsContent>
             )}
-
-            {/* Annonces */}
-            <TabsContent value="annonces">
-              <h2 className="font-semibold text-lg mb-4">Annonces & Circulaires</h2>
-              {annonces.length === 0 ? (
-                <p className="text-muted-foreground text-sm py-6 text-center">Aucune annonce.</p>
-              ) : (
-                <div className="space-y-4">
-                  {annonces.map((a: any) => (
-                    <div key={a.id} className="bg-card border border-border rounded-lg overflow-hidden">
-                      {a.image_url && (
-                        <img src={a.image_url} alt={a.title} className="w-full h-52 object-cover" />
-                      )}
-                      <div className="p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                            a.type === "circulaire" ? "bg-blue-100 text-blue-700" :
-                            a.type === "convocation" ? "bg-amber-100 text-amber-700" :
-                            "bg-green-100 text-green-700"
-                          }`}>{a.type}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {new Date(a.created_at).toLocaleDateString("fr-FR")}
-                          </span>
-                        </div>
-                        <p className="font-semibold text-sm">{a.title}</p>
-                        {a.content && <p className="text-sm text-muted-foreground mt-1">{a.content}</p>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
           </Tabs>
         </div>
       </section>

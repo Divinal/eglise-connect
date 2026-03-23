@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
+import AnnoncesSection from "@/components/AnnoncesSection";
 import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Church, Users, MapPin, Phone, Mail, ArrowLeft, ChevronRight } from "lucide-react";
@@ -167,6 +168,17 @@ const ConsistoireDetailPage = () => {
         </div>
       </div>
 
+      {/* Annonces affichées directement */}
+      <section className="py-8 bg-cream/50 border-b border-border">
+        <div className="container max-w-3xl">
+          <h2 className="font-display text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+            📢 Annonces & Circulaires
+          </h2>
+          <AnnoncesSection annonces={annonces} />
+        </div>
+      </section>
+
+      {/* Tabs pour bureau, conseil, organes, paroisses */}
       <section className="py-8 bg-cream">
         <div className="container">
           <Tabs defaultValue="bureau" className="w-full">
@@ -176,9 +188,6 @@ const ConsistoireDetailPage = () => {
               <TabsTrigger value="organes">Organes</TabsTrigger>
               <TabsTrigger value="paroisses">
                 Paroisses {paroisses.length > 0 && `(${paroisses.length})`}
-              </TabsTrigger>
-              <TabsTrigger value="annonces">
-                Annonces {annonces.length > 0 && `(${annonces.length})`}
               </TabsTrigger>
             </TabsList>
 
@@ -221,37 +230,6 @@ const ConsistoireDetailPage = () => {
                       </div>
                       <ChevronRight className="h-4 w-4 text-muted-foreground/40 shrink-0 group-hover:text-primary transition-colors" />
                     </button>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="annonces">
-              <h2 className="font-semibold text-lg mb-4">Annonces & Circulaires</h2>
-              {annonces.length === 0 ? (
-                <p className="text-muted-foreground text-sm py-6 text-center">Aucune annonce.</p>
-              ) : (
-                <div className="space-y-4">
-                  {annonces.map((a: any) => (
-                    <div key={a.id} className="bg-card border border-border rounded-lg overflow-hidden">
-                      {a.image_url && (
-                        <img src={a.image_url} alt={a.title} className="w-full h-52 object-cover" />
-                      )}
-                      <div className="p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                            a.type === "circulaire" ? "bg-blue-100 text-blue-700" :
-                            a.type === "convocation" ? "bg-amber-100 text-amber-700" :
-                            "bg-green-100 text-green-700"
-                          }`}>{a.type}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {new Date(a.created_at).toLocaleDateString("fr-FR")}
-                          </span>
-                        </div>
-                        <p className="font-semibold text-sm">{a.title}</p>
-                        {a.content && <p className="text-sm text-muted-foreground mt-1">{a.content}</p>}
-                      </div>
-                    </div>
                   ))}
                 </div>
               )}
