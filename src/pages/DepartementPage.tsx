@@ -93,19 +93,10 @@ const departements: Record<string, DepartementInfo> = {
 const DepartementPage = () => {
   const { slug } = useParams();
   const info = departements[slug || ""];
-
-  if (!info) {
-    return (
-      <Layout>
-        <div className="container py-20 text-center">
-          <h1 className="font-display text-2xl text-foreground">Département introuvable</h1>
-        </div>
-      </Layout>
-    );
-  }
-
   const [annonces, setAnnonces] = useState<any[]>([]);
+
   useEffect(() => {
+    if (!info) return;
     supabase.from("departments").select("id").eq("slug", slug || "").maybeSingle()
       .then(({ data }) => {
         if (!data?.id) return;
