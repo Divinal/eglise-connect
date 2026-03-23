@@ -107,7 +107,17 @@ const DepartementPage = () => {
           .order("created_at", { ascending: false })
           .then(({ data: ann }) => setAnnonces(ann || []));
       });
-  }, [slug]);
+  }, [slug, info]);
+
+  if (!info) {
+    return (
+      <Layout>
+        <div className="container py-20 text-center">
+          <h1 className="font-display text-2xl text-foreground">Département introuvable</h1>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
