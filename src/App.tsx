@@ -14,6 +14,7 @@ import ContactPage from "./pages/ContactPage";
 import BlogPage from "./pages/BlogPage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
+import PolyticPage from './pages/PolyticPage';
 
 // Institutions publiques
 import SynodePage from "./pages/institutions/SynodePage";
@@ -56,6 +57,7 @@ const App = () => (
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/politique-confidentialite" element={<PolyticPage />} />
 
           {/* INSTITUTIONS PUBLIQUES */}
           <Route path="/institution/synode" element={<SynodePage />} />

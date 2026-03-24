@@ -26,12 +26,24 @@ const Footer = () => {
               Elle collabore avec plusieurs organisations chrétiennes internationales
               et continue d'avoir un impact significatif au Congo.
             </p>
-            <div className="flex items-center gap-4 mt-6">
-              <a href="#" className="text-primary-foreground/60 hover:text-gold transition-colors"><Facebook className="h-4 w-4" /></a>
-              <a href="#" className="text-primary-foreground/60 hover:text-gold transition-colors"><Twitter className="h-4 w-4" /></a>
-              <a href="#" className="text-primary-foreground/60 hover:text-gold transition-colors"><Instagram className="h-4 w-4" /></a>
-              <a href="#" className="text-primary-foreground/60 hover:text-gold transition-colors"><Youtube className="h-4 w-4" /></a>
-            </div>
+            <div className="flex gap-3">
+                  {[
+                    { icon: <Facebook className="h-4 w-4" />, href: "https://web.facebook.com/eeccongo" },
+                    { icon: <Twitter className="h-4 w-4" />, href: "#" },
+                    { icon: <Instagram className="h-4 w-4" />, href: "#" },
+                    { icon: <Youtube className="h-4 w-4" />, href: "https://www.youtube.com/@salasambilaTv/videos" },
+                  ].map((s, i) => (
+                    <a
+                      key={i}
+                      href={s.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-10 h-10 rounded-full border border-white flex items-center justify-center text-white hover:text-white/50 hover:border-white/50 transition-colors"
+                    >
+                      {s.icon}
+                    </a>
+                  ))}
+                </div>
           </div>
 
           {/* Column 2 - Links */}
