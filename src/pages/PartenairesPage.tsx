@@ -6,20 +6,18 @@ const partenaires = [
   {
     slug: "cvaa",
     name: "CVAA",
-    fullName: "Communauté des Villes et des Associations Africaines",
-    description:
-      "La CVAA est un réseau panafricain qui regroupe des villes, associations et organisations engagées dans le développement durable et la solidarité interafricaine. L'EEC collabore avec la CVAA pour des programmes sociaux et de développement communautaire en République du Congo.",
+    fullName: "Communauté d'Églises en Mission",
+    description: "CVAA est une organisation protestante internationale créée en 1971, regroupant plus de 35 Églises (réformées et luthériennes) en Afrique, Europe, Amérique latine et Pacifique. Elle promeut le partage, l'entraide et une mission « de partout vers partout », favorisant l'échange de pasteurs et de projets entre Églises membres.",
     icon: Globe,
     color: "bg-blue-50 border-blue-200",
     iconColor: "text-blue-600",
-    domaines: ["Développement communautaire", "Solidarité africaine", "Programmes sociaux"],
+    domaines: ["projets de développement", "Formation théologique", "Mission partagée"],
   },
   {
     slug: "federation-epc",
     name: "Fédération des EPC",
     fullName: "Fédération des Églises et Missions Évangéliques du Congo",
-    description:
-      "La Fédération des Églises Protestantes du Congo est un organe fédérateur qui regroupe les principales dénominations protestantes actives en République du Congo. Elle favorise la coopération entre les églises membres pour un témoignage commun de l'Évangile.",
+    description:"",
     icon: Users,
     color: "bg-green-50 border-green-200",
     iconColor: "text-green-600",
@@ -29,8 +27,7 @@ const partenaires = [
     slug: "plateforme-eeac",
     name: "Plateforme des EEAC",
     fullName: "Plateforme des Églises Évangéliques d'Afrique Centrale",
-    description:
-      "La Plateforme des Églises Évangéliques d'Afrique Centrale est un forum régional qui réunit les Églises évangéliques de la sous-région pour traiter des questions communes : évangélisation, formation, questions sociales et relations avec les pouvoirs publics.",
+    description:"La Plateforme a pour vocation la proclamation de l'Évangile, la justice et la transformation sociale. Elle collabore avec des alliances nationales et des églises locales (Cameroun, RCA, Congo, Gabon) pour la formation, la mission et l'entraide communautaire.",
     icon: BookOpen,
     color: "bg-amber-50 border-amber-200",
     iconColor: "text-amber-600",
@@ -39,13 +36,12 @@ const partenaires = [
   {
     slug: "conseil-oecumenisme",
     name: "Conseil Œcuménisme ECC",
-    fullName: "Conseil Œcuménique des Églises Chrétiennes du Congo",
-    description:
-      "Le Conseil Œcuménique des Églises Chrétiennes du Congo est l'instance de dialogue et de coopération entre les différentes familles chrétiennes du pays (catholiques, protestants, kimbanguistes). L'EEC y participe activement pour promouvoir l'unité visible des chrétiens.",
+    fullName: "Conseil œcuménique des Eglises Chrétiennes du Congo",
+    description:"Le Conseil Œcuménique des Églises Chrétiennes du Congo (COECC) est une plateforme de collaboration entre différentes dénominations chrétiennes au Congo-Brazzaville, axée sur l'unité, la prière et des actions sociales communes. Il œuvre pour la réconciliation, la justice et la paix, notamment à travers des partenariats pour la traduction biblique et des journées de méditation.",
     icon: Heart,
     color: "bg-rose-50 border-rose-200",
     iconColor: "text-rose-600",
-    domaines: ["Dialogue interchrétien", "Unité des chrétiens", "Actions communes"],
+    domaines: ["Organisation de prières conjointes", "cultes œcuméniques", "collaboration dans des projets sociaux"],
   },
   {
     slug: "partenariat-historique",

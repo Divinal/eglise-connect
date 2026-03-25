@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import DepartementPage from "./pages/DepartementPage";
 import PartenairesPage from "./pages/PartenairesPage";
+import PartenairePage from "./pages/PartenairePage";
 import FAQPage from "./pages/FAQPage";
 import BureauSynodalPage from "./pages/BureauSynodalPage";
 import ContactPage from "./pages/ContactPage";
@@ -52,6 +53,7 @@ const App = () => (
           {/* PUBLIQUES */}
           <Route path="/" element={<Index />} />
           <Route path="/departements/:slug" element={<DepartementPage />} />
+          <Route path="/partenaires/:slug" element={<PartenairePage />} />
           <Route path="/partenaires" element={<PartenairesPage />} />
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/contact" element={<ContactPage />} />

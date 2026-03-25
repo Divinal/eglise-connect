@@ -130,46 +130,73 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
               <Label className="text-xs">Prénom</Label>
               <Input value={form.prenom} onChange={e => setForm({ ...form, prenom: e.target.value })} placeholder="Prénom" className="h-9 text-sm" />
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">Fonction</Label>
-              <Input value={form.fonction} onChange={e => setForm({ ...form, fonction: e.target.value })} placeholder="Ex: Président, Trésorier…" className="h-9 text-sm" />
-            </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs">Fonction</Label>
+                {memberType === "conseil" ? (
+                  <select value={form.fonction} onChange={e => setForm({ ...form, fonction: e.target.value })}
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm">
+                    <option value="">-- Choisir --</option>
+                    <option value="Conseillé titulaire">Conseillé titulaire</option>
+                    <option value="Suppléant">Suppléant</option>
+                  </select>
+                ) : (
+                  <Input value={form.fonction} onChange={e => setForm({ ...form, fonction: e.target.value })}
+                    placeholder={memberType === "organe" ? "Ex: Président, Secrétaire…" : "Ex: Président, Trésorier…"}
+                    className="h-9 text-sm" />
+                )}
+              </div>
             <div className="space-y-1.5">
               <Label className="text-xs">Téléphone</Label>
               <Input value={form.telephone} onChange={e => setForm({ ...form, telephone: e.target.value })} placeholder="+242 …" className="h-9 text-sm" />
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">Date de naissance</Label>
-              <Input type="date" value={form.date_naissance} onChange={e => setForm({ ...form, date_naissance: e.target.value })} className="h-9 text-sm" />
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">Paroisse de baptême</Label>
-              <Input value={form.paroisse_bapteme} onChange={e => setForm({ ...form, paroisse_bapteme: e.target.value })} placeholder="Paroisse de …" className="h-9 text-sm" />
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs">Date de baptême</Label>
-              <Input type="date" value={form.date_bapteme} onChange={e => setForm({ ...form, date_bapteme: e.target.value })} className="h-9 text-sm" />
-            </div>
+            
+            {memberType === "bureau" && (
+              <>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">Date de naissance</Label>
+                  <Input type="date" value={form.date_naissance} onChange={e => setForm({ ...form, date_naissance: e.target.value })} className="h-9 text-sm" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">Paroisse de baptême</Label>
+                  <Input value={form.paroisse_bapteme} onChange={e => setForm({ ...form, paroisse_bapteme: e.target.value })} placeholder="Paroisse de …" className="h-9 text-sm" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">Date de baptême</Label>
+                  <Input type="date" value={form.date_bapteme} onChange={e => setForm({ ...form, date_bapteme: e.target.value })} className="h-9 text-sm" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs">Genre</Label>
+                  <select value={form.genre} onChange={e => setForm({ ...form, genre: e.target.value })}
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm">
+                    <option value="M">Masculin</option>
+                    <option value="F">Féminin</option>
+                  </select>
+                </div>
+              </>
+            )}
+           
             <div className="space-y-1.5">
               <Label className="text-xs">Adresse</Label>
               <Input value={form.adresse} onChange={e => setForm({ ...form, adresse: e.target.value })} placeholder="Adresse…" className="h-9 text-sm" />
             </div>
-            <div className="space-y-1.5">
+            {/* <div className="space-y-1.5">
               <Label className="text-xs">Genre</Label>
               <select value={form.genre} onChange={e => setForm({ ...form, genre: e.target.value })}
                 className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm">
                 <option value="M">Masculin</option>
                 <option value="F">Féminin</option>
               </select>
-            </div>
-            <div className="space-y-1.5">
+            </div> */}
+
+            {/* <div className="space-y-1.5">
               <Label className="text-xs">Statut</Label>
+
               <select value={form.statut} onChange={e => setForm({ ...form, statut: e.target.value })}
                 className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm">
                 <option value="actif">Actif</option>
                 <option value="refroidi">Refroidi</option>
               </select>
-            </div>
+            </div> */}
           </div>
           <div className="flex gap-2 mt-4">
             <Button size="sm" onClick={handleSave} className="gap-1.5"><Save className="h-3.5 w-3.5" />Enregistrer</Button>
