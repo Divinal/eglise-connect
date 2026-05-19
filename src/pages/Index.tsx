@@ -27,7 +27,7 @@ const sampleNews = [
   },
 ];
 
-const services = [
+const services = [ 
   {
     icon: <Church className="h-10 w-10 text-primary" />,
     title: "Cultes et Prières",
@@ -66,6 +66,33 @@ const Index = () => {
 
             {/* Colonne principale (gauche) */}
             <div className="lg:col-span-2 space-y-10">
+               {/* Mot du Président */}
+              <div className="bg-card rounded-xl border border-border p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                  <img
+                    src="/images/images/presidentEglise.jpg"
+                    alt="Le Président"
+                    className="rounded-lg shadow w-full object-cover aspect-square"
+                    onError={(e) => { (e.target as HTMLImageElement).src = heroImage; }}
+                  />
+                  <div>
+                    <h2 className="font-display text-xl font-bold text-primary mb-3">
+                      Mot de bienvenue par le Président
+                    </h2>
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-3">
+                      Bien-aimés frères et sœurs en Christ, c'est avec une joie profonde et un cœur
+                      rempli de gratitude que je vous accueille en ce lieu saint, la maison de notre
+                      Seigneur. Au nom de l'église évangélique du Congo, je vous dis : <em>Mbote na bino nyonso!</em>
+                    </p>
+                    <h4 className="font-semibold text-foreground text-sm mb-1">Encouragement et inspiration</h4>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      Dans notre Congo bien-aimé, nous sommes appelés à être des lumières dans un monde
+                      en quête d'espoir. Que notre foi soit un phare qui guide nos pas, que notre amour
+                      soit un témoignage vivant de la présence de Christ en nous.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               {/* Intro texte */}
               <div className="text-center">
@@ -94,33 +121,6 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Mot du Président */}
-              <div className="bg-card rounded-xl border border-border p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                  <img
-                    src="/images/images/president.jpg"
-                    alt="Le Président"
-                    className="rounded-lg shadow w-full object-cover aspect-square"
-                    onError={(e) => { (e.target as HTMLImageElement).src = heroImage; }}
-                  />
-                  <div>
-                    <h2 className="font-display text-xl font-bold text-primary mb-3">
-                      Mot de bienvenue par le Président
-                    </h2>
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-3">
-                      Bien-aimés frères et sœurs en Christ, c'est avec une joie profonde et un cœur
-                      rempli de gratitude que je vous accueille en ce lieu saint, la maison de notre
-                      Seigneur. Au nom de l'église évangélique du Congo, je vous dis : <em>Mbote na bino nyonso!</em>
-                    </p>
-                    <h4 className="font-semibold text-foreground text-sm mb-1">Encouragement et inspiration</h4>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      Dans notre Congo bien-aimé, nous sommes appelés à être des lumières dans un monde
-                      en quête d'espoir. Que notre foi soit un phare qui guide nos pas, que notre amour
-                      soit un témoignage vivant de la présence de Christ en nous.
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Colonne latérale (droite) */}

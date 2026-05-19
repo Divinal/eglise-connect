@@ -15,21 +15,37 @@ const navItems: NavItem[] = [
       { label: "Synode", href: "/institution/synode" },
       { label: "Conseil Synodal", href: "/institution/conseil-synodal" },
       { label: "Bureau Synodal", href: "/institution/bureau-synodal" },
-      { label: "Consistoires", href: "/institution/consistoires" },
+      { label: "Pastorale", href: "/" },
+      { label: "UPB", href: "/" },
+      { label: "IFPN", href: "/" },
+      { label: "SUECO", href: "/" },
+
     ],
   },
   {
+    label: "Consistoires & Diaspora", href: "/institution/consistoires",
+    children: [
+      { label: "Consistoires", href: "/institution/consistoires" },
+      { label: "Champs d'évangelisation", href: "/institution/champs-evangelisation" },
+      { label: "Champs de Mission", href: "/institution/champs-de-mission" },
+      { label: "Diaspora", href: "/institution/diaspora" },
+    ],
+  },
+
+  {
     label: "Départements", href: "/departements",
     children: [
-      { label: "DGEP", href: "/departements/dgep" },
-      { label: "Santé", href: "/departements/sante" },
-      { label: "Jeunesse", href: "/departements/jeunesse" },
-      { label: "Musique", href: "/departements/musique" },
-      { label: "Évangélisation", href: "/departements/evangelisation" },
-      { label: "Femmes et Famille", href: "/departements/femmes-famille" },
-      { label: "Éducation-Chrétienne", href: "/departements/education-chretienne" },
-      { label: "Aumônerie-Générale", href: "/departements/aumonerie" },
-      { label: "Communication", href: "/departements/communication" },
+      { label: "Dép. Syn. de l'Enseignement Protestant", href: "/departements/dgep" },
+      { label: "Dép. Syn. de la Santé", href: "/departements/sante" },
+      { label: "Dép. Syn. de la Jeunesse", href: "/departements/jeunesse" },
+      { label: "Dép. Syn. de la Musique", href: "/departements/musique" },
+      { label: "Dép. Syn. de l'Évangélisation", href: "/departements/evangelisation" },
+      { label: "Dép. Syn. Femme et Famille", href: "/departements/femmes-famille" },
+      { label: "Dép. Syn. de l'Éducation-Chrétienne", href: "/departements/education-chretienne" },
+      { label: "Dép. Syn. de l'Aumônerie-Générale", href: "/departements/aumonerie" },
+      { label: "Dép. Syn. de la Communication", href: "/departements/communication" },
+      { label: "AEP", href: "/departements/aep" },
+
     ],
   },
   {
@@ -48,7 +64,7 @@ const navItems: NavItem[] = [
 
 // Données statiques des départements pour la recherche locale
 const DEPARTEMENTS_STATIQUES = [
-  { name: "DGEP", fullName: "Direction Générale de l'Évangélisation et des Paroisses", slug: "dgep" },
+  { name: "DSEP", fullName: "Direction Générale de l'Évangélisation et des Paroisses", slug: "dgep" },
   { name: "Santé", fullName: "Département de la Santé", slug: "sante" },
   { name: "Jeunesse", fullName: "Département de la Jeunesse", slug: "jeunesse" },
   { name: "Musique", fullName: "Département de la Musique et des Arts Sacrés", slug: "musique" },

@@ -11,8 +11,8 @@ interface DepartementInfo {
 
 const departements: Record<string, DepartementInfo> = {
   dgep: {
-    name: "DGEP", fullName: "Direction Générale de l'Évangélisation et des Paroisses",
-    mission: "La DGEP est la cheville ouvrière de l'EEC. Elle supervise et coordonne l'ensemble des activités évangéliques et paroissiales à travers tout le territoire national, veillant à la cohérence doctrinale et à la vitalité spirituelle de l'Église.",
+    name: "DSEP", fullName: "Departement Synodale de l'Enseignement Protestant",
+    mission: "La DSEP est la cheville ouvrière de l'EEC. Elle supervise et coordonne l'ensemble des activités évangéliques et paroissiales à travers tout le territoire national, veillant à la cohérence doctrinale et à la vitalité spirituelle de l'Église.",
     activites: ["Supervision des consistoires et paroisses", "Coordination de l'évangélisation nationale", "Formation et supervision des pasteurs", "Suivi des statistiques d'église", "Organisation des campagnes évangéliques"],
     objectifs: ["Renforcer la vie spirituelle des paroisses", "Planter de nouvelles églises dans les zones non atteintes", "Former une nouvelle génération de responsables", "Favoriser le renouveau spirituel"],
     couleur: "border-l-primary",
