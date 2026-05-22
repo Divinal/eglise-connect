@@ -3,8 +3,44 @@ import HeroSection from "@/components/HeroSection";
 import CTAButtons from "@/components/CTAButtons";
 import InfoCard from "@/components/InfoCard";
 import { Link } from "react-router-dom";
-import { FileText, Book, BookOpen, Calendar, Church, Users, ChevronRight } from "lucide-react";
+import { FileText, Book, BookOpen, Calendar, Users, ChevronRight, Radio, Clock, MapPin, Music } from "lucide-react";
 import heroImage from "@/assets/hero-church.jpg";
+import { useEffect, useRef, useState } from "react";
+
+const STATS = [
+  { value: 157,  suffix: "+", label: "Serviteurs de Dieu" },
+  { value: 1,    suffix: "M+", label: "Fidèles" },
+  { value: 250,  suffix: "+", label: "Groupes chantants" },
+  { value: 400,  suffix: "+", label: "Paroisses" },
+];
+
+function useCountUp(target: number, started: boolean, duration = 1800) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!started) return;
+    let start = 0;
+    const step = Math.ceil(target / (duration / 16));
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { setCount(target); clearInterval(timer); }
+      else setCount(start);
+    }, 16);
+    return () => clearInterval(timer);
+  }, [started, target, duration]);
+  return count;
+}
+
+function StatCard({ value, suffix, label, started }: { value: number; suffix: string; label: string; started: boolean }) {
+  const count = useCountUp(value, started);
+  return (
+    <div className="flex flex-col items-center text-center gap-1">
+      <span className="font-display text-4xl md:text-5xl font-bold text-primary-foreground">
+        {count}{suffix}
+      </span>
+      <span className="text-sm text-primary-foreground/70 uppercase tracking-wide">{label}</span>
+    </div>
+  );
+}
 
 const sampleNews = [
   {
@@ -27,23 +63,6 @@ const sampleNews = [
   },
 ];
 
-const services = [ 
-  {
-    icon: <Church className="h-10 w-10 text-primary" />,
-    title: "Cultes et Prières",
-    desc: "Rejoignez-nous pour nos services de culte hebdomadaires et nos groupes de prière.",
-  },
-  {
-    icon: <Users className="h-10 w-10 text-primary" />,
-    title: "Communauté",
-    desc: "Nous croyons en la force de la communauté et offrons divers groupes de soutien et activités.",
-  },
-  {
-    icon: <BookOpen className="h-10 w-10 text-primary" />,
-    title: "Études Bibliques",
-    desc: "Approfondir votre connaissance des Écritures à travers nos programmes d'études bibliques.",
-  },
-];
 
 const documents = [
   { icon: <FileText className="h-4 w-4 text-red-500" />, label: "Guide Biblique", href: "#" },
@@ -53,6 +72,20 @@ const documents = [
 ];
 
 const Index = () => {
+  const statsRef = useRef<HTMLDivElement>(null);
+  const [statsStarted, setStatsStarted] = useState(false);
+
+  useEffect(() => {
+    const el = statsRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setStatsStarted(true); observer.disconnect(); } },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <Layout>
       {/* ── HERO ── */}
@@ -97,7 +130,7 @@ const Index = () => {
               {/* Intro texte */}
               <div className="text-center">
                 <h2 className="font-display text-3xl font-bold text-primary mb-4">
-                  Allons à la découverte de l'EEC
+                 A la découverte de l'EEC
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
                   L'Église Évangélique du Congo est une institution spirituelle et sociale clé en
@@ -125,6 +158,30 @@ const Index = () => {
 
             {/* Colonne latérale (droite) */}
             <div className="space-y-5">
+
+              {/* Notre Radio */}
+              <div className="rounded-xl border border-border overflow-hidden shadow-sm">
+                <div className="bg-primary text-primary-foreground px-4 py-3 flex items-center gap-2">
+                  <Radio className="h-4 w-4 text-gold" />
+                  <h4 className="font-display font-semibold">Nos Radio</h4>
+                </div>
+                <div className="bg-card divide-y divide-border">
+                  {[
+                    { name: "Radio Évangile Congo", freq: "— FM à venir" },
+                    { name: "Radio Espoir", freq: "— FM à venir" },
+                  ].map((radio, i) => (
+                    <div key={i} className="flex items-center gap-3 px-4 py-3">
+                      <span className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        <Radio className="h-3.5 w-3.5 text-primary" />
+                      </span>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{radio.name}</p>
+                        <p className="text-xs text-muted-foreground">{radio.freq}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
               {/* Prochain Synode */}
               <div className="rounded-xl border border-border overflow-hidden shadow-sm">
@@ -204,32 +261,80 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ── DOCTRINE ET PRATIQUES ── */}
+      {/* ── VIE DE L'ÉGLISE ── */}
       <section className="py-16 bg-background">
         <div className="container">
-          <h2 className="font-display text-3xl font-bold text-primary text-center mb-3">
-            Doctrine et pratiques
+          <h2 className="font-display text-3xl font-bold text-primary text-center mb-10">
+            Vie de l'Église
           </h2>
-          <p className="text-center text-muted-foreground mb-4">
-            L'Église Évangélique du Congo repose sur les principes fondamentaux du protestantisme :
-          </p>
-          <ol className="max-w-xl mx-auto text-sm text-muted-foreground space-y-1 list-decimal list-inside mb-10">
-            <li>La suprématie des Écritures (la Bible comme seule autorité de foi et de pratique)</li>
-            <li>Le salut par la foi en Jésus-Christ</li>
-            <li>La pratique des sacrements du baptême et de la Sainte-Cène</li>
-            <li>L'importance de la prédication et de la formation théologique</li>
-          </ol>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {services.map((s, i) => (
-              <div key={i} className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
-                {s.icon}
-                <h3 className="font-display font-semibold text-foreground text-lg">{s.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed flex-1">{s.desc}</p>
-                <a href="#" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
-                  En savoir plus
-                </a>
-              </div>
+            {/* Programme du Culte */}
+            <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
+              <Clock className="h-10 w-10 text-primary" />
+              <h3 className="font-display font-semibold text-foreground text-lg">Programme du Culte</h3>
+              <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Culte dominical — Dim. 9h00</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Prière synodale — Mer. 18h30</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Étude biblique — Ven. 17h00</li>
+              </ul>
+              <Link to="/contact" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+                En savoir plus
+              </Link>
+            </div>
+
+            {/* Trouver une Paroisse */}
+            <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
+              <MapPin className="h-10 w-10 text-primary" />
+              <h3 className="font-display font-semibold text-foreground text-lg">Trouver une Paroisse</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed flex-1">
+                Localisez la paroisse la plus proche de chez vous à Brazzaville, Pointe-Noire ou dans toute la République du Congo.
+              </p>
+              <Link to="/institution/consistoires" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+                Voir les paroisses
+              </Link>
+            </div>
+
+            {/* Grand Thème d'Édification */}
+            <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
+              <BookOpen className="h-10 w-10 text-primary" />
+              <h3 className="font-display font-semibold text-foreground text-lg">Thème d'Édification</h3>
+              <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />Croire, Espérer, Aimer</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />L'Évangile : Lumière des Nations</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />Sanctification et Témoignage</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />Bâtir l'Église de Christ</li>
+              </ul>
+              <a href="#" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+                En savoir plus
+              </a>
+            </div>
+
+            {/* Types de Groupe */}
+            <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
+              <Music className="h-10 w-10 text-primary" />
+              <h3 className="font-display font-semibold text-foreground text-lg">Types de Groupe</h3>
+              <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Chorale</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Kilombo</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />CBE</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Groupe de Louange</li>
+              </ul>
+              <a href="#" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+                En savoir plus
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── COMPTEUR STATISTIQUES ── */}
+      <section className="py-14 bg-primary" ref={statsRef}>
+        <div className="container">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+            {STATS.map((s, i) => (
+              <StatCard key={i} value={s.value} suffix={s.suffix} label={s.label} started={statsStarted} />
             ))}
           </div>
         </div>

@@ -24,6 +24,20 @@ import ConsistoiresPage from "./pages/institutions/ConsistoiresPage";
 import ConsistoireDetailPage from "./pages/institutions/ConsistoireDetailPage";
 import ParoisseDetailPage from "./pages/institutions/ParoisseDetailPage";
 
+// Nouvelles pages institutions
+import UPBPage from "./pages/institutions/UPBPage";
+import IFPNPage from "./pages/institutions/IFPNPage";
+import SUECOPage from "./pages/institutions/SUECOPage";
+import PastoralePage from "./pages/institutions/PastoralePage";
+
+// Pages Consistoires & Diaspora
+import DiasporaPage from "./pages/institutions/DiasporaPage";
+import DiasporaDetailPage from "./pages/institutions/DiasporaDetailPage";
+import ChampsMissionPage from "./pages/institutions/ChampsMissionPage";
+import ChampsMissionDetailPage from "./pages/institutions/ChampsMissionDetailPage";
+import ChampsEvangelisationPage from "./pages/institutions/ChampsEvangelisationPage";
+import ChampsEvangelisationDetailPage from "./pages/institutions/ChampsEvangelisationDetailPage";
+
 // Pages admin
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsersPage from "./pages/AdminUsersPage";
@@ -32,6 +46,14 @@ import AdminInstitutionsPage from "./pages/AdminInstitutionsPage";
 import AdminDepartmentsPage from "./pages/AdminDepartmentsPage";
 import AdminSynodePage from "./pages/AdminSynodePage";
 import AdminDepartementPage from "./pages/AdminDepartementPage";
+
+// Nouvelles pages admin Diaspora & Champs
+import AdminDiasporaPage from "./pages/AdminDiasporaPage";
+import AdminChampsMissionPage from "./pages/AdminChampsMissionPage";
+import AdminChampsEvangelisationPage from "./pages/AdminChampsEvangelisationPage";
+import DiasporaBureauPage from "./pages/DiasporaBureauPage";
+import ChampsMissionBureauPage from "./pages/ChampsMissionBureauPage";
+import ChampsEvangelisationBureauPage from "./pages/ChampsEvangelisationBureauPage";
 
 // Pages coordinateur consistoire
 import ConsistoireParoissesPage from "./pages/ConsistoireParoissesPage";
@@ -65,9 +87,21 @@ const App = () => (
           <Route path="/institution/synode" element={<SynodePage />} />
           <Route path="/institution/conseil-synodal" element={<ConseilSynodalPage />} />
           <Route path="/institution/bureau-synodal" element={<BureauSynodalPage />} />
+          <Route path="/institution/upb" element={<UPBPage />} />
+          <Route path="/institution/ifpn" element={<IFPNPage />} />
+          <Route path="/institution/sueco" element={<SUECOPage />} />
+          <Route path="/institution/pastorale" element={<PastoralePage />} />
           <Route path="/institution/consistoires" element={<ConsistoiresPage />} />
           <Route path="/institution/consistoires/:id" element={<ConsistoireDetailPage />} />
           <Route path="/paroisses/:id" element={<ParoisseDetailPage />} />
+
+          {/* DIASPORA & CHAMPS */}
+          <Route path="/institution/diaspora" element={<DiasporaPage />} />
+          <Route path="/institution/diaspora/:id" element={<DiasporaDetailPage />} />
+          <Route path="/institution/champs-de-mission" element={<ChampsMissionPage />} />
+          <Route path="/institution/champs-de-mission/:id" element={<ChampsMissionDetailPage />} />
+          <Route path="/institution/champs-evangelisation" element={<ChampsEvangelisationPage />} />
+          <Route path="/institution/champs-evangelisation/:id" element={<ChampsEvangelisationDetailPage />} />
 
           {/* ADMIN GÉNÉRAL */}
           <Route path="/admin" element={<AdminDashboard />} />
@@ -75,6 +109,18 @@ const App = () => (
           <Route path="/admin/consistoires" element={<AdminConsistoiresPage />} />
           <Route path="/admin/institutions" element={<AdminInstitutionsPage />} />
           <Route path="/admin/departments" element={<AdminDepartmentsPage />} />
+
+          {/* ADMIN DIASPORA & CHAMPS */}
+          <Route path="/admin/diaspora" element={<AdminDiasporaPage />} />
+          <Route path="/admin/diaspora/:id/bureau" element={<DiasporaBureauPage />} />
+          <Route path="/admin/diaspora/:id/conseil" element={<DiasporaBureauPage />} />
+          <Route path="/admin/diaspora/:id/annonces" element={<DiasporaBureauPage />} />
+          <Route path="/admin/champs-mission" element={<AdminChampsMissionPage />} />
+          <Route path="/admin/champs-mission/:id/bureau" element={<ChampsMissionBureauPage />} />
+          <Route path="/admin/champs-mission/:id/annonces" element={<ChampsMissionBureauPage />} />
+          <Route path="/admin/champs-evangelisation" element={<AdminChampsEvangelisationPage />} />
+          <Route path="/admin/champs-evangelisation/:id/bureau" element={<ChampsEvangelisationBureauPage />} />
+          <Route path="/admin/champs-evangelisation/:id/annonces" element={<ChampsEvangelisationBureauPage />} />
 
           {/* ADMIN SYNODE */}
           <Route path="/admin/synode/bureau" element={<AdminSynodePage />} />

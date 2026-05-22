@@ -26,7 +26,7 @@ interface Membre {
 }
 
 interface Props {
-  entityType: "consistoire" | "paroisse";
+  entityType: string;
   entityId: string;
   memberType: "bureau" | "conseil" | "organe";
   title?: string;

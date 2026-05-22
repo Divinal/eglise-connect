@@ -21,6 +21,16 @@
 
   <body>
     <div id="root"></div>
+    <!-- Restore URL after 404.html redirect (React Router sur GitHub Pages) -->
+    <script>
+      (function() {
+        var p = window.location.search.match(/[?&]p=([^&]*)/);
+        if (p) {
+          var path = decodeURIComponent(p[1]);
+          window.history.replaceState(null, null, path || '/');
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
