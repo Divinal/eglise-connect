@@ -305,9 +305,9 @@ const Index = () => {
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />Sanctification et Témoignage</li>
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />Bâtir l'Église de Christ</li>
               </ul>
-              <a href="#" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+              <Link to="/themes-edification" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
                 En savoir plus
-              </a>
+              </Link>
             </div>
 
             {/* Types de Groupe */}
@@ -320,9 +320,9 @@ const Index = () => {
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />CBE</li>
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Groupe de Louange</li>
               </ul>
-              <a href="#" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+              <Link to="/types-de-groupe" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
                 En savoir plus
-              </a>
+              </Link>
             </div>
 
           </div>
