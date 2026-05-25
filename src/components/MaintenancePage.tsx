@@ -69,11 +69,10 @@ const MaintenancePage = () => {
         <p className="text-white/50 text-sm mt-4">
           Pour toute question :{" "}
           <a href="mailto:contact@egliseevangeliquecongo.org" className="text-[#c9a84c] hover:underline">
-            +242 06 902 30 30
+            +242 04 092 09 51
           </a>
         </p>
       </div>
-
       {/* Ligne de séparation décorative */}
       <div className="mt-12 flex items-center gap-3 text-white/20">
         <div className="h-px w-16 bg-white/20" />

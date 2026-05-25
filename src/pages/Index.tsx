@@ -274,11 +274,11 @@ const Index = () => {
               <Clock className="h-10 w-10 text-primary" />
               <h3 className="font-display font-semibold text-foreground text-lg">Programme du Culte</h3>
               <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
-                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Culte dominical — Dim. 9h00</li>
-                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Prière synodale — Mer. 18h30</li>
-                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Étude biblique — Ven. 17h00</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Culte du matin — Lun. au Sam.</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Culte dominical — Dim. 9h–11h</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Culte vespéral — Jeu. soir</li>
               </ul>
-              <Link to="/contact" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+              <Link to="/programme-culte" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
                 En savoir plus
               </Link>
             </div>

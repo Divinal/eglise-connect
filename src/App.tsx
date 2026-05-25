@@ -64,6 +64,7 @@ import ConsistoireParoisseInfoPage from "./pages/ConsistoireParoisseInfoPage";
 import ParoissePage from "./pages/ParoissePage";
 
 import AccessGuard from "./components/AccessGuard";
+import ProgrammeCultePage from "./pages/ProgrammeCultePage";
 
 const queryClient = new QueryClient();
 
@@ -85,6 +86,7 @@ const App = () => (
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/politique-confidentialite" element={<PolyticPage />} />
+          <Route path="/programme-culte" element={<ProgrammeCultePage />} />
 
           {/* INSTITUTIONS PUBLIQUES */}
           <Route path="/institution/synode" element={<SynodePage />} />
