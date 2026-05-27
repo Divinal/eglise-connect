@@ -92,14 +92,15 @@ const Index = () => {
       <HeroSection />
       <CTAButtons />
 
-      {/* ── DÉCOUVERTE EEC ── */}
+      {/* ── MOT DU PRÉSIDENT ── */}
       <section className="py-16 bg-cream">
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
 
             {/* Colonne principale (gauche) */}
             <div className="lg:col-span-2 space-y-10">
-               {/* Mot du Président */}
+
+              {/* Mot du Président */}
               <div className="bg-card rounded-xl border border-border p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                   <img
@@ -127,10 +128,30 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Intro texte */}
+              {/* Dernières Actualités */}
+              <div>
+                <h2 className="font-display text-2xl font-bold text-primary mb-6">Dernières Actualités</h2>
+                <div className="space-y-4">
+                  {sampleNews.map((news, i) => (
+                    <div key={i} className="animate-fade-in" style={{ animationDelay: `${i * 100}ms` }}>
+                      <InfoCard {...news} />
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6">
+                  <Link
+                    to="/blog"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+                  >
+                    Voir toutes les actualités
+                  </Link>
+                </div>
+              </div>
+
+              {/* A la découverte de l'EEC */}
               <div className="text-center">
                 <h2 className="font-display text-3xl font-bold text-primary mb-4">
-                 A la découverte de l'EEC
+                  A la découverte de l'EEC
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
                   L'Église Évangélique du Congo est une institution spirituelle et sociale clé en
@@ -140,7 +161,7 @@ const Index = () => {
                 </p>
               </div>
 
-              {/* Carousel images (statique) */}
+              {/* Image Bureau synodal */}
               <div className="rounded-xl overflow-hidden bg-muted aspect-video relative">
                 <img
                   src="/images/images/bureauSyn.jpg"
@@ -261,6 +282,17 @@ const Index = () => {
         </div>
       </section>
 
+      {/* ── COMPTEUR STATISTIQUES ── */}
+      <section className="py-14 bg-primary" ref={statsRef}>
+        <div className="container">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+            {STATS.map((s, i) => (
+              <StatCard key={i} value={s.value} suffix={s.suffix} label={s.label} started={statsStarted} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── VIE DE L'ÉGLISE ── */}
       <section className="py-16 bg-background">
         <div className="container">
@@ -325,41 +357,6 @@ const Index = () => {
               </Link>
             </div>
 
-          </div>
-        </div>
-      </section>
-
-      {/* ── COMPTEUR STATISTIQUES ── */}
-      <section className="py-14 bg-primary" ref={statsRef}>
-        <div className="container">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-            {STATS.map((s, i) => (
-              <StatCard key={i} value={s.value} suffix={s.suffix} label={s.label} started={statsStarted} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── ACTUALITÉS ── */}
-      <section className="py-16 bg-cream">
-        <div className="container">
-          <h2 className="font-display text-3xl font-bold text-primary text-center mb-10">
-            Dernières Actualités
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sampleNews.map((news, i) => (
-              <div key={i} className="animate-fade-in" style={{ animationDelay: `${i * 100}ms` }}>
-                <InfoCard {...news} />
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Link
-              to="/blog"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
-            >
-              Voir toutes les actualités
-            </Link>
           </div>
         </div>
       </section>
