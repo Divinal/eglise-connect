@@ -66,6 +66,7 @@ import ParoissePage from "./pages/ParoissePage";
 import ProgrammeCultePage from "./pages/ProgrammeCultePage";
 import ThemesEdificationPage from "./pages/ThemesEdificationPage";
 import TypesGroupePage from "./pages/TypesGroupePage";
+import AccessGuard from "./components/AccessGuard";
 
 const queryClient = new QueryClient();
 
@@ -75,6 +76,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AccessGuard>
         <Routes>
           {/* PUBLIQUES */}
           <Route path="/" element={<Index />} />
@@ -161,6 +163,7 @@ const App = () => (
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </AccessGuard>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
