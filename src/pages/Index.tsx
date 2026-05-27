@@ -180,6 +180,30 @@ const Index = () => {
             {/* Colonne latérale (droite) */}
             <div className="space-y-5">
 
+               {/* Thème et verset de l'année */}
+              <div className="rounded-xl border border-border overflow-hidden shadow-sm">
+                <div className="bg-primary text-primary-foreground px-4 py-3 flex items-center gap-2">
+                  <Book className="h-4 w-4 text-gold" />
+                  <h4 className="font-display font-semibold"> Thème et Verset de l'Année</h4>
+                </div>
+                <div className="bg-card divide-y divide-border">
+                  {[
+                    { name: "Contenue du thème de l'année | Contenue du thème de l'année | Contenue du thème de l'année", freq: "Thème de l'année 2026" },
+                    { name: "Contenue du verset de l'année | Contenue du verset de l'année", freq: "Verset de l'année 2026 - 2 Tim 2 : 22" },
+                  ].map((radio, i) => (
+                    <div key={i} className="flex items-center gap-3 px-4 py-3">
+                      <span className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        <Book className="h-3.5 w-3.5 text-primary" />
+                      </span>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{radio.name}</p>
+                        <p className="text-xs text-muted-foreground">{radio.freq}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div> 
+              </div>
+
               {/* Notre Radio */}
               <div className="rounded-xl border border-border overflow-hidden shadow-sm">
                 <div className="bg-primary text-primary-foreground px-4 py-3 flex items-center gap-2">
