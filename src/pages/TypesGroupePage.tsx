@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout";
-import { Music, Users, BookOpen, Heart, Star, ChevronRight, Info } from "lucide-react";
+import { Music, Users, BookOpen, Star, ChevronRight, Info, GraduationCap, Compass } from "lucide-react";
 
 const STRUCTURE_COMMUNE = [
   { titre: "Président(e) / Responsable", desc: "Anime et coordonne la vie du groupe, représente le groupe auprès du bureau de la paroisse." },
@@ -38,15 +38,15 @@ const GROUPES = [
     icon: <Star className="h-8 w-8" />,
     couleur: "bg-amber-700",
     nom: "Le Kilombo",
-    role: "Groupe de jeunes hommes — Engagement et formation",
+    role: "Groupe de chant — au style de l'EEC",
     description:
-      "Le Kilombo est le groupe des jeunes hommes de l'Église. Il vise à former des hommes de foi, responsables et engagés dans la société. C'est un espace de fraternité, de formation et d'action.",
+      "Le Kilombo est le groupe avec les tradition et style unique à l'EEC. Il vise à former des personnes de foi, responsables et engagés dans la société. C'est un espace de fraternité, de formation et d'action.",
     specificites: [
-      "Rassemblement des jeunes hommes de la paroisse",
+      "Rassemblement dans les paroisses",
       "Formation à la responsabilité, au leadership et à la foi",
       "Actions communautaires : nettoyage, aide aux personnes âgées, soutien aux veuves",
-      "Participation aux conventions nationales du Kilombo",
-      "Engagement dans l'évangélisation et le témoignage de rue",
+      "Participation aux conventions nationales des biKilombo",
+      "Engagement dans l'évangélisation et témoignage",
     ],
     verset: "1 Timothée 4 : 12",
   },
@@ -67,32 +67,48 @@ const GROUPES = [
     verset: "2 Timothée 2 : 15",
   },
   {
-    icon: <Heart className="h-8 w-8" />,
-    couleur: "bg-pink-700",
-    nom: "Groupe de Louange",
-    role: "Adoration contemporaine et animation musicale",
+    icon: <GraduationCap className="h-8 w-8" />,
+    couleur: "bg-green-700",
+    nom: "Ecodi",
+    role: "École du Dimanche — Formation des enfants dans la foi",
     description:
-      "Le Groupe de Louange est l'ensemble musical moderne de la paroisse. Il anime les temps d'adoration avec des instruments (guitare, clavier, percussions) et des chants contemporains.",
+      "L'Ecodi (École du Dimanche) est le groupe dédié à l'éducation biblique et spirituelle des enfants de la paroisse. Elle se réunit chaque dimanche en parallèle du culte principal pour instruire les enfants dans la foi chrétienne selon leur tranche d'âge.",
     specificites: [
-      "Instruments modernes : guitare, clavier, batterie, basse",
-      "Répertoire de chants contemporains de louange et d'adoration",
-      "Animation des veillées de prière, marathons et événements spéciaux",
-      "Collaboration avec la Chorale lors des grands cultes",
-      "Répétitions régulières et formation musicale continue",
+      "Accueil des enfants de 4 à 15 ans selon les tranches d'âge",
+      "Enseignement biblique adapté avec histoires, chants et activités",
+      "Formation de moniteurs et monitrices dévoués",
+      "Célébrations spéciales : Noël, Pâques, fête des enfants",
+      "Intégration progressive des enfants dans la vie de l'Église",
     ],
-    verset: "Éphésiens 5 : 19",
+    verset: "Proverbes 22 : 6",
+  },
+  {
+    icon: <Compass className="h-8 w-8" />,
+    couleur: "bg-indigo-700",
+    nom: "EUC",
+    role: "Éclaireurs Unionistes du Congo — Jeunesse et engagement",
+    description:
+      "L'EUC (Éclaireurs Unionistes du Congo) est le mouvement scout évangélique de l'EEC. Il forme les jeunes au service, à la discipline et à la foi chrétienne à travers des activités de plein air, des camps et des projets communautaires.",
+    specificites: [
+      "Mouvement de jeunesse chrétienne inspiré du scoutisme",
+      "Formation au leadership, à la discipline et au service communautaire",
+      "Camps et sorties de plein air pour la cohésion et la formation",
+      "Activités manuelles, citoyennes et spirituelles",
+      "Participation aux rassemblements nationaux et internationaux de l'EUC",
+    ],
+    verset: "Matthieu 5 : 16",
   },
   {
     icon: <Users className="h-8 w-8" />,
     couleur: "bg-teal-700",
     nom: "Autres Groupes",
-    role: "Femmes, Seniors, Couples, Enfants…",
+    role: "Femmes, Seniors, Couples, Louange…",
     description:
-      "Au-delà des groupes principaux, chaque paroisse peut organiser d'autres groupes selon ses besoins : groupe des femmes (Union des Femmes Évangéliques), groupe des seniors, groupe des couples, école du dimanche pour les enfants, etc.",
+      "Au-delà des groupes principaux, chaque paroisse peut organiser d'autres groupes selon ses besoins : groupe des femmes (Union des Femmes Évangéliques), groupe de louange, groupe des seniors, groupe des couples, etc.",
     specificites: [
       "Union des Femmes Évangéliques — entraide, prière et formation",
+      "Groupe de Louange — adoration contemporaine et animation musicale",
       "Groupe des seniors — accompagnement des personnes âgées",
-      "École du dimanche — éducation religieuse des enfants",
       "Groupe des couples — séminaires et renforcement du foyer",
       "Chaque groupe est rattaché au conseil de la paroisse",
     ],

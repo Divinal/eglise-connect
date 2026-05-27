@@ -350,7 +350,9 @@ const Index = () => {
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Chorale</li>
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Kilombo</li>
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />CBE</li>
-                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Groupe de Louange</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Ecodi</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />EUC</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Autres Groupes</li>
               </ul>
               <Link to="/types-de-groupe" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
                 En savoir plus
