@@ -54,7 +54,7 @@ const GROUPES = [
     icon: <BookOpen className="h-8 w-8" />,
     couleur: "bg-blue-700",
     nom: "Le CBE",
-    role: "Corps Biblique d'Évangélisation",
+    role: "Cercle Biblique d'Évangélisation",
     description:
       "Le CBE est le groupe dédié à l'étude approfondie de la Bible et à l'évangélisation. Ses membres sont formés à la connaissance des Écritures pour mieux témoigner et annoncer l'Évangile.",
     specificites: [
