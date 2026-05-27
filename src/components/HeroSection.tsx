@@ -114,15 +114,15 @@ const HeroSection = () => {
 
       {/* ── BOUTONS CTA ── */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-wrap justify-center gap-3 z-10">
-        <Link
+        {/* <Link
           to="/contact"
           className="px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors shadow-lg"
         >
           Faire un don
-        </Link>
+        </Link> */}
 
         {/* ── CULTE EN DIRECT YouTube ── */}
-        <a
+        {/* <a
           href={CULTE_YOUTUBE_URL}
           target="_blank"
           rel="noopener noreferrer"
@@ -132,14 +132,14 @@ const HeroSection = () => {
             <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
           </svg>
           Culte en direct
-        </a>
+        </a> */}
 
-        <Link
+        {/* <Link
           to="/contact"
           className="px-5 py-2 rounded-full bg-white/20 backdrop-blur-sm text-white border border-white/40 text-sm font-semibold hover:bg-white/30 transition-colors shadow-lg"
         >
           Nous contacter
-        </Link>
+        </Link> */}
       </div>
 
     </section>
