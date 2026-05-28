@@ -30,11 +30,19 @@ const CTAButtons = () => {
       >
         Nous contacter
       </Link>
+      
         <Link
         to="/"
         className="px-6 py-2.5 rounded-full border-2 border-primary text-primary text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
       >
         Eglise de proximité
+      </Link>
+
+       <Link
+        to="/contact"
+        className="px-6 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-navy-dark transition-colors"
+      >
+        Le Micro de la semaine
       </Link>
       
     </div>

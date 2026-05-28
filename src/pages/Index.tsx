@@ -283,7 +283,7 @@ const Index = () => {
               {/* Activités phares */}
               <div className="rounded-xl border border-border overflow-hidden shadow-sm">
                 <div className="bg-primary text-primary-foreground px-4 py-3">
-                  <h4 className="font-display font-semibold">Les activités phares</h4>
+                  <h4 className="font-display font-semibold">Les activités flash</h4>
                 </div>
                 <div className="bg-card p-4">
                   <p className="text-xs text-muted-foreground flex items-center gap-1 mb-1">

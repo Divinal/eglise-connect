@@ -48,14 +48,14 @@ const Footer = () => {
             <div className="grid grid-cols-2 gap-x-4">
               <div className="space-y-0.5">
                 <p className="text-xs font-semibold text-primary-foreground/50 uppercase tracking-wide mb-2">Institution</p>
-                <Link to="/institution/synode" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Synode</Link>
-                <Link to="/institution/conseil-synodal" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Conseil Synodal</Link>
+                <Link to="presidence-eec.com" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Présidence</Link>
+                <Link to="/institution/bureau-synodal" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Bureau Synodal</Link>
                 <Link to="/institution/consistoires" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Consistoires</Link>
                 <Link to="/institution/diaspora" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Diaspora</Link>
                 <p className="text-xs font-semibold text-primary-foreground/50 uppercase tracking-wide mt-3 mb-2">Départements</p>
-                <Link to="/departements/jeunesse" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Jeunesse</Link>
-                <Link to="/departements/evangelisation" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Évangélisation</Link>
-                <Link to="/departements/sante" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Santé</Link>
+                <Link to="/departements/communication" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Communication</Link>
+                <Link to="/departements/evangelisation" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Évangélisation & Mission</Link>
+                <Link to="/departements/aumonerie" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Aumonerie</Link>
               </div>
               <div className="space-y-0.5">
                 <p className="text-xs font-semibold text-primary-foreground/50 uppercase tracking-wide mb-2">Navigation</p>
@@ -102,7 +102,7 @@ const Footer = () => {
       {/* Bas du footer */}
       <div className="border-t border-white/10">
         <div className="container py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-primary-foreground/50">
-          <span className="text-center sm:text-left">© 2025 Église Évangélique du Congo. Tous droits réservés.</span>
+          <span className="text-center sm:text-left">© 2026 Église Évangélique du Congo. Tous droits réservés.</span>
           <Link to="/politique-confidentialite" className="hover:text-primary-foreground/80 transition-colors shrink-0">
             Politique de confidentialité
           </Link>
