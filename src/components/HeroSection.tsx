@@ -77,7 +77,7 @@ const HeroSection = () => {
             className={`transition-all duration-500 ${i === current ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 absolute inset-0"}`}
           >
             {i === current && (
-              <div className="bg-foreground/30 backdrop-blur-sm rounded-lg p-8 md:p-12">
+              <div className="rounded-lg p-8 md:p-12">
                 <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-primary-foreground mb-4 leading-tight">
                   {slide.title}
                 </h1>
