@@ -71,9 +71,24 @@ const documents = [
   { icon: <Book className="h-4 w-4 text-primary" />, label: "Lire la Bible en ligne", href: "https://info-bible.org/lsg/INDEX.html", target: "_blank" },
 ];
 
+const STATIONS_MISS = [
+  { image: "/images/images/ngouedi.jpg",    lieu: "Ngouedi",       desc: "Consistoire du Pool — l'une des premières stations fondées par les missionnaires de la SMEP." },
+  { image: "/images/stations/kolo.jpg",     lieu: "Kolo",          desc: "Consistoire des Plateaux — station historique au cœur du pays." },
+  { image: "/images/stations/loutete.jpg",  lieu: "Loutété",       desc: "Consistoire du Niari — rayonnement évangélique dans le Sud." },
+  { image: "/images/stations/station4.jpg", lieu: "Autre Station", desc: "" },
+];
+
+const EVENEMENTS_EEC = [
+  { image: "/images/evenements/centenaire-eec.jpg",  titre: "Le Centenaire de l'EEC",                     annee: "1909 – 2009", desc: "Célébration du centenaire de la présence évangélique au Congo." },
+  { image: "/images/evenements/centenaire-kolo.jpg", titre: "Centenaire de KOLO & Cinquantenaire du CBE", annee: "",            desc: "Double anniversaire marquant l'histoire des missions et du CBE." },
+  { image: "/images/evenements/autres.jpg",          titre: "Autres Grands Événements",                   annee: "",            desc: "Conventions, jubilés et rassemblements nationaux de l'EEC." },
+];
+
 const Index = () => {
   const statsRef = useRef<HTMLDivElement>(null);
   const [statsStarted, setStatsStarted] = useState(false);
+  const [showMoreStations, setShowMoreStations] = useState(false);
+  const [showMoreEvenements, setShowMoreEvenements] = useState(false);
 
   useEffect(() => {
     const el = statsRef.current;
@@ -212,8 +227,8 @@ const Index = () => {
                 </div>
                 <div className="bg-card divide-y divide-border">
                   {[
-                    { name: "Radio Évangile Congo", freq: "— FM à venir" },
-                    { name: "Radio Espoir", freq: "— FM à venir" },
+                    { name: "Voix Evangélique", freq: "— FM à venir" },
+                    { name: "Radio du Centenaire", freq: "— FM à venir" },
                   ].map((radio, i) => (
                     <div key={i} className="flex items-center gap-3 px-4 py-3">
                       <span className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -229,7 +244,7 @@ const Index = () => {
               </div>
 
               {/* Prochain Synode */}
-              <div className="rounded-xl border border-border overflow-hidden shadow-sm">
+              {/* <div className="rounded-xl border border-border overflow-hidden shadow-sm">
                 <div className="bg-primary text-primary-foreground px-4 py-3">
                   <h4 className="font-display font-semibold">Prochain Synode</h4>
                 </div>
@@ -241,12 +256,12 @@ const Index = () => {
                     En savoir plus <ChevronRight className="h-3.5 w-3.5" />
                   </a>
                 </div>
-              </div>
+              </div> */}
 
               {/* Documents importants */}
               <div className="rounded-xl border border-border overflow-hidden shadow-sm">
                 <div className="bg-primary text-primary-foreground px-4 py-3">
-                  <h4 className="font-display font-semibold">Documents Importants</h4>
+                  <h4 className="font-display font-semibold">Documents à Consulter</h4>
                 </div>
                 <ul className="divide-y divide-border bg-card">
                   {documents.map((doc, i) => (
@@ -387,40 +402,94 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ── À PROPOS ── */}
+      {/* ── STATIONS & ÉVÉNEMENTS ── */}
       <section className="py-16 bg-background">
         <div className="container">
-          <div className="bg-card border border-border rounded-xl p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <img
-                src="/images/images/ngouedi.jpg"
-                alt="À propos de l'EEC"
-                className="rounded-lg shadow w-full object-cover aspect-video"
-                onError={(e) => { (e.target as HTMLImageElement).src = heroImage; }}
-              />
-              <div>
-                <h2 className="font-display text-2xl font-bold text-primary mb-4">
-                  Station Missionnaire et Archive de l'EEC
-                </h2>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  L'EEC est l'une des plus anciennes et des plus influentes dénominations protestantes
-                  en République du Congo. Fondée en 1909 par la Société des Missions Évangéliques de
-                  Paris (SMEP), elle s'est progressivement développée sur tout le territoire congolais.
-                </p>
-                <h4 className="font-semibold text-foreground mb-2">Histoire et implantation</h4>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  Elle s'est implantée principalement dans les régions du Pool, des Plateaux, de la
-                  Cuvette, et du Niari. Aujourd'hui, elle est présente à Brazzaville, Pointe-Noire,
-                  Dolisie, et Owando, et compte de nombreux fidèles.
-                </p>
-                <h4 className="font-semibold text-foreground mb-2">Organisation et structure</h4>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  L'EEC est une église réformée presbytérienne dirigée par un Président National,
-                  assisté d'un bureau exécutif et des responsables régionaux, avec un Synode National
-                  comme organe de décision suprême.
-                </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+
+            {/* ── STATIONS MISSIONNAIRES ── */}
+            <div className="bg-card border border-border rounded-xl p-6">
+              <h2 className="font-display text-xl font-bold text-primary mb-1">
+                Station Missionnaire et Archive de l'EEC
+              </h2>
+              <p className="text-xs text-muted-foreground mb-5">
+                Lieux historiques où les missionnaires ont évangélisé et fondé l'EEC depuis 1909
+              </p>
+
+              <div className="space-y-4">
+                {STATIONS_MISS.slice(0, showMoreStations ? STATIONS_MISS.length : 3).map((s, i) => (
+                  <div key={i} className="rounded-lg overflow-hidden border border-border">
+                    <div className="relative">
+                      <img
+                        src={s.image}
+                        alt={s.lieu}
+                        className="w-full aspect-video object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).src = heroImage; }}
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2">
+                        <p className="text-white font-semibold text-sm">{s.lieu}</p>
+                      </div>
+                    </div>
+                    {s.desc && (
+                      <p className="text-xs text-muted-foreground px-3 py-2">{s.desc}</p>
+                    )}
+                  </div>
+                ))}
               </div>
+
+              {STATIONS_MISS.length > 3 && (
+                <button
+                  onClick={() => setShowMoreStations(!showMoreStations)}
+                  className="mt-4 text-sm text-primary font-semibold hover:underline flex items-center gap-1"
+                >
+                  <ChevronRight className={`h-4 w-4 transition-transform ${showMoreStations ? "rotate-90" : ""}`} />
+                  {showMoreStations ? "Voir moins" : "Voir plus"}
+                </button>
+              )}
             </div>
+
+            {/* ── GRANDS ÉVÉNEMENTS ── */}
+            <div className="bg-card border border-border rounded-xl p-6">
+              <h2 className="font-display text-xl font-bold text-primary mb-1">
+                Grands Événements de l'EEC
+              </h2>
+              <p className="text-xs text-muted-foreground mb-5">
+                Les moments marquants qui ont façonné l'histoire de l'Église Évangélique du Congo
+              </p>
+
+              <div className="space-y-3">
+                {EVENEMENTS_EEC.slice(0, showMoreEvenements ? EVENEMENTS_EEC.length : 3).map((ev, i) => (
+                  <div key={i} className="flex gap-3 border border-border rounded-lg overflow-hidden">
+                    <img
+                      src={ev.image}
+                      alt={ev.titre}
+                      className="w-24 h-20 object-cover shrink-0"
+                      onError={(e) => { (e.target as HTMLImageElement).src = heroImage; }}
+                    />
+                    <div className="py-2 pr-3 flex flex-col justify-center">
+                      {ev.annee && (
+                        <p className="text-[10px] text-primary font-semibold uppercase tracking-wide mb-0.5">{ev.annee}</p>
+                      )}
+                      <p className="text-sm font-semibold text-foreground leading-snug">{ev.titre}</p>
+                      {ev.desc && (
+                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{ev.desc}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {EVENEMENTS_EEC.length > 3 && (
+                <button
+                  onClick={() => setShowMoreEvenements(!showMoreEvenements)}
+                  className="mt-4 text-sm text-primary font-semibold hover:underline flex items-center gap-1"
+                >
+                  <ChevronRight className={`h-4 w-4 transition-transform ${showMoreEvenements ? "rotate-90" : ""}`} />
+                  {showMoreEvenements ? "Voir moins" : "Voir plus"}
+                </button>
+              )}
+            </div>
+
           </div>
         </div>
       </section>
