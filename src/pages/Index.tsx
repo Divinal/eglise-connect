@@ -400,7 +400,7 @@ const Index = () => {
               />
               <div>
                 <h2 className="font-display text-2xl font-bold text-primary mb-4">
-                  L'Église Évangélique du Congo (EEC)
+                  Station Missionnaire et Archive de l'EEC
                 </h2>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                   L'EEC est l'une des plus anciennes et des plus influentes dénominations protestantes

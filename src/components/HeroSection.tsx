@@ -19,6 +19,13 @@ const slides = [
     description:
       "C'est l'organe décisionnel suprême de l'Église. Il définit les orientations générales et prend les grandes décisions pour l'Église.",
   },
+   {
+    image: "../images/images/bureauSyn.jpg",
+    fallback: heroImage,
+    title: "Bureau Synodal",
+    description:
+      "Le Bureau Synodal est l'organe exécutif permanent de l'EEC, chargé d'assurer la gestion courante de l'Église entre les sessions du Conseil Synodal. Il est composé du Président National, du Vice-Président, du Secrétaire Général et de ses adjoints, ainsi que du Trésorier Général.",
+  },
   {
     image: "../images/images/news-2.jpg",
     fallback: heroImage,
