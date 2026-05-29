@@ -17,23 +17,33 @@ interface UserRole {
 }
 interface Consistoire { id: string; name: string; }
 interface Paroisse { id: string; name: string; consistoire_id: string; }
+interface EntiteSimple { id: string; name: string; }
 
 const ROLES = [
-  { value: "coordinateur_consistoire", label: "Coordinateur de Consistoire" },
-  { value: "secretaire_paroissial", label: "Secrétaire Paroissial" },
-  { value: "admin_departement", label: "Admin Département" },
+  { value: "coordinateur_consistoire",    label: "Coordinateur de Consistoire" },
+  { value: "secretaire_paroissial",       label: "Secrétaire Paroissial" },
+  { value: "admin_departement",           label: "Admin Département" },
+  { value: "admin_diaspora",              label: "Admin Diaspora" },
+  { value: "admin_champs_mission",        label: "Admin Champs de Mission" },
+  { value: "admin_champs_evangelisation", label: "Admin Champs d'Évangélisation" },
 ];
 const ROLE_COLORS: Record<string,string> = {
-  admin_general: "bg-red-100 text-red-700 border-red-200",
-  admin_departement: "bg-blue-100 text-blue-700 border-blue-200",
-  coordinateur_consistoire: "bg-green-100 text-green-700 border-green-200",
-  secretaire_paroissial: "bg-amber-100 text-amber-700 border-amber-200",
+  admin_general:              "bg-red-100 text-red-700 border-red-200",
+  admin_departement:          "bg-blue-100 text-blue-700 border-blue-200",
+  coordinateur_consistoire:   "bg-green-100 text-green-700 border-green-200",
+  secretaire_paroissial:      "bg-amber-100 text-amber-700 border-amber-200",
+  admin_diaspora:             "bg-violet-100 text-violet-700 border-violet-200",
+  admin_champs_mission:       "bg-emerald-100 text-emerald-700 border-emerald-200",
+  admin_champs_evangelisation:"bg-orange-100 text-orange-700 border-orange-200",
 };
 const ROLE_LABELS: Record<string,string> = {
-  admin_general: "Admin Général",
-  admin_departement: "Admin Département",
-  coordinateur_consistoire: "Coordinateur Consistoire",
-  secretaire_paroissial: "Secrétaire Paroissial",
+  admin_general:              "Admin Général",
+  admin_departement:          "Admin Département",
+  coordinateur_consistoire:   "Coordinateur Consistoire",
+  secretaire_paroissial:      "Secrétaire Paroissial",
+  admin_diaspora:             "Admin Diaspora",
+  admin_champs_mission:       "Admin Champs Mission",
+  admin_champs_evangelisation:"Admin Champs Évang.",
 };
 
 const AdminUsersPage = () => {
@@ -43,6 +53,9 @@ const AdminUsersPage = () => {
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [consistoires, setConsistoires] = useState<Consistoire[]>([]);
   const [paroisses, setParoisses] = useState<Paroisse[]>([]);
+  const [diasporaList, setDiasporaList] = useState<EntiteSimple[]>([]);
+  const [champsMissionList, setChampsMissionList] = useState<EntiteSimple[]>([]);
+  const [champsEvangelisationList, setChampsEvangelisationList] = useState<EntiteSimple[]>([]);
   const [fetching, setFetching] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [newEmail, setNewEmail] = useState("");
@@ -53,10 +66,14 @@ const AdminUsersPage = () => {
 
   const fetchData = async () => {
     setFetching(true);
-    const rolesRes = await supabase.from("user_roles").select("id,user_id,role,scope_type,scope_id,created_at").order("created_at",{ascending:false});
-    const conRes = await supabase.from("consistoires").select("id,name").order("name");
-    const parRes = await supabase.from("paroisses").select("id,name,consistoire_id").order("name");
-    // access_blocks n'est pas encore dans les types générés → cast any
+    const [rolesRes, conRes, parRes, diaRes, cmRes, ceRes] = await Promise.all([
+      supabase.from("user_roles").select("id,user_id,role,scope_type,scope_id,created_at").order("created_at",{ascending:false}),
+      supabase.from("consistoires").select("id,name").order("name"),
+      supabase.from("paroisses").select("id,name,consistoire_id").order("name"),
+      (supabase as any).from("diaspora").select("id,name").order("name"),
+      (supabase as any).from("champs_mission").select("id,name").order("name"),
+      (supabase as any).from("champs_evangelisation").select("id,name").order("name"),
+    ]);
     const blocksRes = await (supabase as any).from("access_blocks").select("user_id");
     const blockedIds = new Set((blocksRes.data||[]).map((b:any)=>b.user_id));
     const rr = rolesRes.data||[];
@@ -67,17 +84,22 @@ const AdminUsersPage = () => {
     setUserRoles(rr.map((r:any)=>({...r,email:pm[r.user_id]?.email,full_name:pm[r.user_id]?.full_name,is_blocked:blockedIds.has(r.user_id)})));
     setConsistoires(conRes.data||[]);
     setParoisses(parRes.data||[]);
+    setDiasporaList(diaRes.data||[]);
+    setChampsMissionList(cmRes.data||[]);
+    setChampsEvangelisationList(ceRes.data||[]);
     setFetching(false);
   };
   useEffect(()=>{fetchData();},[]);
 
   const toggleBlock = async (ur: UserRole) => {
     if (ur.is_blocked) {
-      await (supabase as any).from("access_blocks").delete().eq("user_id",ur.user_id);
+      const {error} = await (supabase as any).from("access_blocks").delete().eq("user_id",ur.user_id);
+      if (error) { toast({title:"Erreur",description:error.message,variant:"destructive"}); return; }
       toast({title:"Accès débloqué"});
     } else {
       const {data:{user}} = await supabase.auth.getUser();
-      await (supabase as any).from("access_blocks").insert({user_id:ur.user_id,blocked_by:user?.id});
+      const {error} = await (supabase as any).from("access_blocks").insert({user_id:ur.user_id,blocked_by:user?.id});
+      if (error) { toast({title:"Erreur",description:error.message,variant:"destructive"}); return; }
       toast({title:"Accès bloqué"});
     }
     fetchData();
@@ -92,7 +114,13 @@ const AdminUsersPage = () => {
     if(!newEmail||!newRole){toast({title:"Email et rôle requis",variant:"destructive"});return;}
     const {data:profile} = await supabase.from("profiles").select("user_id").eq("email",newEmail).maybeSingle();
     if(!profile){toast({title:"Utilisateur introuvable",description:"L'utilisateur doit créer son compte d'abord.",variant:"destructive"});return;}
-    const scopeType = newRole==="coordinateur_consistoire"?"consistoire":newRole==="secretaire_paroissial"?"paroisse":null;
+    const scopeType =
+      newRole === "coordinateur_consistoire"    ? "consistoire" :
+      newRole === "secretaire_paroissial"       ? "paroisse" :
+      newRole === "admin_diaspora"              ? "diaspora" :
+      newRole === "admin_champs_mission"        ? "champs_mission" :
+      newRole === "admin_champs_evangelisation" ? "champs_evangelisation" :
+      null;
     const {error} = await supabase.from("user_roles").insert({
       user_id: profile.user_id,
       role: newRole as "coordinateur_consistoire"|"secretaire_paroissial"|"admin_departement"|"admin_general",
@@ -106,14 +134,29 @@ const AdminUsersPage = () => {
 
   const getScopeName = (ur:UserRole) => {
     if(!ur.scope_id) return "Global";
-    const c=consistoires.find(x=>x.id===ur.scope_id);
-    if(c) return c.name;
-    const p=paroisses.find(x=>x.id===ur.scope_id);
-    if(p) return p.name;
+    const c=consistoires.find(x=>x.id===ur.scope_id); if(c) return c.name;
+    const p=paroisses.find(x=>x.id===ur.scope_id); if(p) return p.name;
+    const d=diasporaList.find(x=>x.id===ur.scope_id); if(d) return d.name;
+    const cm=champsMissionList.find(x=>x.id===ur.scope_id); if(cm) return cm.name;
+    const ce=champsEvangelisationList.find(x=>x.id===ur.scope_id); if(ce) return ce.name;
     return ur.scope_id.slice(0,8)+"…";
   };
 
-  const scopeOptions = newRole==="coordinateur_consistoire"?consistoires:newRole==="secretaire_paroissial"?paroisses:[];
+  const scopeOptions: EntiteSimple[] =
+    newRole === "coordinateur_consistoire"    ? consistoires :
+    newRole === "secretaire_paroissial"       ? paroisses :
+    newRole === "admin_diaspora"              ? diasporaList :
+    newRole === "admin_champs_mission"        ? champsMissionList :
+    newRole === "admin_champs_evangelisation" ? champsEvangelisationList :
+    [];
+
+  const scopeLabel =
+    newRole === "coordinateur_consistoire"    ? "Consistoire" :
+    newRole === "secretaire_paroissial"       ? "Paroisse" :
+    newRole === "admin_diaspora"              ? "Diaspora" :
+    newRole === "admin_champs_mission"        ? "Champ de Mission" :
+    newRole === "admin_champs_evangelisation" ? "Champ d'Évangélisation" :
+    "Portée";
 
   return (
     <Layout>
@@ -147,7 +190,7 @@ const AdminUsersPage = () => {
                 </div>
                 {scopeOptions.length>0&&(
                   <div className="space-y-1.5">
-                    <Label>{newRole==="coordinateur_consistoire"?"Consistoire":"Paroisse"} *</Label>
+                    <Label>{scopeLabel} *</Label>
                     <Select value={newScopeId} onValueChange={setNewScopeId}>
                       <SelectTrigger><SelectValue placeholder="Choisir…"/></SelectTrigger>
                       <SelectContent>{scopeOptions.map((o:any)=><SelectItem key={o.id} value={o.id}>{o.name}</SelectItem>)}</SelectContent>

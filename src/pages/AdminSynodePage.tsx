@@ -259,10 +259,10 @@ const SynodePage = ({ defaultTab }: { defaultTab?: Tab }) => {
             ))}
           </div>
           <div className="bg-card border border-border rounded-xl p-6">
-            {activeTab === "bureau" && (<MembresManager entityType="consistoire" entityId={SYNODE_ID} memberType="bureau" title="Bureau Synodal" />)}
-            {activeTab === "commissions" && (<MembresManager entityType="consistoire" entityId={SYNODE_ID} memberType="organe" title="Commissions Synodales" /> )}
-            {activeTab === "organes" && (<MembresManager entityType="consistoire" entityId={SYNODE_ID} memberType="organe" title="Organes Synodaux" />)}
-            {activeTab === "conseil" && (<MembresManager entityType="consistoire" entityId={SYNODE_ID} memberType="conseil" title="Conseil Synodal" />)}
+            {activeTab === "bureau" && (<MembresManager entityType="synode" entityId={SYNODE_ID} memberType="bureau" title="Bureau Synodal" />)}
+            {activeTab === "commissions" && (<MembresManager entityType="synode" entityId={SYNODE_ID} memberType="organe" title="Commissions Synodales" />)}
+            {activeTab === "organes" && (<MembresManager entityType="synode" entityId={SYNODE_ID} memberType="organe" title="Organes Synodaux" />)}
+            {activeTab === "conseil" && (<MembresManager entityType="synode" entityId={SYNODE_ID} memberType="conseil" title="Conseil Synodal" />)}
             {activeTab === "annonces" && (<AnnoncesManager entityType="synode" entityId={SYNODE_ID} />)}
           </div>
         </div>

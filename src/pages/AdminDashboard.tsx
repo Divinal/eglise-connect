@@ -60,6 +60,9 @@ const AdminDashboard = () => {
     admin_departement: "Admin Département",
     coordinateur_consistoire: "Coordinateur de Consistoire",
     secretaire_paroissial: "Secrétaire Paroissial",
+    admin_diaspora: "Admin Diaspora",
+    admin_champs_mission: "Admin Champs de Mission",
+    admin_champs_evangelisation: "Admin Champs d'Évangélisation",
   }[role] || role);
 
   const getRoleBadgeColor = (role: string) => ({
@@ -67,6 +70,9 @@ const AdminDashboard = () => {
     admin_departement: "bg-blue-100 text-blue-700 border border-blue-200",
     coordinateur_consistoire: "bg-green-100 text-green-700 border border-green-200",
     secretaire_paroissial: "bg-amber-100 text-amber-700 border border-amber-200",
+    admin_diaspora: "bg-violet-100 text-violet-700 border border-violet-200",
+    admin_champs_mission: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+    admin_champs_evangelisation: "bg-orange-100 text-orange-700 border border-orange-200",
   }[role] || "bg-gray-100 text-gray-700");
 
   return (
@@ -148,6 +154,54 @@ const AdminDashboard = () => {
                 <DashboardCard icon={Building2} label="Organes" desc="Organes consistoriaux" color="text-purple-600 bg-purple-50" onClick={() => navigate(`/admin/consistoire/${r.scope_id}/organes`)} />
                 <DashboardCard icon={Shield} label="Conseil" desc="Conseil consistorial" color="text-teal-600 bg-teal-50" onClick={() => navigate(`/admin/consistoire/${r.scope_id}/conseil`)} />
                 <DashboardCard icon={Shield} label="Secrétaires" desc="Gérer les secrétaires paroissiaux" color="text-red-600 bg-red-50" onClick={() => navigate(`/admin/consistoire/${r.scope_id}/secretaires`)} />
+              </div>
+            </div>
+          ))}
+
+          {/* ══════════════════════════════════════
+              ADMIN DIASPORA
+          ══════════════════════════════════════ */}
+          {roles.filter(r => r.role === "admin_diaspora").map((r, i) => (
+            <div key={i} className="mb-8">
+              <SectionTitle>Ma Communauté Diaspora</SectionTitle>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <DashboardCard icon={Users} label="Bureau" desc="Membres du bureau" color="text-violet-600 bg-violet-50" onClick={() => navigate(`/admin/diaspora/${r.scope_id}/bureau`)} />
+                <DashboardCard icon={Shield} label="Conseil" desc="Conseil de la diaspora" color="text-teal-600 bg-teal-50" onClick={() => navigate(`/admin/diaspora/${r.scope_id}/conseil`)} />
+                <DashboardCard icon={BookOpen} label="Commissions" desc="Commissions" color="text-amber-600 bg-amber-50" onClick={() => navigate(`/admin/diaspora/${r.scope_id}/commissions`)} />
+                <DashboardCard icon={Building2} label="Organes" desc="Organes" color="text-purple-600 bg-purple-50" onClick={() => navigate(`/admin/diaspora/${r.scope_id}/organes`)} />
+                <DashboardCard icon={Megaphone} label="Annonces" desc="Publier des annonces" color="text-rose-600 bg-rose-50" onClick={() => navigate(`/admin/diaspora/${r.scope_id}/annonces`)} />
+              </div>
+            </div>
+          ))}
+
+          {/* ══════════════════════════════════════
+              ADMIN CHAMPS DE MISSION
+          ══════════════════════════════════════ */}
+          {roles.filter(r => r.role === "admin_champs_mission").map((r, i) => (
+            <div key={i} className="mb-8">
+              <SectionTitle>Mon Champ de Mission</SectionTitle>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <DashboardCard icon={Users} label="Bureau" desc="Membres du bureau" color="text-emerald-600 bg-emerald-50" onClick={() => navigate(`/admin/champs-mission/${r.scope_id}/bureau`)} />
+                <DashboardCard icon={Shield} label="Conseil" desc="Conseil du champ" color="text-teal-600 bg-teal-50" onClick={() => navigate(`/admin/champs-mission/${r.scope_id}/conseil`)} />
+                <DashboardCard icon={BookOpen} label="Commissions" desc="Commissions" color="text-amber-600 bg-amber-50" onClick={() => navigate(`/admin/champs-mission/${r.scope_id}/commissions`)} />
+                <DashboardCard icon={Building2} label="Organes" desc="Organes" color="text-purple-600 bg-purple-50" onClick={() => navigate(`/admin/champs-mission/${r.scope_id}/organes`)} />
+                <DashboardCard icon={Megaphone} label="Annonces" desc="Publier des annonces" color="text-rose-600 bg-rose-50" onClick={() => navigate(`/admin/champs-mission/${r.scope_id}/annonces`)} />
+              </div>
+            </div>
+          ))}
+
+          {/* ══════════════════════════════════════
+              ADMIN CHAMPS D'ÉVANGÉLISATION
+          ══════════════════════════════════════ */}
+          {roles.filter(r => r.role === "admin_champs_evangelisation").map((r, i) => (
+            <div key={i} className="mb-8">
+              <SectionTitle>Mon Champ d'Évangélisation</SectionTitle>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <DashboardCard icon={Users} label="Bureau" desc="Membres du bureau" color="text-orange-600 bg-orange-50" onClick={() => navigate(`/admin/champs-evangelisation/${r.scope_id}/bureau`)} />
+                <DashboardCard icon={Shield} label="Conseil" desc="Conseil du champ" color="text-teal-600 bg-teal-50" onClick={() => navigate(`/admin/champs-evangelisation/${r.scope_id}/conseil`)} />
+                <DashboardCard icon={BookOpen} label="Commissions" desc="Commissions" color="text-amber-600 bg-amber-50" onClick={() => navigate(`/admin/champs-evangelisation/${r.scope_id}/commissions`)} />
+                <DashboardCard icon={Building2} label="Organes" desc="Organes" color="text-purple-600 bg-purple-50" onClick={() => navigate(`/admin/champs-evangelisation/${r.scope_id}/organes`)} />
+                <DashboardCard icon={Megaphone} label="Annonces" desc="Publier des annonces" color="text-rose-600 bg-rose-50" onClick={() => navigate(`/admin/champs-evangelisation/${r.scope_id}/annonces`)} />
               </div>
             </div>
           ))}

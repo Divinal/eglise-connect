@@ -12,12 +12,14 @@ type Tab = "bureau" | "conseil" | "commissions" | "organes" | "annonces";
 
 const ChampsEvangelisationBureauPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { isAdminGeneral, loading } = useAuth();
+  const { isAdminGeneral, hasRole, loading } = useAuth();
   const navigate = useNavigate();
   const [nomEntite, setNomEntite] = useState("");
   const [activeTab, setActiveTab] = useState<Tab>("bureau");
 
-  useEffect(() => { if (!loading && !isAdminGeneral) navigate("/admin"); }, [loading, isAdminGeneral, navigate]);
+  useEffect(() => {
+    if (!loading && !isAdminGeneral && !hasRole("admin_champs_evangelisation", id)) navigate("/admin");
+  }, [loading, isAdminGeneral, id]);
 
   useEffect(() => {
     (supabase as any).from("champs_evangelisation").select("name").eq("id", id!).maybeSingle()
@@ -36,7 +38,7 @@ const ChampsEvangelisationBureauPage = () => {
     <Layout>
       <div className="bg-primary py-8">
         <div className="container flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/admin/champs-evangelisation")}
+          <Button variant="ghost" size="icon" onClick={() => navigate(isAdminGeneral ? "/admin/champs-evangelisation" : "/admin")}
             className="text-primary-foreground hover:bg-primary-foreground/10">
             <ArrowLeft className="h-5 w-5" />
           </Button>
