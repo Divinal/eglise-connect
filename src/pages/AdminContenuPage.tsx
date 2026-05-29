@@ -6,18 +6,19 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnnoncesManager } from "./AdminSynodePage";
 
+// UUIDs fixes — entity_id dans announcements est de type UUID
 const CONTENU_CONFIG: Record<string, { label: string; desc: string; entityType: string; entityId: string }> = {
   "eglise-proximite": {
     label: "Église de Proximité",
     desc: "Reportages des actions sociales menées par l'EEC à travers le pays",
     entityType: "eglise_proximite",
-    entityId: "eglise_proximite",
+    entityId: "00000000-0000-0000-0000-000000000022",
   },
   "micro-semaine": {
     label: "Micro de la Semaine",
     desc: "Messages spirituels et interviews des responsables de l'EEC",
     entityType: "micro_semaine",
-    entityId: "micro_semaine",
+    entityId: "00000000-0000-0000-0000-000000000023",
   },
 };
 

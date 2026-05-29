@@ -5,7 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User } from "lucide-react";
 
-const SYNODE_UUID = "00000000-0000-0000-0000-000000000001";
+const SYNODE_UUID    = "00000000-0000-0000-0000-000000000001"; // membres
+const SYNODE_ANN_ID = "00000000-0000-0000-0000-000000000020"; // annonces
 
 const SynodePage = () => {
   const [annonces, setAnnonces] = useState<any[]>([]);
@@ -13,12 +14,12 @@ const SynodePage = () => {
 
   useEffect(() => {
     // Annonces du synode
-    supabase.from("announcements")
+    (supabase.from("announcements") as any)
       .select("*")
       .eq("entity_type", "synode")
-      .eq("entity_id", "synode")
+      .eq("entity_id", SYNODE_ANN_ID)
       .order("created_at", { ascending: false })
-      .then(({ data }) => setAnnonces(data || []));
+      .then(({ data }: any) => setAnnonces(data || []));
 
     // Membres du bureau synodal
     (supabase.from("membres") as any)

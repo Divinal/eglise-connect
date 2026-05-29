@@ -5,7 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { User, Megaphone } from "lucide-react";
 
-const SYNODE_UUID = "00000000-0000-0000-0000-000000000001";
+const SYNODE_UUID      = "00000000-0000-0000-0000-000000000001";
+const CONSEIL_ANN_ID  = "00000000-0000-0000-0000-000000000021";
 
 const ConseilSynodalPage = () => {
   const [annonces, setAnnonces] = useState<any[]>([]);
@@ -16,7 +17,7 @@ const ConseilSynodalPage = () => {
     supabase.from("announcements")
       .select("*")
       .eq("entity_type", "synode")
-      .eq("entity_id", "conseil_synodal")
+      .eq("entity_id", CONSEIL_ANN_ID)
       .order("created_at", { ascending: false })
       .then(({ data }) => setAnnonces(data || []));
 

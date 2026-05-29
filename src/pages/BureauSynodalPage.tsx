@@ -5,7 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AnnoncesSection from "@/components/AnnoncesSection";
 import { User, Calendar, FileText } from "lucide-react";
 
-const SYNODE_UUID = "00000000-0000-0000-0000-000000000001";
+const SYNODE_UUID    = "00000000-0000-0000-0000-000000000001";
+const SYNODE_ANN_ID = "00000000-0000-0000-0000-000000000020";
 
 const BureauSynodalPage = () => {
   const [membres, setMembres] = useState<any[]>([]);
@@ -23,22 +24,22 @@ const BureauSynodalPage = () => {
       .then(({ data }: any) => setMembres(data || []));
 
     // Annonces (hors circulaires)
-    supabase.from("announcements")
+    (supabase.from("announcements") as any)
       .select("*")
       .eq("entity_type", "synode")
-      .eq("entity_id", "synode")
+      .eq("entity_id", SYNODE_ANN_ID)
       .neq("type", "circulaire")
       .order("created_at", { ascending: false })
-      .then(({ data }) => setAnnonces(data || []));
+      .then(({ data }: any) => setAnnonces(data || []));
 
     // Circulaires uniquement
-    supabase.from("announcements")
+    (supabase.from("announcements") as any)
       .select("*")
       .eq("entity_type", "synode")
-      .eq("entity_id", "synode")
+      .eq("entity_id", SYNODE_ANN_ID)
       .eq("type", "circulaire")
       .order("created_at", { ascending: false })
-      .then(({ data }) => setCirculaires(data || []));
+      .then(({ data }: any) => setCirculaires(data || []));
   }, []);
 
   return (

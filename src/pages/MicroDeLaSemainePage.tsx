@@ -8,12 +8,15 @@ const MicroDeLaSemainePage = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const MICRO_ANN_ID = "00000000-0000-0000-0000-000000000023";
+
   useEffect(() => {
-    supabase.from("announcements")
+    (supabase.from("announcements") as any)
       .select("*")
       .eq("entity_type", "micro_semaine")
+      .eq("entity_id", MICRO_ANN_ID)
       .order("created_at", { ascending: false })
-      .then(({ data }) => { setMessages(data || []); setLoading(false); });
+      .then(({ data }: any) => { setMessages(data || []); setLoading(false); });
   }, []);
 
   const featured = messages[0];

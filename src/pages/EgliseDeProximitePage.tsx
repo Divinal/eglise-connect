@@ -8,12 +8,15 @@ const EgliseDeProximitePage = () => {
   const [reportages, setReportages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const EGLISE_ANN_ID = "00000000-0000-0000-0000-000000000022";
+
   useEffect(() => {
-    supabase.from("announcements")
+    (supabase.from("announcements") as any)
       .select("*")
       .eq("entity_type", "eglise_proximite")
+      .eq("entity_id", EGLISE_ANN_ID)
       .order("created_at", { ascending: false })
-      .then(({ data }) => { setReportages(data || []); setLoading(false); });
+      .then(({ data }: any) => { setReportages(data || []); setLoading(false); });
   }, []);
 
   return (

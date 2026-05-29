@@ -226,10 +226,10 @@ const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: "annonces_conseil", label: "Annonces Conseil",  icon: Megaphone },
 ];
 
-// UUID fixe pour le Synode dans la table membres (entity_id est UUID)
-const SYNODE_UUID = "00000000-0000-0000-0000-000000000001";
-// Identifiant texte pour les annonces (entity_id est text dans announcements)
-const SYNODE_ID = "synode";
+// UUIDs fixes pour le Synode (entity_id est UUID dans membres ET announcements)
+const SYNODE_UUID      = "00000000-0000-0000-0000-000000000001"; // membres
+const SYNODE_ID        = "00000000-0000-0000-0000-000000000020"; // annonces synode
+const CONSEIL_ANN_ID   = "00000000-0000-0000-0000-000000000021"; // annonces conseil
 
 const SynodePage = ({ defaultTab }: { defaultTab?: Tab }) => {
   const { isAdminGeneral, loading } = useAuth();
@@ -267,7 +267,7 @@ const SynodePage = ({ defaultTab }: { defaultTab?: Tab }) => {
             {activeTab === "organes" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="organe" title="Organes Synodaux" />)}
             {activeTab === "conseil" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="conseil" title="Conseil Synodal" />)}
             {activeTab === "annonces" && (<AnnoncesManager entityType="synode" entityId={SYNODE_ID} />)}
-            {activeTab === "annonces_conseil" && (<AnnoncesManager entityType="synode" entityId="conseil_synodal" />)}
+            {activeTab === "annonces_conseil" && (<AnnoncesManager entityType="synode" entityId={CONSEIL_ANN_ID} />)}
           </div>
         </div>
       </section>
