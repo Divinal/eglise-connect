@@ -5,7 +5,8 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import {
   Shield, Users, Church, Building2, BookOpen,
-  LogOut, ChevronRight, Lock, Megaphone, Cross
+  LogOut, ChevronRight, Lock, Megaphone,
+  GraduationCap, Globe, Heart, Compass
 } from "lucide-react";
 
 const DashboardCard = ({ icon: Icon, label, desc, color, onClick }: {
@@ -60,19 +61,27 @@ const AdminDashboard = () => {
     admin_departement: "Admin Département",
     coordinateur_consistoire: "Coordinateur de Consistoire",
     secretaire_paroissial: "Secrétaire Paroissial",
-    admin_diaspora: "Admin Diaspora",
-    admin_champs_mission: "Admin Champs de Mission",
+    admin_diaspora:              "Admin Diaspora",
+    admin_champs_mission:        "Admin Champs de Mission",
     admin_champs_evangelisation: "Admin Champs d'Évangélisation",
+    admin_pastorale:             "Admin Pastorale",
+    admin_upb:                   "Admin UPB",
+    admin_ifpn:                  "Admin IFPN",
+    admin_sueco:                 "Admin SUECO",
   }[role] || role);
 
   const getRoleBadgeColor = (role: string) => ({
-    admin_general: "bg-red-100 text-red-700 border border-red-200",
-    admin_departement: "bg-blue-100 text-blue-700 border border-blue-200",
-    coordinateur_consistoire: "bg-green-100 text-green-700 border border-green-200",
-    secretaire_paroissial: "bg-amber-100 text-amber-700 border border-amber-200",
-    admin_diaspora: "bg-violet-100 text-violet-700 border border-violet-200",
-    admin_champs_mission: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+    admin_general:               "bg-red-100 text-red-700 border border-red-200",
+    admin_departement:           "bg-blue-100 text-blue-700 border border-blue-200",
+    coordinateur_consistoire:    "bg-green-100 text-green-700 border border-green-200",
+    secretaire_paroissial:       "bg-amber-100 text-amber-700 border border-amber-200",
+    admin_diaspora:              "bg-violet-100 text-violet-700 border border-violet-200",
+    admin_champs_mission:        "bg-emerald-100 text-emerald-700 border border-emerald-200",
     admin_champs_evangelisation: "bg-orange-100 text-orange-700 border border-orange-200",
+    admin_pastorale:             "bg-pink-100 text-pink-700 border border-pink-200",
+    admin_upb:                   "bg-cyan-100 text-cyan-700 border border-cyan-200",
+    admin_ifpn:                  "bg-indigo-100 text-indigo-700 border border-indigo-200",
+    admin_sueco:                 "bg-lime-100 text-lime-700 border border-lime-200",
   }[role] || "bg-gray-100 text-gray-700");
 
   return (
@@ -109,20 +118,33 @@ const AdminDashboard = () => {
           {isAdminGeneral && (
             <>
               <SectionTitle>Administration générale</SectionTitle>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-2">
+              <div className="grid md:grid-cols-2 gap-4 mb-2">
                 <DashboardCard icon={Shield} label="Utilisateurs" desc="Gérer rôles, accès et blocages" color="text-red-600 bg-red-50" onClick={() => navigate("/admin/users")} />
                 <DashboardCard icon={Church} label="Consistoires" desc="Créer et gérer les consistoires" color="text-green-600 bg-green-50" onClick={() => navigate("/admin/consistoires")} />
-                <DashboardCard icon={Building2} label="Institutions" desc="Gérer les institutions synodales" color="text-purple-600 bg-purple-50" onClick={() => navigate("/admin/institutions")} />
-                <DashboardCard icon={BookOpen} label="Départements" desc="Gérer les départements" color="text-blue-600 bg-blue-50" onClick={() => navigate("/admin/departments")} />
               </div>
 
               <SectionTitle>Synode — Structures nationales</SectionTitle>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-2">
                 <DashboardCard icon={Users} label="Bureau Synodal" desc="Membres du bureau synodal" color="text-indigo-600 bg-indigo-50" onClick={() => navigate("/admin/synode/bureau")} />
                 <DashboardCard icon={BookOpen} label="Commissions Synodales" desc="Commissions permanentes du synode" color="text-teal-600 bg-teal-50" onClick={() => navigate("/admin/synode/commissions")} />
                 <DashboardCard icon={Building2} label="Organes Synodaux" desc="Organes du synode national" color="text-orange-600 bg-orange-50" onClick={() => navigate("/admin/synode/organes")} />
                 <DashboardCard icon={Shield} label="Conseil Synodal" desc="Membres du conseil synodal" color="text-cyan-600 bg-cyan-50" onClick={() => navigate("/admin/synode/conseil")} />
                 <DashboardCard icon={Megaphone} label="Annonces Synodales" desc="Annonces et circulaires nationales" color="text-rose-600 bg-rose-50" onClick={() => navigate("/admin/synode/annonces")} />
+              </div>
+
+              <SectionTitle>Diaspora, Champs de Mission & Évangélisation</SectionTitle>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-2">
+                <DashboardCard icon={Globe} label="Diaspora" desc="Gérer les communautés diaspora" color="text-violet-600 bg-violet-50" onClick={() => navigate("/admin/diaspora")} />
+                <DashboardCard icon={Compass} label="Champs de Mission" desc="Gérer les champs de mission" color="text-emerald-600 bg-emerald-50" onClick={() => navigate("/admin/champs-mission")} />
+                <DashboardCard icon={Heart} label="Champs d'Évangélisation" desc="Gérer les champs d'évangélisation" color="text-orange-600 bg-orange-50" onClick={() => navigate("/admin/champs-evangelisation")} />
+              </div>
+
+              <SectionTitle>Institutions connexes</SectionTitle>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <DashboardCard icon={Users} label="Pastorale" desc="Administration de la Pastorale" color="text-pink-600 bg-pink-50" onClick={() => navigate("/admin/institution/pastorale")} />
+                <DashboardCard icon={GraduationCap} label="UPB" desc="Université Protestante de Brazza" color="text-cyan-600 bg-cyan-50" onClick={() => navigate("/admin/institution/upb")} />
+                <DashboardCard icon={BookOpen} label="IFPN" desc="Institut de Formation Pastorale" color="text-indigo-600 bg-indigo-50" onClick={() => navigate("/admin/institution/ifpn")} />
+                <DashboardCard icon={Building2} label="SUECO" desc="Administration du SUECO" color="text-lime-600 bg-lime-50" onClick={() => navigate("/admin/institution/sueco")} />
               </div>
             </>
           )}
@@ -205,6 +227,58 @@ const AdminDashboard = () => {
               </div>
             </div>
           ))}
+
+          {/* ══════════════════════════════════════
+              ADMIN PASTORALE
+          ══════════════════════════════════════ */}
+          {roles.some(r => r.role === "admin_pastorale") && (
+            <div className="mb-8">
+              <SectionTitle>La Pastorale</SectionTitle>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <DashboardCard icon={Users} label="Bureau" desc="Membres du bureau" color="text-pink-600 bg-pink-50" onClick={() => navigate("/admin/institution/pastorale")} />
+                <DashboardCard icon={Megaphone} label="Annonces" desc="Publier des annonces" color="text-rose-600 bg-rose-50" onClick={() => navigate("/admin/institution/pastorale")} />
+              </div>
+            </div>
+          )}
+
+          {/* ══════════════════════════════════════
+              ADMIN UPB
+          ══════════════════════════════════════ */}
+          {roles.some(r => r.role === "admin_upb") && (
+            <div className="mb-8">
+              <SectionTitle>UPB — Université Protestante de Brazzaville</SectionTitle>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <DashboardCard icon={GraduationCap} label="Bureau" desc="Membres du bureau" color="text-cyan-600 bg-cyan-50" onClick={() => navigate("/admin/institution/upb")} />
+                <DashboardCard icon={Megaphone} label="Annonces" desc="Publier des annonces" color="text-rose-600 bg-rose-50" onClick={() => navigate("/admin/institution/upb")} />
+              </div>
+            </div>
+          )}
+
+          {/* ══════════════════════════════════════
+              ADMIN IFPN
+          ══════════════════════════════════════ */}
+          {roles.some(r => r.role === "admin_ifpn") && (
+            <div className="mb-8">
+              <SectionTitle>IFPN — Institut de Formation Pastorale de Ngouedi</SectionTitle>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <DashboardCard icon={BookOpen} label="Bureau" desc="Membres du bureau" color="text-indigo-600 bg-indigo-50" onClick={() => navigate("/admin/institution/ifpn")} />
+                <DashboardCard icon={Megaphone} label="Annonces" desc="Publier des annonces" color="text-rose-600 bg-rose-50" onClick={() => navigate("/admin/institution/ifpn")} />
+              </div>
+            </div>
+          )}
+
+          {/* ══════════════════════════════════════
+              ADMIN SUECO
+          ══════════════════════════════════════ */}
+          {roles.some(r => r.role === "admin_sueco") && (
+            <div className="mb-8">
+              <SectionTitle>SUECO</SectionTitle>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <DashboardCard icon={Building2} label="Bureau" desc="Membres du bureau" color="text-lime-600 bg-lime-50" onClick={() => navigate("/admin/institution/sueco")} />
+                <DashboardCard icon={Megaphone} label="Annonces" desc="Publier des annonces" color="text-rose-600 bg-rose-50" onClick={() => navigate("/admin/institution/sueco")} />
+              </div>
+            </div>
+          )}
 
           {/* ══════════════════════════════════════
               SECRÉTAIRE PAROISSIAL

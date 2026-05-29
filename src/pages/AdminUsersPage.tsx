@@ -26,6 +26,10 @@ const ROLES = [
   { value: "admin_diaspora",              label: "Admin Diaspora" },
   { value: "admin_champs_mission",        label: "Admin Champs de Mission" },
   { value: "admin_champs_evangelisation", label: "Admin Champs d'Évangélisation" },
+  { value: "admin_pastorale",             label: "Admin Pastorale" },
+  { value: "admin_upb",                   label: "Admin UPB" },
+  { value: "admin_ifpn",                  label: "Admin IFPN" },
+  { value: "admin_sueco",                 label: "Admin SUECO" },
 ];
 const ROLE_COLORS: Record<string,string> = {
   admin_general:              "bg-red-100 text-red-700 border-red-200",
@@ -35,6 +39,10 @@ const ROLE_COLORS: Record<string,string> = {
   admin_diaspora:             "bg-violet-100 text-violet-700 border-violet-200",
   admin_champs_mission:       "bg-emerald-100 text-emerald-700 border-emerald-200",
   admin_champs_evangelisation:"bg-orange-100 text-orange-700 border-orange-200",
+  admin_pastorale:            "bg-pink-100 text-pink-700 border-pink-200",
+  admin_upb:                  "bg-cyan-100 text-cyan-700 border-cyan-200",
+  admin_ifpn:                 "bg-indigo-100 text-indigo-700 border-indigo-200",
+  admin_sueco:                "bg-lime-100 text-lime-700 border-lime-200",
 };
 const ROLE_LABELS: Record<string,string> = {
   admin_general:              "Admin Général",
@@ -44,6 +52,10 @@ const ROLE_LABELS: Record<string,string> = {
   admin_diaspora:             "Admin Diaspora",
   admin_champs_mission:       "Admin Champs Mission",
   admin_champs_evangelisation:"Admin Champs Évang.",
+  admin_pastorale:            "Admin Pastorale",
+  admin_upb:                  "Admin UPB",
+  admin_ifpn:                 "Admin IFPN",
+  admin_sueco:                "Admin SUECO",
 };
 
 const AdminUsersPage = () => {

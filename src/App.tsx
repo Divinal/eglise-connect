@@ -66,6 +66,7 @@ import ParoissePage from "./pages/ParoissePage";
 import ProgrammeCultePage from "./pages/ProgrammeCultePage";
 import ThemesEdificationPage from "./pages/ThemesEdificationPage";
 import TypesGroupePage from "./pages/TypesGroupePage";
+import AdminInstitutionPage from "./pages/AdminInstitutionPage";
 import AccessGuard from "./components/AccessGuard";
 
 const queryClient = new QueryClient();
@@ -137,6 +138,7 @@ const App = () => (
           <Route path="/admin/synode/organes" element={<AdminSynodePage />} />
           <Route path="/admin/synode/conseil" element={<AdminSynodePage />} />
           <Route path="/admin/synode/annonces" element={<AdminSynodePage />} />
+          <Route path="/admin/institution/:type" element={<AdminInstitutionPage />} />
 
           {/* ADMIN DÉPARTEMENT */}
           <Route path="/admin/departement/:id/bureau" element={<AdminDepartementPage />} />
