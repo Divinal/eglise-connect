@@ -225,7 +225,9 @@ const TABS: { key: Tab; label: string; icon: any }[] = [
   { key: "annonces", label: "Annonces", icon: Megaphone },
 ];
 
-// entity_id fixe pour tout ce qui est synodal
+// UUID fixe pour le Synode dans la table membres (entity_id est UUID)
+const SYNODE_UUID = "00000000-0000-0000-0000-000000000001";
+// Identifiant texte pour les annonces (entity_id est text dans announcements)
 const SYNODE_ID = "synode";
 
 const SynodePage = ({ defaultTab }: { defaultTab?: Tab }) => {
@@ -259,10 +261,10 @@ const SynodePage = ({ defaultTab }: { defaultTab?: Tab }) => {
             ))}
           </div>
           <div className="bg-card border border-border rounded-xl p-6">
-            {activeTab === "bureau" && (<MembresManager entityType="synode" entityId={SYNODE_ID} memberType="bureau" title="Bureau Synodal" />)}
-            {activeTab === "commissions" && (<MembresManager entityType="synode" entityId={SYNODE_ID} memberType="organe" title="Commissions Synodales" />)}
-            {activeTab === "organes" && (<MembresManager entityType="synode" entityId={SYNODE_ID} memberType="organe" title="Organes Synodaux" />)}
-            {activeTab === "conseil" && (<MembresManager entityType="synode" entityId={SYNODE_ID} memberType="conseil" title="Conseil Synodal" />)}
+            {activeTab === "bureau" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="bureau" title="Bureau Synodal" />)}
+            {activeTab === "commissions" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="organe" title="Commissions Synodales" />)}
+            {activeTab === "organes" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="organe" title="Organes Synodaux" />)}
+            {activeTab === "conseil" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="conseil" title="Conseil Synodal" />)}
             {activeTab === "annonces" && (<AnnoncesManager entityType="synode" entityId={SYNODE_ID} />)}
           </div>
         </div>
