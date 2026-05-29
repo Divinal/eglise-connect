@@ -215,14 +215,15 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
   );
 };
 
-type Tab = "bureau" | "commissions" | "organes" | "conseil" | "annonces";
+type Tab = "bureau" | "commissions" | "organes" | "conseil" | "annonces" | "annonces_conseil";
 
 const TABS: { key: Tab; label: string; icon: any }[] = [
-  { key: "bureau", label: "Bureau", icon: Users },
-  { key: "commissions", label: "Commissions", icon: BookOpen },
-  { key: "organes", label: "Organes", icon: Building2 },
-  { key: "conseil", label: "Conseil", icon: Shield },
-  { key: "annonces", label: "Annonces", icon: Megaphone },
+  { key: "bureau",           label: "Bureau",            icon: Users },
+  { key: "commissions",      label: "Commissions",       icon: BookOpen },
+  { key: "organes",          label: "Organes",           icon: Building2 },
+  { key: "conseil",          label: "Conseil",           icon: Shield },
+  { key: "annonces",         label: "Annonces Synode",   icon: Megaphone },
+  { key: "annonces_conseil", label: "Annonces Conseil",  icon: Megaphone },
 ];
 
 // UUID fixe pour le Synode dans la table membres (entity_id est UUID)
@@ -266,6 +267,7 @@ const SynodePage = ({ defaultTab }: { defaultTab?: Tab }) => {
             {activeTab === "organes" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="organe" title="Organes Synodaux" />)}
             {activeTab === "conseil" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="conseil" title="Conseil Synodal" />)}
             {activeTab === "annonces" && (<AnnoncesManager entityType="synode" entityId={SYNODE_ID} />)}
+            {activeTab === "annonces_conseil" && (<AnnoncesManager entityType="synode" entityId="conseil_synodal" />)}
           </div>
         </div>
       </section>
