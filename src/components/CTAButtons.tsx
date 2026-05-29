@@ -25,14 +25,15 @@ const CTAButtons = () => {
       </a>
       
         <Link
-        to="/"
+        to="/eglise-de-proximite"
         className="px-6 py-2.5 rounded-full border-2 border-primary text-primary text-sm font-semibold hover:bg-primary hover:text-primary-foreground transition-colors"
       >
         Eglise de proximité
       </Link>
+      
 
        <Link
-        to="/contact"
+        to="/micro-de-la-semaine"
         className="px-6 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-navy-dark transition-colors"
       >
         Le Micro de la semaine
