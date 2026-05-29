@@ -71,7 +71,7 @@ const documents = [
   { icon: <FileText className="h-4 w-4 text-red-500" />, label: "Guide Biblique", href: "#" },
   { icon: <FileText className="h-4 w-4 text-red-500" />, label: "Versets Bibliques", href: "#" },
   { icon: <FileText className="h-4 w-4 text-red-500" />, label: "Bible Électronique", href: "doc/Labible.pdf", target: "_blank" },
-  { icon: <Book className="h-4 w-4 text-primary" />, label: "Lire la Bible en ligne", href: "https://info-bible.org/lsg/INDEX.html", target: "_blank" },
+  { icon: <Book className="h-4 w-4 text-primary" />, label: "Lire la Bible en ligne", href: "https://emcitv.com/bible/lire-la-bible.html", target: "_blank" },
 ];
 
 const STATIONS_MISS = [
