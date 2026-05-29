@@ -53,6 +53,7 @@ const AdminUsersPage = () => {
   const [userRoles, setUserRoles] = useState<UserRole[]>([]);
   const [consistoires, setConsistoires] = useState<Consistoire[]>([]);
   const [paroisses, setParoisses] = useState<Paroisse[]>([]);
+  const [departementsList, setDepartementsList] = useState<EntiteSimple[]>([]);
   const [diasporaList, setDiasporaList] = useState<EntiteSimple[]>([]);
   const [champsMissionList, setChampsMissionList] = useState<EntiteSimple[]>([]);
   const [champsEvangelisationList, setChampsEvangelisationList] = useState<EntiteSimple[]>([]);
@@ -66,10 +67,11 @@ const AdminUsersPage = () => {
 
   const fetchData = async () => {
     setFetching(true);
-    const [rolesRes, conRes, parRes, diaRes, cmRes, ceRes] = await Promise.all([
+    const [rolesRes, conRes, parRes, deptRes, diaRes, cmRes, ceRes] = await Promise.all([
       supabase.from("user_roles").select("id,user_id,role,scope_type,scope_id,created_at").order("created_at",{ascending:false}),
       supabase.from("consistoires").select("id,name").order("name"),
       supabase.from("paroisses").select("id,name,consistoire_id").order("name"),
+      supabase.from("departments").select("id,name").order("name"),
       (supabase as any).from("diaspora").select("id,name").order("name"),
       (supabase as any).from("champs_mission").select("id,name").order("name"),
       (supabase as any).from("champs_evangelisation").select("id,name").order("name"),
@@ -84,6 +86,7 @@ const AdminUsersPage = () => {
     setUserRoles(rr.map((r:any)=>({...r,email:pm[r.user_id]?.email,full_name:pm[r.user_id]?.full_name,is_blocked:blockedIds.has(r.user_id)})));
     setConsistoires(conRes.data||[]);
     setParoisses(parRes.data||[]);
+    setDepartementsList(deptRes.data||[]);
     setDiasporaList(diaRes.data||[]);
     setChampsMissionList(cmRes.data||[]);
     setChampsEvangelisationList(ceRes.data||[]);
@@ -117,6 +120,7 @@ const AdminUsersPage = () => {
     const scopeType =
       newRole === "coordinateur_consistoire"    ? "consistoire" :
       newRole === "secretaire_paroissial"       ? "paroisse" :
+      newRole === "admin_departement"           ? "departement" :
       newRole === "admin_diaspora"              ? "diaspora" :
       newRole === "admin_champs_mission"        ? "champs_mission" :
       newRole === "admin_champs_evangelisation" ? "champs_evangelisation" :
@@ -136,6 +140,7 @@ const AdminUsersPage = () => {
     if(!ur.scope_id) return "Global";
     const c=consistoires.find(x=>x.id===ur.scope_id); if(c) return c.name;
     const p=paroisses.find(x=>x.id===ur.scope_id); if(p) return p.name;
+    const dept=departementsList.find(x=>x.id===ur.scope_id); if(dept) return dept.name;
     const d=diasporaList.find(x=>x.id===ur.scope_id); if(d) return d.name;
     const cm=champsMissionList.find(x=>x.id===ur.scope_id); if(cm) return cm.name;
     const ce=champsEvangelisationList.find(x=>x.id===ur.scope_id); if(ce) return ce.name;
@@ -145,6 +150,7 @@ const AdminUsersPage = () => {
   const scopeOptions: EntiteSimple[] =
     newRole === "coordinateur_consistoire"    ? consistoires :
     newRole === "secretaire_paroissial"       ? paroisses :
+    newRole === "admin_departement"           ? departementsList :
     newRole === "admin_diaspora"              ? diasporaList :
     newRole === "admin_champs_mission"        ? champsMissionList :
     newRole === "admin_champs_evangelisation" ? champsEvangelisationList :
@@ -153,6 +159,7 @@ const AdminUsersPage = () => {
   const scopeLabel =
     newRole === "coordinateur_consistoire"    ? "Consistoire" :
     newRole === "secretaire_paroissial"       ? "Paroisse" :
+    newRole === "admin_departement"           ? "Département" :
     newRole === "admin_diaspora"              ? "Diaspora" :
     newRole === "admin_champs_mission"        ? "Champ de Mission" :
     newRole === "admin_champs_evangelisation" ? "Champ d'Évangélisation" :
