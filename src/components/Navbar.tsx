@@ -55,8 +55,15 @@ const navItems: NavItem[] = [
       { label: "Partenariat Historique", href: "/partenaires/partenariat-historique" },
     ],
   },
+  {
+    label: "Actualités", href: "/blog",
+    children: [
+      { label: "Blog", href: "/blog" },
+      { label: "Église de Proximité", href: "/eglise-de-proximite" },
+      { label: "Micro de la Semaine", href: "/micro-de-la-semaine" },
+    ],
+  },
   { label: "Contact", href: "/contact" },
-  { label: "Blog", href: "/blog" },
 ];
 
 const DEPARTEMENTS_STATIQUES = [

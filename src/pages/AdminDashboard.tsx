@@ -139,6 +139,12 @@ const AdminDashboard = () => {
                 <DashboardCard icon={Heart} label="Champs d'Évangélisation" desc="Gérer les champs d'évangélisation" color="text-orange-600 bg-orange-50" onClick={() => navigate("/admin/champs-evangelisation")} />
               </div>
 
+              <SectionTitle>Contenus & Publications</SectionTitle>
+              <div className="grid md:grid-cols-2 gap-4 mb-2">
+                <DashboardCard icon={Megaphone} label="Église de Proximité" desc="Reportages actions sociales" color="text-rose-600 bg-rose-50" onClick={() => navigate("/admin/contenu/eglise-proximite")} />
+                <DashboardCard icon={Megaphone} label="Micro de la Semaine" desc="Messages et interviews" color="text-amber-600 bg-amber-50" onClick={() => navigate("/admin/contenu/micro-semaine")} />
+              </div>
+
               <SectionTitle>Institutions connexes</SectionTitle>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <DashboardCard icon={Users} label="Pastorale" desc="Administration de la Pastorale" color="text-pink-600 bg-pink-50" onClick={() => navigate("/admin/institution/pastorale")} />

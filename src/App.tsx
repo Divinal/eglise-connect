@@ -67,6 +67,9 @@ import ProgrammeCultePage from "./pages/ProgrammeCultePage";
 import ThemesEdificationPage from "./pages/ThemesEdificationPage";
 import TypesGroupePage from "./pages/TypesGroupePage";
 import AdminInstitutionPage from "./pages/AdminInstitutionPage";
+import AdminContenuPage from "./pages/AdminContenuPage";
+import EgliseDeProximitePage from "./pages/EgliseDeProximitePage";
+import MicroDeLaSemainePage from "./pages/MicroDeLaSemainePage";
 import AccessGuard from "./components/AccessGuard";
 
 const queryClient = new QueryClient();
@@ -92,6 +95,8 @@ const App = () => (
           <Route path="/programme-culte" element={<ProgrammeCultePage />} />
           <Route path="/themes-edification" element={<ThemesEdificationPage />} />
           <Route path="/types-de-groupe" element={<TypesGroupePage />} />
+          <Route path="/eglise-de-proximite" element={<EgliseDeProximitePage />} />
+          <Route path="/micro-de-la-semaine" element={<MicroDeLaSemainePage />} />
 
           {/* INSTITUTIONS PUBLIQUES */}
           <Route path="/institution/synode" element={<SynodePage />} />
@@ -139,6 +144,7 @@ const App = () => (
           <Route path="/admin/synode/conseil" element={<AdminSynodePage />} />
           <Route path="/admin/synode/annonces" element={<AdminSynodePage />} />
           <Route path="/admin/institution/:type" element={<AdminInstitutionPage />} />
+          <Route path="/admin/contenu/:type" element={<AdminContenuPage />} />
 
           {/* ADMIN DÉPARTEMENT */}
           <Route path="/admin/departement/:id/bureau" element={<AdminDepartementPage />} />
