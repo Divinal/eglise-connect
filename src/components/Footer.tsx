@@ -48,8 +48,7 @@ const Footer = () => {
             <div className="grid grid-cols-2 gap-x-4">
               <div className="space-y-0.5">
                 <p className="text-xs font-semibold text-primary-foreground/50 uppercase tracking-wide mb-2">Institution</p>
-                <Link to="presidence-eec.com" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Présidence</Link>
-                <Link to="/institution/bureau-synodal" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Bureau Synodal</Link>
+                <a href="https://presidence-eec.com"  target="_blank"  rel="noopener noreferrer"  className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors"> Présidence</a>                <Link to="/institution/bureau-synodal" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Bureau Synodal</Link>
                 <Link to="/institution/consistoires" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Consistoires</Link>
                 <Link to="/institution/diaspora" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Diaspora</Link>
                 <p className="text-xs font-semibold text-primary-foreground/50 uppercase tracking-wide mt-3 mb-2">Départements</p>

@@ -23,13 +23,6 @@ const CTAButtons = () => {
         </svg>
         Culte en ligne
       </a>
-
-      <Link
-        to="/contact"
-        className="px-6 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-navy-dark transition-colors"
-      >
-        Nous contacter
-      </Link>
       
         <Link
         to="/"

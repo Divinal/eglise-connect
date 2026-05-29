@@ -8,10 +8,13 @@ import heroImage from "@/assets/hero-church.jpg";
 import { useEffect, useRef, useState } from "react";
 
 const STATS = [
-  { value: 157,  suffix: "+", label: "Serviteurs de Dieu" },
-  { value: 1,    suffix: "M+", label: "Fidèles" },
-  { value: 250,  suffix: "+", label: "Groupes chantants" },
-  { value: 400,  suffix: "+", label: "Paroisses" },
+  { value: 552,     suffix: "+", label: "Serviteurs" },
+  // { value: 1000000, suffix: "+", label: "Fidèles" },
+  // { value: 250,     suffix: "+", label: "Groupes chantants" },
+  { value: 32,      suffix: "+", label: "Consistoires" },
+  { value: 146,     suffix: "+", label: "Paroisses" },
+  { value: 846,     suffix: "+", label: "Annexes" },
+  { value: 6,       suffix: "+", label: "Champs d'Evangelisation" },
 ];
 
 function useCountUp(target: number, started: boolean, duration = 1800) {
@@ -19,7 +22,7 @@ function useCountUp(target: number, started: boolean, duration = 1800) {
   useEffect(() => {
     if (!started) return;
     let start = 0;
-    const step = Math.ceil(target / (duration / 16));
+    const step = Math.ceil(target / (duration / 30));
     const timer = setInterval(() => {
       start += step;
       if (start >= target) { setCount(target); clearInterval(timer); }
