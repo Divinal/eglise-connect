@@ -30,6 +30,7 @@ const ROLES = [
   { value: "admin_upb",                   label: "Admin UPB" },
   { value: "admin_ifpn",                  label: "Admin IFPN" },
   { value: "admin_sueco",                 label: "Admin SUECO" },
+  { value: "admin_boutique",              label: "Admin Boutique" },
 ];
 const ROLE_COLORS: Record<string,string> = {
   admin_general:              "bg-red-100 text-red-700 border-red-200",
@@ -43,6 +44,7 @@ const ROLE_COLORS: Record<string,string> = {
   admin_upb:                  "bg-cyan-100 text-cyan-700 border-cyan-200",
   admin_ifpn:                 "bg-indigo-100 text-indigo-700 border-indigo-200",
   admin_sueco:                "bg-lime-100 text-lime-700 border-lime-200",
+  admin_boutique:             "bg-sky-100 text-sky-700 border-sky-200",
 };
 const ROLE_LABELS: Record<string,string> = {
   admin_general:              "Admin Général",
@@ -56,6 +58,7 @@ const ROLE_LABELS: Record<string,string> = {
   admin_upb:                  "Admin UPB",
   admin_ifpn:                 "Admin IFPN",
   admin_sueco:                "Admin SUECO",
+  admin_boutique:             "Admin Boutique",
 };
 
 const AdminUsersPage = () => {

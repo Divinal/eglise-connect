@@ -63,6 +63,13 @@ const navItems: NavItem[] = [
       { label: "Micro de la Semaine", href: "/micro-de-la-semaine" },
     ],
   },
+  {
+    label: "Services", href: "/faire-un-don",
+    children: [
+      { label: "Faire un Don", href: "/faire-un-don" },
+      { label: "Boutique EEC", href: "/boutique" },
+    ],
+  },
   { label: "Contact", href: "/contact" },
 ];
 

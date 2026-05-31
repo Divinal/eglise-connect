@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Shield, Users, Church, Building2, BookOpen,
   LogOut, ChevronRight, Lock, Megaphone,
-  GraduationCap, Globe, Heart, Compass
+  GraduationCap, Globe, Heart, Compass, ShoppingBag
 } from "lucide-react";
 
 const DashboardCard = ({ icon: Icon, label, desc, color, onClick }: {
@@ -68,6 +68,7 @@ const AdminDashboard = () => {
     admin_upb:                   "Admin UPB",
     admin_ifpn:                  "Admin IFPN",
     admin_sueco:                 "Admin SUECO",
+    admin_boutique:              "Admin Boutique",
   }[role] || role);
 
   const getRoleBadgeColor = (role: string) => ({
@@ -82,6 +83,7 @@ const AdminDashboard = () => {
     admin_upb:                   "bg-cyan-100 text-cyan-700 border border-cyan-200",
     admin_ifpn:                  "bg-indigo-100 text-indigo-700 border border-indigo-200",
     admin_sueco:                 "bg-lime-100 text-lime-700 border border-lime-200",
+    admin_boutique:              "bg-sky-100 text-sky-700 border border-sky-200",
   }[role] || "bg-gray-100 text-gray-700");
 
   return (
@@ -137,6 +139,11 @@ const AdminDashboard = () => {
                 <DashboardCard icon={Globe} label="Diaspora" desc="Gérer les communautés diaspora" color="text-violet-600 bg-violet-50" onClick={() => navigate("/admin/diaspora")} />
                 <DashboardCard icon={Compass} label="Champs de Mission" desc="Gérer les champs de mission" color="text-emerald-600 bg-emerald-50" onClick={() => navigate("/admin/champs-mission")} />
                 <DashboardCard icon={Heart} label="Champs d'Évangélisation" desc="Gérer les champs d'évangélisation" color="text-orange-600 bg-orange-50" onClick={() => navigate("/admin/champs-evangelisation")} />
+              </div>
+
+              <SectionTitle>Boutique & Dons</SectionTitle>
+              <div className="grid md:grid-cols-1 gap-4 mb-2">
+                <DashboardCard icon={ShoppingBag} label="Boutique & Dons" desc="Gérer articles, commandes et dons reçus" color="text-sky-600 bg-sky-50" onClick={() => navigate("/admin/boutique")} />
               </div>
 
               <SectionTitle>Contenus & Publications</SectionTitle>
@@ -302,6 +309,18 @@ const AdminDashboard = () => {
               </div>
             </div>
           ))}
+
+          {/* ══════════════════════════════════════
+              ADMIN BOUTIQUE
+          ══════════════════════════════════════ */}
+          {roles.some(r => r.role === "admin_boutique") && !isAdminGeneral && (
+            <div className="mb-8">
+              <SectionTitle>Boutique & Dons</SectionTitle>
+              <div className="grid md:grid-cols-1 gap-4">
+                <DashboardCard icon={ShoppingBag} label="Boutique & Dons" desc="Gérer articles, commandes et dons reçus" color="text-sky-600 bg-sky-50" onClick={() => navigate("/admin/boutique")} />
+              </div>
+            </div>
+          )}
 
           {/* Aucun rôle */}
           {roles.length === 0 && (
