@@ -68,8 +68,8 @@ const MaintenancePage = () => {
         </p>
         <p className="text-white/50 text-sm mt-4">
           Pour toute question :{" "}
-          <a href="mailto:contact@egliseevangeliquecongo.org" className="text-[#c9a84c] hover:underline">
-            +242 04 092 09 51
+          <a href="mailto:dscom@eeccg.net" className="text-[#c9a84c] hover:underline">
+            +242 04 092 09 51 | dscom@eeccg.net
           </a>
         </p>
       </div>
@@ -77,6 +77,8 @@ const MaintenancePage = () => {
       <div className="mt-12 flex items-center gap-3 text-white/20">
         <div className="h-px w-16 bg-white/20" />
         <span className="text-xs uppercase tracking-widest">EEC — Depuis 1909</span>
+        <span className="text-xs uppercase tracking-widest">Développer par Rezo Campus</span>
+
         <div className="h-px w-16 bg-white/20" />
       </div>
     </div>
