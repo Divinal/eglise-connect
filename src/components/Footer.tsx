@@ -42,9 +42,7 @@ const Footer = () => {
 
           {/* Colonne 2 — Liens rapides */}
           <div>
-            <h3 className="font-display text-lg md:text-xl text-gold-light mb-3 md:mb-4">
-              Liens Rapides
-            </h3>
+            <h3 className="font-display text-lg md:text-xl text-gold-light mb-3 md:mb-4"> Liens Rapides </h3>
             <div className="grid grid-cols-2 gap-x-4">
               <div className="space-y-0.5">
                 <p className="text-xs font-semibold text-primary-foreground/50 uppercase tracking-wide mb-2">Institution</p>
@@ -57,14 +55,13 @@ const Footer = () => {
                 <Link to="/departements/aumonerie" className="block text-sm text-primary-foreground/70 hover:text-gold pl-2 py-0.5 transition-colors">Aumonerie</Link>
               </div>
               <div className="space-y-0.5">
+                <h3 className="font-display text-lg md:text-xl text-gold-light mb-3 md:mb-4"> Liens de Navigation </h3>
                 <p className="text-xs font-semibold text-primary-foreground/50 uppercase tracking-wide mb-2">Navigation</p>
                 <Link to="/partenaires" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Partenaires</Link>
                 <Link to="/blog" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Blog</Link>
                 <Link to="/contact" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Contact</Link>
                 <Link to="/faq" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">FAQ</Link>
-                <Link to="/politique-confidentialite" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">
-                  Politique de conf.
-                </Link>
+                <Link to="/politique-confidentialite" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors"> Politique de conf. </Link>
               </div>
             </div>
           </div>

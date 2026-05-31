@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 
 const STATS = [
   { value: 552,     suffix: "+", label: "Serviteurs" },
-  // { value: 1000000, suffix: "+", label: "Fidèles" },
+  { value: 1, suffix: "M+", label: "Fidèles" },
   // { value: 250,     suffix: "+", label: "Groupes chantants" },
   { value: 32,      suffix: "+", label: "Consistoires" },
   { value: 146,     suffix: "+", label: "Paroisses" },
@@ -313,7 +313,7 @@ const Index = () => {
                     Ensemble, construisons l'œuvre de Dieu. Votre contribution, si modeste soit-elle,
                     est une pierre précieuse dans cet édifice spirituel.
                   </p>
-                  <a href="#" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors inline-block">
+                  <a href="/faire-un-don" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors inline-block">
                     Nature de don
                   </a>
                 </div>
