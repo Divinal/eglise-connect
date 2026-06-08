@@ -206,8 +206,8 @@ const Index = () => {
                 </div>
                 <div className="bg-card divide-y divide-border">
                   {[
-                    { name: "Contenue du thème de l'année | Contenue du thème de l'année | Contenue du thème de l'année", freq: "Thème de l'année 2026" },
-                    { name: "Contenue du verset de l'année | Contenue du verset de l'année", freq: "Verset de l'année 2026 - 2 Tim 2 : 22" },
+                    { name: "Rendez à chacun ce qui lui est dû", freq: "Thème de l'année 2026 --> Romain 13 : 7 - 10" },
+                    { name: " Rendez donc à chacun ce qui lui est dû : les impôts et les taxes à qui vous les devez, le respect et l'honneur à qui ils reviennent.", freq: "Verset de l'année 2026 --> Romain 13 : 7" },
                   ].map((radio, i) => (
                     <div key={i} className="flex items-center gap-3 px-4 py-3">
                       <span className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -296,7 +296,7 @@ const Index = () => {
                   <p className="text-sm text-muted-foreground mb-3">
                     Il sera organisé la séance de prière synodale dans l'enceinte de la paroisse évangélique de Makélékélé.
                   </p>
-                  <a href="#" className="text-sm text-primary font-medium flex items-center gap-1 hover:underline">
+                  <a href="/blog" className="text-sm text-primary font-medium flex items-center gap-1 hover:underline">
                     En savoir plus <ChevronRight className="h-3.5 w-3.5" />
                   </a>
                 </div>

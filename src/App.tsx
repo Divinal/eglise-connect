@@ -73,6 +73,7 @@ import FaireUnDonPage from "./pages/FaireUnDonPage";
 import BoutiquePage from "./pages/BoutiquePage";
 import EgliseDeProximitePage from "./pages/EgliseDeProximitePage";
 import MicroDeLaSemainePage from "./pages/MicroDeLaSemainePage";
+import EECChatPage from "./pages/EECChatPage";
 import AccessGuard from "./components/AccessGuard";
 
 const queryClient = new QueryClient();
@@ -173,6 +174,7 @@ const App = () => (
           <Route path="/admin/paroisse/:id/groupes" element={<ParoissePage />} />
           <Route path="/admin/paroisse/:id/annexes" element={<ParoissePage />} />
           <Route path="/admin/paroisse/:id/infos" element={<ParoissePage />} />
+          <Route path="/eec-ai" element={<EECChatPage />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
