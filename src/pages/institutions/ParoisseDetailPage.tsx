@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Church, Users, MapPin, Phone, Mail, ArrowLeft, Music, Calendar, ChevronRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { slugify } from "@/utils/slugify";
 
 interface Paroisse {
   id: string; name: string; ville: string | null; departement: string | null;
@@ -45,11 +46,10 @@ const SideBlock = ({ title, color, items, renderItem, emptyMsg }: {
 };
 
 const ParoisseDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [paroisse, setParoisse] = useState<Paroisse | null>(null);
   const [consistoireName, setConsistoireName] = useState("");
-  const [consistoireId, setConsistoireId] = useState("");
   const [membres, setMembres] = useState<Record<string, Membre[]>>({ bureau: [], conseil: [], organes: [] });
   const [groupes, setGroupes] = useState<any[]>([]);
   const [annexes, setAnnexes] = useState<any[]>([]);
@@ -57,18 +57,21 @@ const ParoisseDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return;
+    if (!slug) return;
     const fetchAll = async () => {
       setLoading(true);
-      const { data: par } = await (supabase as any).from("paroisses").select("*").eq("id", id).maybeSingle();
+      const { data: allPars } = await (supabase as any).from("paroisses").select("*");
+      const par = (allPars || []).find((p: any) => slugify(p.name) === slug) || null;
       setParoisse(par);
+      const uuid = par?.id;
+      if (!uuid) { setLoading(false); return; }
+
       if (par?.consistoire_id) {
-        setConsistoireId(par.consistoire_id);
         const { data: con } = await supabase.from("consistoires").select("name").eq("id", par.consistoire_id).maybeSingle();
         setConsistoireName((con as any)?.name || "");
       }
       const { data: allMembres } = await (supabase as any).from("membres").select("*")
-        .eq("entity_type", "paroisse").eq("entity_id", id);
+        .eq("entity_type", "paroisse").eq("entity_id", uuid);
       const grouped: Record<string, Membre[]> = { bureau: [], conseil: [], organes: [] };
       (allMembres || []).forEach((m: any) => {
         if (m.type === "bureau") grouped.bureau.push(m);
@@ -76,17 +79,17 @@ const ParoisseDetailPage = () => {
         else if (m.type === "organe") grouped.organes.push(m);
       });
       setMembres(grouped);
-      const { data: grp } = await supabase.from("groupes_chantants").select("*").eq("paroisse_id", id).order("name");
+      const { data: grp } = await supabase.from("groupes_chantants").select("*").eq("paroisse_id", uuid).order("name");
       setGroupes(grp || []);
-      const { data: ann } = await supabase.from("annexes").select("*").eq("paroisse_id", id).order("name");
+      const { data: ann } = await supabase.from("annexes").select("*").eq("paroisse_id", uuid).order("name");
       setAnnexes(ann || []);
       const { data: annonceData } = await (supabase as any).from("announcements").select("*")
-        .eq("entity_type", "paroisse").eq("entity_id", id).order("created_at", { ascending: false });
+        .eq("entity_type", "paroisse").eq("entity_id", uuid).order("created_at", { ascending: false });
       setAnnonces(annonceData || []);
       setLoading(false);
     };
     fetchAll();
-  }, [id]);
+  }, [slug]);
 
   if (loading) return (
     <Layout><div className="flex items-center justify-center min-h-[60vh]"><p className="text-muted-foreground">Chargement…</p></div></Layout>
@@ -107,7 +110,7 @@ const ParoisseDetailPage = () => {
       {/* Header */}
       <div className="bg-primary py-10">
         <div className="container">
-          <button onClick={() => navigate(`/institution/consistoires/${consistoireId}`)}
+          <button onClick={() => navigate(`/institution/consistoires/${slugify(consistoireName)}`)}
             className="flex items-center gap-2 text-primary-foreground/60 hover:text-primary-foreground text-sm mb-4 transition-colors">
             <ArrowLeft className="h-4 w-4" />
             {consistoireName ? `Consistoire ${consistoireName}` : "Retour"}

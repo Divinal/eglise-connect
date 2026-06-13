@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Map, Users, MapPin, Phone, Mail, ArrowLeft, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { slugify } from "@/utils/slugify";
 
 interface ChampMission {
   id: string; name: string; ville: string | null; responsable: string | null;
@@ -43,7 +44,7 @@ const SideBlock = ({ title, color, items, renderItem, emptyMsg }: {
 };
 
 const ChampsMissionDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [champ, setChamp] = useState<ChampMission | null>(null);
   const [membres, setMembres] = useState<Record<string, Membre[]>>({ bureau: [], conseil: [], organes: [] });
@@ -51,14 +52,17 @@ const ChampsMissionDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return;
+    if (!slug) return;
     const fetchAll = async () => {
       setLoading(true);
-      const { data: d } = await (supabase as any).from("champs_mission").select("*").eq("id", id).maybeSingle();
+      const { data: allItems } = await (supabase as any).from("champs_mission").select("*");
+      const d = (allItems || []).find((x: any) => slugify(x.name) === slug) || null;
       setChamp(d);
+      const uuid = d?.id;
+      if (!uuid) { setLoading(false); return; }
 
       const { data: allMembres } = await (supabase as any).from("membres").select("*")
-        .eq("entity_type", "champs_mission").eq("entity_id", id);
+        .eq("entity_type", "champs_mission").eq("entity_id", uuid);
       const grouped: Record<string, Membre[]> = { bureau: [], conseil: [], organes: [] };
       (allMembres || []).forEach((m: any) => {
         if (m.type === "bureau") grouped.bureau.push(m);
@@ -68,13 +72,13 @@ const ChampsMissionDetailPage = () => {
       setMembres(grouped);
 
       const { data: ann } = await (supabase as any).from("announcements").select("*")
-        .eq("entity_type", "champs_mission").eq("entity_id", id)
+        .eq("entity_type", "champs_mission").eq("entity_id", uuid)
         .order("created_at", { ascending: false });
       setAnnonces(ann || []);
       setLoading(false);
     };
     fetchAll();
-  }, [id]);
+  }, [slug]);
 
   if (loading) return (
     <Layout><div className="flex items-center justify-center min-h-[60vh]"><p className="text-muted-foreground">Chargement…</p></div></Layout>

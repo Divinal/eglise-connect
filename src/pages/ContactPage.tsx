@@ -146,7 +146,7 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <h5 className="font-semibold text-foreground mb-1">Email</h5>
-                    <p className="text-muted-foreground text-sm">contact@egliseevangeliquecongo.org</p>
+                    <p className="text-muted-foreground text-sm">dscom@eeccg.net</p>
                   </div>
                 </div>
 

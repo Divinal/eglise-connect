@@ -113,16 +113,16 @@ const App = () => (
           <Route path="/institution/sueco" element={<SUECOPage />} />
           <Route path="/institution/pastorale" element={<PastoralePage />} />
           <Route path="/institution/consistoires" element={<ConsistoiresPage />} />
-          <Route path="/institution/consistoires/:id" element={<ConsistoireDetailPage />} />
-          <Route path="/paroisses/:id" element={<ParoisseDetailPage />} />
+          <Route path="/institution/consistoires/:slug" element={<ConsistoireDetailPage />} />
+          <Route path="/paroisses/:slug" element={<ParoisseDetailPage />} />
 
           {/* DIASPORA & CHAMPS */}
           <Route path="/institution/diaspora" element={<DiasporaPage />} />
-          <Route path="/institution/diaspora/:id" element={<DiasporaDetailPage />} />
+          <Route path="/institution/diaspora/:slug" element={<DiasporaDetailPage />} />
           <Route path="/institution/champs-de-mission" element={<ChampsMissionPage />} />
-          <Route path="/institution/champs-de-mission/:id" element={<ChampsMissionDetailPage />} />
+          <Route path="/institution/champs-de-mission/:slug" element={<ChampsMissionDetailPage />} />
           <Route path="/institution/champs-evangelisation" element={<ChampsEvangelisationPage />} />
-          <Route path="/institution/champs-evangelisation/:id" element={<ChampsEvangelisationDetailPage />} />
+          <Route path="/institution/champs-evangelisation/:slug" element={<ChampsEvangelisationDetailPage />} />
 
           {/* ADMIN GÉNÉRAL */}
           <Route path="/admin" element={<AdminDashboard />} />

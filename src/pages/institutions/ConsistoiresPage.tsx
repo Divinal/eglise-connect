@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Church, ChevronRight } from "lucide-react";
+import { slugify } from "@/utils/slugify";
 
 interface Consistoire {
   id: string;
@@ -51,7 +52,7 @@ const ConsistoiresPage = () => {
               {consistoires.map(c => (
                 <button
                   key={c.id}
-                  onClick={() => navigate(`/institution/consistoires/${c.id}`)}
+                  onClick={() => navigate(`/institution/consistoires/${slugify(c.name)}`)}
                   className="bg-card border border-border rounded-lg p-6 hover:shadow-lg hover:border-gold transition-all text-left group"
                 >
                   <div className="flex items-start justify-between gap-3">

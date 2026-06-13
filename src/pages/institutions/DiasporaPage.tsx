@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Globe, ChevronRight } from "lucide-react";
+import { slugify } from "@/utils/slugify";
 
 interface DiasporaComm {
   id: string; name: string; ville: string | null;
@@ -44,7 +45,7 @@ const DiasporaPage = () => {
               {items.map(c => (
                 <button
                   key={c.id}
-                  onClick={() => navigate(`/institution/diaspora/${c.id}`)}
+                  onClick={() => navigate(`/institution/diaspora/${slugify(c.name)}`)}
                   className="bg-card border border-border rounded-lg p-6 hover:shadow-lg hover:border-gold transition-all text-left group"
                 >
                   <div className="flex items-start justify-between gap-3">

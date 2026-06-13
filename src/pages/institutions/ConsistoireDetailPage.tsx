@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Church, Users, MapPin, Phone, Mail, ArrowLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { slugify } from "@/utils/slugify";
 
 interface Consistoire {
   id: string; name: string; ville: string | null; responsable: string | null;
@@ -57,7 +58,7 @@ const SideBlock = ({
 };
 
 const ConsistoireDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [consistoire, setConsistoire] = useState<Consistoire | null>(null);
   const [membres, setMembres] = useState<Record<string, Membre[]>>({ bureau: [], conseil: [], organes: [] });
@@ -66,14 +67,17 @@ const ConsistoireDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return;
+    if (!slug) return;
     const fetchAll = async () => {
       setLoading(true);
-      const { data: con } = await (supabase as any).from("consistoires").select("*").eq("id", id).maybeSingle();
+      const { data: allCons } = await (supabase as any).from("consistoires").select("*");
+      const con = (allCons || []).find((c: any) => slugify(c.name) === slug) || null;
       setConsistoire(con);
+      const uuid = con?.id;
+      if (!uuid) { setLoading(false); return; }
 
       const { data: allMembres } = await (supabase as any).from("membres").select("*")
-        .eq("entity_type", "consistoire").eq("entity_id", id);
+        .eq("entity_type", "consistoire").eq("entity_id", uuid);
       const grouped: Record<string, Membre[]> = { bureau: [], conseil: [], organes: [] };
       (allMembres || []).forEach((m: any) => {
         if (m.type === "bureau") grouped.bureau.push(m);
@@ -83,17 +87,17 @@ const ConsistoireDetailPage = () => {
       setMembres(grouped);
 
       const { data: pars } = await supabase.from("paroisses")
-        .select("id, name, ville, pasteur_responsable").eq("consistoire_id", id).order("name");
+        .select("id, name, ville, pasteur_responsable").eq("consistoire_id", uuid).order("name");
       setParoisses((pars || []) as any);
 
       const { data: ann } = await (supabase as any).from("announcements").select("*")
-        .eq("entity_type", "consistoire").eq("entity_id", id)
+        .eq("entity_type", "consistoire").eq("entity_id", uuid)
         .order("created_at", { ascending: false });
       setAnnonces(ann || []);
       setLoading(false);
     };
     fetchAll();
-  }, [id]);
+  }, [slug]);
 
   if (loading) return (
     <Layout><div className="flex items-center justify-center min-h-[60vh]"><p className="text-muted-foreground">Chargement…</p></div></Layout>
@@ -245,7 +249,7 @@ const ConsistoireDetailPage = () => {
                 items={paroisses}
                 renderItem={(p) => (
                   <button
-                    onClick={() => navigate(`/paroisses/${p.id}`)}
+                    onClick={() => navigate(`/paroisses/${slugify(p.name)}`)}
                     className="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-muted/40 transition-colors text-left group"
                   >
                     <div className="p-1.5 rounded-md bg-green-50 shrink-0">
