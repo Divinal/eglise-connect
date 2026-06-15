@@ -11,6 +11,7 @@ interface Paroisse {
   quartier: string | null; rue: string | null; telephone: string | null;
   email: string | null; pasteur_responsable: string | null;
   date_creation: string | null; description: string | null; consistoire_id: string;
+  historique: string | null;
 }
 interface Membre { id: string; nom: string; prenom: string | null; fonction: string | null; }
 
@@ -136,6 +137,19 @@ const ParoisseDetailPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Présentation & Historique */}
+      {paroisse.historique && (
+        <section className="py-10 bg-white border-b border-border">
+          <div className="container max-w-3xl">
+            <h2 className="font-display text-2xl font-semibold text-foreground mb-5 flex items-center gap-3">
+              <span className="w-1.5 h-7 bg-gold rounded-full inline-block shrink-0" />
+              Présentation & Historique
+            </h2>
+            <p className="text-muted-foreground leading-relaxed text-base whitespace-pre-wrap">{paroisse.historique}</p>
+          </div>
+        </section>
+      )}
 
       {/* Layout 2 colonnes */}
       <section className="py-8 bg-[#f5f5f0]">

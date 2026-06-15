@@ -9,6 +9,7 @@ import { slugify } from "@/utils/slugify";
 interface Diaspora {
   id: string; name: string; ville: string | null; responsable: string | null;
   telephone: string | null; email: string | null; description: string | null;
+  historique: string | null;
 }
 interface Membre { id: string; nom: string; prenom: string | null; fonction: string | null; }
 
@@ -116,6 +117,18 @@ const DiasporaDetailPage = () => {
           </div>
         </div>
       </div>
+
+      {diaspora.historique && (
+        <section className="py-10 bg-white border-b border-border">
+          <div className="container max-w-3xl">
+            <h2 className="font-display text-2xl font-semibold text-foreground mb-5 flex items-center gap-3">
+              <span className="w-1.5 h-7 bg-gold rounded-full inline-block shrink-0" />
+              Présentation & Historique
+            </h2>
+            <p className="text-muted-foreground leading-relaxed text-base whitespace-pre-wrap">{diaspora.historique}</p>
+          </div>
+        </section>
+      )}
 
       <section className="py-8 bg-[#f5f5f0]">
         <div className="container">

@@ -3,12 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Users, BookOpen, Building2, Shield, Megaphone } from "lucide-react";
+import { ArrowLeft, Users, BookOpen, Building2, Shield, Megaphone, FileText } from "lucide-react";
 import { AnnoncesManager } from "./AdminSynodePage";
 import { Button } from "@/components/ui/button";
 import MembresManager from "./MembresManager";
+import HistoriqueManager from "./HistoriqueManager";
 
-type Tab = "bureau" | "conseil" | "commissions" | "organes" | "annonces";
+type Tab = "bureau" | "conseil" | "commissions" | "organes" | "annonces" | "presentation";
 
 const DiasporaBureauPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,6 +33,7 @@ const DiasporaBureauPage = () => {
     { key: "commissions", label: "Commissions", icon: BookOpen },
     { key: "organes", label: "Organes", icon: Building2 },
     { key: "annonces", label: "Annonces", icon: Megaphone },
+    { key: "presentation", label: "Présentation", icon: FileText },
   ];
 
   return (
@@ -81,6 +83,9 @@ const DiasporaBureauPage = () => {
           )}
           {activeTab === "annonces" && id && (
             <AnnoncesManager entityType="diaspora" entityId={id} />
+          )}
+          {activeTab === "presentation" && id && (
+            <HistoriqueManager table="diaspora" entityId={id} entityLabel={nomEntite || "cette communauté diaspora"} />
           )}
         </div>
       </section>

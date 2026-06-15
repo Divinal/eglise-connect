@@ -3,11 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Users, BookOpen, Building2, Shield, UserCheck, Megaphone } from "lucide-react";
+import { ArrowLeft, Users, BookOpen, Building2, Shield, UserCheck, Megaphone, FileText } from "lucide-react";
 import { AnnoncesManager } from "./AdminSynodePage";
 import { Button } from "@/components/ui/button";
 import MembresManager from "./MembresManager";
 import { useToast } from "@/hooks/use-toast";
+import HistoriqueManager from "./HistoriqueManager";
 
 // Composant Secrétaires paroissiaux
 const SecretairesManager = ({ consistoireId }: { consistoireId: string }) => {
@@ -111,7 +112,7 @@ const SecretairesManager = ({ consistoireId }: { consistoireId: string }) => {
   );
 };
 
-type Tab = "bureau" | "conseil" | "commissions" | "organes" | "secretaires" | "annonces";
+type Tab = "bureau" | "conseil" | "commissions" | "organes" | "secretaires" | "annonces" | "presentation";
 
 const ConsistoireBureauPage = () => {
   const { id: consistoireId } = useParams<{ id: string }>();
@@ -138,6 +139,7 @@ const ConsistoireBureauPage = () => {
     { key: "organes", label: "Organes", icon: Building2 },
     { key: "annonces", label: "Annonces", icon: Megaphone },
     { key: "secretaires", label: "Secrétaires", icon: UserCheck },
+    { key: "presentation", label: "Présentation", icon: FileText },
   ];
 
   return (
@@ -186,6 +188,9 @@ const ConsistoireBureauPage = () => {
             )}
             {activeTab === "secretaires" && consistoireId && (
               <SecretairesManager consistoireId={consistoireId} />
+            )}
+            {activeTab === "presentation" && consistoireId && (
+              <HistoriqueManager table="consistoires" entityId={consistoireId} entityLabel={consistoireName || "ce consistoire"} />
             )}
           </div>
         </div>

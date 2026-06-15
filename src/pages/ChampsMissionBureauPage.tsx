@@ -3,12 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Users, BookOpen, Building2, Shield, Megaphone } from "lucide-react";
+import { ArrowLeft, Users, BookOpen, Building2, Shield, Megaphone, FileText } from "lucide-react";
 import { AnnoncesManager } from "./AdminSynodePage";
 import { Button } from "@/components/ui/button";
 import MembresManager from "./MembresManager";
+import HistoriqueManager from "./HistoriqueManager";
 
-type Tab = "bureau" | "conseil" | "commissions" | "organes" | "annonces";
+type Tab = "bureau" | "conseil" | "commissions" | "organes" | "annonces" | "presentation";
 
 const ChampsMissionBureauPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,6 +33,7 @@ const ChampsMissionBureauPage = () => {
     { key: "commissions", label: "Commissions", icon: BookOpen },
     { key: "organes", label: "Organes", icon: Building2 },
     { key: "annonces", label: "Annonces", icon: Megaphone },
+    { key: "presentation", label: "Présentation", icon: FileText },
   ];
 
   return (
@@ -79,6 +81,9 @@ const ChampsMissionBureauPage = () => {
           )}
           {activeTab === "annonces" && id && (
             <AnnoncesManager entityType="champs_mission" entityId={id} />
+          )}
+          {activeTab === "presentation" && id && (
+            <HistoriqueManager table="champs_mission" entityId={id} entityLabel={nomEntite || "ce champ de mission"} />
           )}
         </div>
       </section>

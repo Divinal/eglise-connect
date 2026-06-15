@@ -5,7 +5,7 @@ import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowLeft, Users, Building2, Shield, Music, Church,
-  Info, Plus, Save, Trash2, Megaphone, Phone, User,
+  Info, Plus, Save, Trash2, Megaphone, Phone, User, FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import MembresManager from "./MembresManager";
 import { AnnoncesManager } from "./AdminSynodePage";
 import { useToast } from "@/hooks/use-toast";
+import HistoriqueManager from "./HistoriqueManager";
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -612,7 +613,7 @@ const InfosParoisse = ({ paroisseId }: { paroisseId: string }) => {
 // ─────────────────────────────────────────────
 // PAGE PRINCIPALE
 // ─────────────────────────────────────────────
-type Tab = "bureau" | "organes" | "conseil" | "groupes" | "annexes" | "annonces" | "infos";
+type Tab = "bureau" | "organes" | "conseil" | "groupes" | "annexes" | "annonces" | "infos" | "presentation";
 
 const ParoissePage = () => {
   const { id: paroisseId } = useParams<{ id: string }>();
@@ -641,6 +642,7 @@ const ParoissePage = () => {
     { key: "annexes", label: "Annexes", icon: Church },
     { key: "annonces", label: "Annonces", icon: Megaphone },
     { key: "infos", label: "Informations", icon: Info },
+    { key: "presentation", label: "Présentation", icon: FileText },
   ];
 
   return (
@@ -703,6 +705,9 @@ const ParoissePage = () => {
             )}
             {activeTab === "infos" && paroisseId && (
               <InfosParoisse paroisseId={paroisseId} />
+            )}
+            {activeTab === "presentation" && paroisseId && (
+              <HistoriqueManager table="paroisses" entityId={paroisseId} entityLabel={paroisseName || "cette paroisse"} />
             )}
           </div>
         </div>
