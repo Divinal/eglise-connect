@@ -1,6 +1,3 @@
-// Composant générique réutilisable pour gérer une liste de membres
-// Utilise entity_id + entity_type (schéma réel de la table membres)
-
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Users, Plus, Pencil, Save, X, Trash2 } from "lucide-react";
@@ -14,6 +11,7 @@ interface Membre {
   nom: string;
   prenom: string | null;
   fonction: string | null;
+  categorie: string | null;
   telephone: string | null;
   adresse: string | null;
   date_naissance: string | null;
@@ -33,10 +31,16 @@ interface Props {
 }
 
 const emptyForm = {
-  nom: "", prenom: "", fonction: "", telephone: "", adresse: "",
-  date_naissance: "", paroisse_bapteme: "", date_bapteme: "",
-  genre: "M", statut: "actif",
+  nom: "", prenom: "", fonction: "", categorie: "titulaire",
+  telephone: "", adresse: "", date_naissance: "",
+  paroisse_bapteme: "", date_bapteme: "", genre: "M", statut: "actif",
 };
+
+const CATEGORIES = [
+  { value: "titulaire", label: "Titulaire" },
+  { value: "suppliant", label: "Suppléant" },
+  { value: "delegue",   label: "Délégué" },
+];
 
 const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
   const { toast } = useToast();
@@ -48,7 +52,6 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
 
   const fetchMembres = async () => {
     setFetching(true);
-    // On utilise any pour contourner le type strict Supabase sur les colonnes dynamiques
     const { data, error } = await (supabase.from("membres") as any)
       .select("*")
       .eq("entity_id", entityId)
@@ -68,6 +71,7 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
       nom: form.nom,
       prenom: form.prenom || null,
       fonction: form.fonction || null,
+      categorie: (memberType === "bureau" || memberType === "conseil") ? (form.categorie || "titulaire") : null,
       telephone: form.telephone || null,
       adresse: form.adresse || null,
       date_naissance: form.date_naissance || null,
@@ -95,6 +99,7 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
     setEditingId(m.id);
     setForm({
       nom: m.nom, prenom: m.prenom || "", fonction: m.fonction || "",
+      categorie: m.categorie || "titulaire",
       telephone: m.telephone || "", adresse: m.adresse || "",
       date_naissance: m.date_naissance || "", paroisse_bapteme: m.paroisse_bapteme || "",
       date_bapteme: m.date_bapteme || "", genre: m.genre || "M", statut: m.statut || "actif",
@@ -107,6 +112,23 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
     toast({ title: "Membre supprimé" }); fetchMembres();
   };
 
+  // Résumé par catégorie
+  const nbTitulaires = membres.filter(m => !m.categorie || m.categorie === "titulaire").length;
+  const nbSupplants  = membres.filter(m => m.categorie === "suppliant").length;
+  const nbDelegues   = membres.filter(m => m.categorie === "delegue").length;
+  const showSummary  = (memberType === "bureau" || memberType === "conseil") && membres.length > 0;
+
+  const catLabel = (cat: string | null) => {
+    if (cat === "suppliant") return "Suppléant";
+    if (cat === "delegue")   return "Délégué";
+    return "Titulaire";
+  };
+  const catColor = (cat: string | null) => {
+    if (cat === "suppliant") return "bg-amber-100 text-amber-700";
+    if (cat === "delegue")   return "bg-blue-100 text-blue-700";
+    return "bg-green-100 text-green-700";
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
@@ -115,6 +137,27 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
           <Plus className="h-3.5 w-3.5" /> Ajouter
         </Button>
       </div>
+
+      {/* Résumé des catégories */}
+      {showSummary && (
+        <div className="flex flex-wrap gap-3 mb-4 p-3 bg-muted/30 rounded-xl border border-border">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
+            <span className="text-xs text-muted-foreground">Titulaires : <strong className="text-foreground">{nbTitulaires}</strong></span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+            <span className="text-xs text-muted-foreground">Suppléants : <strong className="text-foreground">{nbSupplants}</strong></span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+            <span className="text-xs text-muted-foreground">Délégués : <strong className="text-foreground">{nbDelegues}</strong></span>
+          </div>
+          <div className="flex items-center gap-1.5 ml-auto">
+            <span className="text-xs font-semibold text-foreground">Total : {membres.length}</span>
+          </div>
+        </div>
+      )}
 
       {showForm && (
         <div className="bg-muted/40 border border-border rounded-xl p-5 mb-5">
@@ -130,26 +173,35 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
               <Label className="text-xs">Prénom</Label>
               <Input value={form.prenom} onChange={e => setForm({ ...form, prenom: e.target.value })} placeholder="Prénom" className="h-9 text-sm" />
             </div>
+
+            {/* Catégorie — bureau ou conseil uniquement */}
+            {(memberType === "bureau" || memberType === "conseil") && (
               <div className="space-y-1.5">
-                <Label className="text-xs">Fonction</Label>
-                {memberType === "conseil" ? (
-                  <select value={form.fonction} onChange={e => setForm({ ...form, fonction: e.target.value })}
-                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm">
-                    <option value="">-- Choisir --</option>
-                    <option value="Conseillé titulaire">Conseillé titulaire</option>
-                    <option value="Suppléant">Suppléant</option>
-                  </select>
-                ) : (
-                  <Input value={form.fonction} onChange={e => setForm({ ...form, fonction: e.target.value })}
-                    placeholder={memberType === "organe" ? "Ex: Président, Secrétaire…" : "Ex: Président, Trésorier…"}
-                    className="h-9 text-sm" />
-                )}
+                <Label className="text-xs">Catégorie</Label>
+                <select value={form.categorie} onChange={e => setForm({ ...form, categorie: e.target.value })}
+                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm">
+                  {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+                </select>
               </div>
+            )}
+
+            <div className="space-y-1.5">
+              <Label className="text-xs">Fonction</Label>
+              {memberType === "organe" ? (
+                <Input value={form.fonction} onChange={e => setForm({ ...form, fonction: e.target.value })}
+                  placeholder="Ex: Président, Secrétaire…" className="h-9 text-sm" />
+              ) : (
+                <Input value={form.fonction} onChange={e => setForm({ ...form, fonction: e.target.value })}
+                  placeholder={memberType === "bureau" ? "Ex: Président, Trésorier…" : "Ex: Conseiller, Assesseur…"}
+                  className="h-9 text-sm" />
+              )}
+            </div>
+
             <div className="space-y-1.5">
               <Label className="text-xs">Téléphone</Label>
               <Input value={form.telephone} onChange={e => setForm({ ...form, telephone: e.target.value })} placeholder="+242 …" className="h-9 text-sm" />
             </div>
-            
+
             {memberType === "bureau" && (
               <>
                 <div className="space-y-1.5">
@@ -174,29 +226,11 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
                 </div>
               </>
             )}
-           
+
             <div className="space-y-1.5">
               <Label className="text-xs">Adresse</Label>
               <Input value={form.adresse} onChange={e => setForm({ ...form, adresse: e.target.value })} placeholder="Adresse…" className="h-9 text-sm" />
             </div>
-            {/* <div className="space-y-1.5">
-              <Label className="text-xs">Genre</Label>
-              <select value={form.genre} onChange={e => setForm({ ...form, genre: e.target.value })}
-                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm">
-                <option value="M">Masculin</option>
-                <option value="F">Féminin</option>
-              </select>
-            </div> */}
-
-            {/* <div className="space-y-1.5">
-              <Label className="text-xs">Statut</Label>
-
-              <select value={form.statut} onChange={e => setForm({ ...form, statut: e.target.value })}
-                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm">
-                <option value="actif">Actif</option>
-                <option value="refroidi">Refroidi</option>
-              </select>
-            </div> */}
           </div>
           <div className="flex gap-2 mt-4">
             <Button size="sm" onClick={handleSave} className="gap-1.5"><Save className="h-3.5 w-3.5" />Enregistrer</Button>
@@ -220,7 +254,14 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
                 <span className="text-xs font-semibold text-primary">{m.nom[0]}{m.prenom?.[0] || ""}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm text-foreground">{m.prenom} {m.nom}</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <p className="font-medium text-sm text-foreground">{m.prenom} {m.nom}</p>
+                  {(memberType === "bureau" || memberType === "conseil") && (
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${catColor(m.categorie)}`}>
+                      {catLabel(m.categorie)}
+                    </span>
+                  )}
+                </div>
                 <div className="flex flex-wrap gap-x-3 gap-y-0.5">
                   {m.fonction && <p className="text-xs text-muted-foreground">{m.fonction}</p>}
                   {m.telephone && <p className="text-xs text-muted-foreground">{m.telephone}</p>}

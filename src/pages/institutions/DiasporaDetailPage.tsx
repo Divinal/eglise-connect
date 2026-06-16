@@ -123,7 +123,7 @@ const DiasporaDetailPage = () => {
           <div className="container max-w-3xl">
             <h2 className="font-display text-2xl font-semibold text-foreground mb-5 flex items-center gap-3">
               <span className="w-1.5 h-7 bg-gold rounded-full inline-block shrink-0" />
-              Présentation & Historique
+              Présentation
             </h2>
             <p className="text-muted-foreground leading-relaxed text-base whitespace-pre-wrap">{diaspora.historique}</p>
           </div>
@@ -136,7 +136,7 @@ const DiasporaDetailPage = () => {
             <main className="flex-1 min-w-0">
               <h2 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
                 <span className="w-1 h-6 bg-gold rounded-full inline-block" />
-                Annonces & Circulaires
+                Actualités & Annonces
               </h2>
               {annonces.length === 0 ? (
                 <div className="bg-white rounded-xl border border-border p-10 text-center">

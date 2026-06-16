@@ -42,7 +42,7 @@ const HistoriqueManager = ({ table, entityId, entityLabel = "cette structure" }:
         <div>
           <h2 className="font-semibold text-lg flex items-center gap-2">
             <FileText className="h-5 w-5 text-primary" />
-            Présentation & Historique
+            Présentation
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
             Ce texte sera affiché en bas de la page publique de {entityLabel}.

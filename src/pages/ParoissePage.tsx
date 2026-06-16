@@ -5,7 +5,7 @@ import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import {
   ArrowLeft, Users, Building2, Shield, Music, Church,
-  Info, Plus, Save, Trash2, Megaphone, Phone, User, FileText,
+  Info, Plus, Save, Trash2, Megaphone, Phone, User, FileText, CalendarDays,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,9 @@ import MembresManager from "./MembresManager";
 import { AnnoncesManager } from "./AdminSynodePage";
 import { useToast } from "@/hooks/use-toast";
 import HistoriqueManager from "./HistoriqueManager";
+import PasteursManager from "./PasteursManager";
+import { ServiteursParoisseManager } from "./ServiteursManager";
+import PlanningManager from "./PlanningManager";
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -613,7 +616,7 @@ const InfosParoisse = ({ paroisseId }: { paroisseId: string }) => {
 // ─────────────────────────────────────────────
 // PAGE PRINCIPALE
 // ─────────────────────────────────────────────
-type Tab = "bureau" | "organes" | "conseil" | "groupes" | "annexes" | "annonces" | "infos" | "presentation";
+type Tab = "bureau" | "organes" | "conseil" | "pasteurs" | "serviteurs" | "planning" | "groupes" | "annexes" | "annonces" | "infos" | "presentation";
 
 const ParoissePage = () => {
   const { id: paroisseId } = useParams<{ id: string }>();
@@ -638,6 +641,9 @@ const ParoissePage = () => {
     { key: "bureau", label: "Bureau", icon: Users },
     { key: "organes", label: "Organes", icon: Building2 },
     { key: "conseil", label: "Conseil", icon: Shield },
+    { key: "pasteurs", label: "Pasteurs", icon: Users },
+    { key: "serviteurs", label: "Serviteurs", icon: Users },
+    { key: "planning", label: "Planning", icon: CalendarDays },
     { key: "groupes", label: "Groupes chantants", icon: Music },
     { key: "annexes", label: "Annexes", icon: Church },
     { key: "annonces", label: "Annonces", icon: Megaphone },
@@ -693,6 +699,15 @@ const ParoissePage = () => {
             )}
             {activeTab === "conseil" && paroisseId && (
               <MembresManager entityType="paroisse" entityId={paroisseId} memberType="conseil" title="Conseil paroissial" />
+            )}
+            {activeTab === "pasteurs" && paroisseId && (
+              <PasteursManager paroisseId={paroisseId} />
+            )}
+            {activeTab === "serviteurs" && paroisseId && (
+              <ServiteursParoisseManager paroisseId={paroisseId} />
+            )}
+            {activeTab === "planning" && paroisseId && (
+              <PlanningManager entityType="paroisse" entityId={paroisseId} title="Planning paroissial" />
             )}
             {activeTab === "groupes" && paroisseId && (
               <GroupesChantants paroisseId={paroisseId} />

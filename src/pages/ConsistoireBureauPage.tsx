@@ -3,12 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Users, BookOpen, Building2, Shield, UserCheck, Megaphone, FileText } from "lucide-react";
+import { ArrowLeft, Users, BookOpen, Building2, UserCheck, Megaphone, FileText, CalendarDays } from "lucide-react";
 import { AnnoncesManager } from "./AdminSynodePage";
 import { Button } from "@/components/ui/button";
 import MembresManager from "./MembresManager";
 import { useToast } from "@/hooks/use-toast";
 import HistoriqueManager from "./HistoriqueManager";
+import PlanningManager from "./PlanningManager";
+import { ServiteursConsistoireManager } from "./ServiteursManager";
 
 // Composant Secrétaires paroissiaux
 const SecretairesManager = ({ consistoireId }: { consistoireId: string }) => {
@@ -112,7 +114,7 @@ const SecretairesManager = ({ consistoireId }: { consistoireId: string }) => {
   );
 };
 
-type Tab = "bureau" | "conseil" | "commissions" | "organes" | "secretaires" | "annonces" | "presentation";
+type Tab = "bureau" | "planning" | "commissions" | "organes" | "secretaires" | "annonces" | "presentation" | "serviteurs";
 
 const ConsistoireBureauPage = () => {
   const { id: consistoireId } = useParams<{ id: string }>();
@@ -134,7 +136,8 @@ const ConsistoireBureauPage = () => {
 
   const TABS: { key: Tab; label: string; icon: any }[] = [
     { key: "bureau", label: "Bureau", icon: Users },
-    { key: "conseil", label: "Conseil", icon: Shield },
+    { key: "planning", label: "Planning", icon: CalendarDays },
+    { key: "serviteurs", label: "Serviteurs", icon: Users },
     { key: "commissions", label: "Commissions", icon: BookOpen },
     { key: "organes", label: "Organes", icon: Building2 },
     { key: "annonces", label: "Annonces", icon: Megaphone },
@@ -174,8 +177,11 @@ const ConsistoireBureauPage = () => {
             {activeTab === "bureau" && consistoireId && (
               <MembresManager entityType="consistoire" entityId={consistoireId} memberType="bureau" title="Bureau consistorial" />
             )}
-            {activeTab === "conseil" && consistoireId && (
-              <MembresManager entityType="consistoire" entityId={consistoireId} memberType="conseil" title="Conseil consistorial" />
+            {activeTab === "planning" && consistoireId && (
+              <PlanningManager entityType="consistoire" entityId={consistoireId} title="Planning consistorial" />
+            )}
+            {activeTab === "serviteurs" && consistoireId && (
+              <ServiteursConsistoireManager consistoireId={consistoireId} />
             )}
             {activeTab === "commissions" && consistoireId && (
               <MembresManager entityType="consistoire" entityId={consistoireId} memberType="organe" title="Commissions" />

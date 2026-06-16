@@ -111,7 +111,7 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-semibold text-lg">Annonces & Circulaires</h2>
+        <h2 className="font-semibold text-lg">Actualités & Annonces</h2>
         <Button size="sm" onClick={() => setShowForm(!showForm)} className="gap-1.5">
           <Plus className="h-3.5 w-3.5" /> Publier
         </Button>

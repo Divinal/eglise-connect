@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Pages publiques
 import Index from "./pages/Index";
 import DepartementPage from "./pages/DepartementPage";
+import InstitutionHubPage from "./pages/InstitutionHubPage";
+import DepartementsHubPage from "./pages/DepartementsHubPage";
 import PartenairesPage from "./pages/PartenairesPage";
 import PartenairePage from "./pages/PartenairePage";
 import FAQPage from "./pages/FAQPage";
@@ -88,6 +90,8 @@ const App = () => (
         <Routes>
           {/* PUBLIQUES */}
           <Route path="/" element={<Index />} />
+          <Route path="/institution" element={<InstitutionHubPage />} />
+          <Route path="/departements" element={<DepartementsHubPage />} />
           <Route path="/departements/:slug" element={<DepartementPage />} />
           <Route path="/partenaires/:slug" element={<PartenairePage />} />
           <Route path="/partenaires" element={<PartenairesPage />} />

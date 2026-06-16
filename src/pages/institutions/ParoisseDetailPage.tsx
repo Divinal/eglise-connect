@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { Church, Users, MapPin, Phone, Mail, ArrowLeft, Music, Calendar, ChevronRight, ChevronDown } from "lucide-react";
+import { Church, Users, MapPin, Phone, Mail, ArrowLeft, Music, Calendar, ChevronRight, ChevronDown, CalendarDays, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { slugify } from "@/utils/slugify";
 
@@ -14,6 +14,7 @@ interface Paroisse {
   historique: string | null;
 }
 interface Membre { id: string; nom: string; prenom: string | null; fonction: string | null; }
+interface PlanEntry { id: string; titre: string; date_debut: string | null; heure: string | null; lieu: string | null; }
 
 const SideBlock = ({ title, color, items, renderItem, emptyMsg }: {
   title: string; color: string; items: any[];
@@ -52,6 +53,9 @@ const ParoisseDetailPage = () => {
   const [paroisse, setParoisse] = useState<Paroisse | null>(null);
   const [consistoireName, setConsistoireName] = useState("");
   const [membres, setMembres] = useState<Record<string, Membre[]>>({ bureau: [], conseil: [], organes: [] });
+  const [pasteurs, setPasteurs] = useState<Membre[]>([]);
+  const [serviteurs, setServiteurs] = useState<Membre[]>([]);
+  const [planning, setPlanning] = useState<PlanEntry[]>([]);
   const [groupes, setGroupes] = useState<any[]>([]);
   const [annexes, setAnnexes] = useState<any[]>([]);
   const [annonces, setAnnonces] = useState<any[]>([]);
@@ -74,12 +78,19 @@ const ParoisseDetailPage = () => {
       const { data: allMembres } = await (supabase as any).from("membres").select("*")
         .eq("entity_type", "paroisse").eq("entity_id", uuid);
       const grouped: Record<string, Membre[]> = { bureau: [], conseil: [], organes: [] };
+      const pasts: Membre[] = [];
+      const servs: Membre[] = [];
       (allMembres || []).forEach((m: any) => {
         if (m.type === "bureau") grouped.bureau.push(m);
         else if (m.type === "conseil") grouped.conseil.push(m);
         else if (m.type === "organe") grouped.organes.push(m);
+        else if (m.type === "pasteur") pasts.push(m);
+        else if (m.type === "serviteur") servs.push(m);
       });
       setMembres(grouped);
+      setPasteurs(pasts);
+      setServiteurs(servs);
+
       const { data: grp } = await supabase.from("groupes_chantants").select("*").eq("paroisse_id", uuid).order("name");
       setGroupes(grp || []);
       const { data: ann } = await supabase.from("annexes").select("*").eq("paroisse_id", uuid).order("name");
@@ -87,6 +98,12 @@ const ParoisseDetailPage = () => {
       const { data: annonceData } = await (supabase as any).from("announcements").select("*")
         .eq("entity_type", "paroisse").eq("entity_id", uuid).order("created_at", { ascending: false });
       setAnnonces(annonceData || []);
+
+      const { data: plan } = await (supabase as any).from("planning").select("*")
+        .eq("entity_type", "paroisse").eq("entity_id", uuid)
+        .order("date_debut", { ascending: true });
+      setPlanning(plan || []);
+
       setLoading(false);
     };
     fetchAll();
@@ -144,7 +161,7 @@ const ParoisseDetailPage = () => {
           <div className="container max-w-3xl">
             <h2 className="font-display text-2xl font-semibold text-foreground mb-5 flex items-center gap-3">
               <span className="w-1.5 h-7 bg-gold rounded-full inline-block shrink-0" />
-              Présentation & Historique
+              Présentation
             </h2>
             <p className="text-muted-foreground leading-relaxed text-base whitespace-pre-wrap">{paroisse.historique}</p>
           </div>
@@ -160,7 +177,7 @@ const ParoisseDetailPage = () => {
             <main className="flex-1 min-w-0">
               <h2 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
                 <span className="w-1 h-6 bg-gold rounded-full inline-block"></span>
-                Annonces & Circulaires
+                Actualités & Annonces
               </h2>
               {annonces.length === 0 ? (
                 <div className="bg-white rounded-xl border border-border p-10 text-center">
@@ -194,35 +211,51 @@ const ParoisseDetailPage = () => {
             {/* ── COLONNE DROITE : blocs info ── */}
             <aside className="w-full lg:w-72 shrink-0 space-y-4">
 
-              <SideBlock title="Bureau Paroissial" color="bg-[#1a3a5c]" items={membres.bureau}
-                emptyMsg="Aucun membre du bureau."
-                renderItem={(m) => (
-                  <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted/40 transition-colors">
-                    <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <span className="text-[10px] font-bold text-primary">{m.nom[0]}{m.prenom?.[0] || ""}</span>
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium truncate">{m.prenom} {m.nom}</p>
-                      {m.fonction && <p className="text-[10px] text-muted-foreground truncate">{m.fonction}</p>}
-                    </div>
-                  </div>
-                )}
-              />
-
-              <SideBlock title="Conseil Paroissial" color="bg-[#2a6496]" items={membres.conseil}
-                emptyMsg="Aucun membre du conseil."
-                renderItem={(m) => (
-                  <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted/40 transition-colors">
-                    <div className="w-7 h-7 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-                      <span className="text-[10px] font-bold text-blue-700">{m.nom[0]}{m.prenom?.[0] || ""}</span>
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium truncate">{m.prenom} {m.nom}</p>
-                      {m.fonction && <p className="text-[10px] text-muted-foreground truncate">{m.fonction}</p>}
-                    </div>
-                  </div>
-                )}
-              />
+              {/* Bureau & Conseil fusionnés */}
+              <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
+                <div className="bg-[#1a3a5c] px-4 py-3">
+                  <h3 className="font-semibold text-white text-sm tracking-wide">Bureau & Conseil Paroissial</h3>
+                </div>
+                <div className="p-3 space-y-1">
+                  {membres.bureau.length > 0 && (
+                    <>
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2 pt-1 pb-0.5">Bureau</p>
+                      {membres.bureau.slice(0, 3).map(m => (
+                        <div key={m.id} className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted/40 transition-colors">
+                          <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                            <span className="text-[10px] font-bold text-primary">{m.nom[0]}{m.prenom?.[0] || ""}</span>
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs font-medium truncate">{m.prenom} {m.nom}</p>
+                            {m.fonction && <p className="text-[10px] text-muted-foreground truncate">{m.fonction}</p>}
+                          </div>
+                        </div>
+                      ))}
+                      {membres.bureau.length > 3 && <p className="text-[10px] text-primary text-center pb-1">+ {membres.bureau.length - 3} autre(s)</p>}
+                    </>
+                  )}
+                  {membres.bureau.length === 0 && <p className="text-xs text-muted-foreground px-2 py-1">Aucun membre du bureau.</p>}
+                  <div className="border-t border-border my-1" />
+                  {membres.conseil.length > 0 && (
+                    <>
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-2 pt-0.5 pb-0.5">Conseil</p>
+                      {membres.conseil.slice(0, 3).map(m => (
+                        <div key={m.id} className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted/40 transition-colors">
+                          <div className="w-7 h-7 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+                            <span className="text-[10px] font-bold text-blue-700">{m.nom[0]}{m.prenom?.[0] || ""}</span>
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs font-medium truncate">{m.prenom} {m.nom}</p>
+                            {m.fonction && <p className="text-[10px] text-muted-foreground truncate">{m.fonction}</p>}
+                          </div>
+                        </div>
+                      ))}
+                      {membres.conseil.length > 3 && <p className="text-[10px] text-primary text-center pb-1">+ {membres.conseil.length - 3} autre(s)</p>}
+                    </>
+                  )}
+                  {membres.conseil.length === 0 && <p className="text-xs text-muted-foreground px-2 py-1">Aucun membre du conseil.</p>}
+                </div>
+              </div>
 
               <SideBlock title="Organes Paroissiaux" color="bg-[#5a4a8a]" items={membres.organes}
                 emptyMsg="Aucun organe enregistré."
@@ -269,6 +302,83 @@ const ParoisseDetailPage = () => {
                     </div>
                   )}
                 />
+              )}
+
+              {/* Pasteurs */}
+              {pasteurs.length > 0 && (
+                <SideBlock title={`Pasteurs (${pasteurs.length})`} color="bg-[#1a4d2e]" items={pasteurs}
+                  renderItem={(p) => (
+                    <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted/40 transition-colors">
+                      <div className="w-7 h-7 rounded-full bg-green-50 flex items-center justify-center shrink-0">
+                        <span className="text-[10px] font-bold text-green-800">{p.nom[0]}{p.prenom?.[0] || ""}</span>
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-medium truncate">{p.prenom} {p.nom}</p>
+                        {p.fonction && <p className="text-[10px] text-muted-foreground truncate">{p.fonction}</p>}
+                      </div>
+                    </div>
+                  )}
+                />
+              )}
+
+              {/* Serviteurs */}
+              {serviteurs.length > 0 && (
+                <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
+                  <div className="bg-[#7b3f00] px-4 py-3 flex items-center justify-between">
+                    <h3 className="font-semibold text-white text-sm tracking-wide">Serviteurs</h3>
+                    <span className="text-white/80 text-xs font-bold">{serviteurs.length}</span>
+                  </div>
+                  <div className="p-3 space-y-1">
+                    {serviteurs.slice(0, 4).map((s) => (
+                      <div key={s.id} className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted/40 transition-colors">
+                        <div className="w-6 h-6 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                          <span className="text-[9px] font-bold text-orange-700">{s.nom[0]}{s.prenom?.[0] || ""}</span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-medium truncate">{s.prenom} {s.nom}</p>
+                          {s.fonction && <p className="text-[10px] text-muted-foreground truncate">{s.fonction}</p>}
+                        </div>
+                      </div>
+                    ))}
+                    {serviteurs.length > 4 && (
+                      <p className="text-[10px] text-primary text-center pt-1">+ {serviteurs.length - 4} autre(s)</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Planning */}
+              {planning.length > 0 && (
+                <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
+                  <div className="bg-[#1a3a5c] px-4 py-3">
+                    <h3 className="font-semibold text-white text-sm tracking-wide flex items-center gap-2">
+                      <CalendarDays className="h-3.5 w-3.5" /> Planning
+                    </h3>
+                  </div>
+                  <div className="p-3 space-y-2">
+                    {planning.slice(0, 4).map((p) => (
+                      <div key={p.id} className="p-2 rounded-lg hover:bg-muted/40 transition-colors">
+                        <p className="text-xs font-semibold text-foreground leading-snug">{p.titre}</p>
+                        <div className="flex flex-wrap gap-x-2 mt-0.5">
+                          {p.date_debut && (
+                            <span className="text-[10px] text-muted-foreground">
+                              {new Date(p.date_debut).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
+                            </span>
+                          )}
+                          {p.heure && (
+                            <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground">
+                              <Clock className="h-2.5 w-2.5" />{p.heure}
+                            </span>
+                          )}
+                          {p.lieu && <span className="text-[10px] text-muted-foreground">{p.lieu}</span>}
+                        </div>
+                      </div>
+                    ))}
+                    {planning.length > 4 && (
+                      <p className="text-[10px] text-primary text-center pt-1">+ {planning.length - 4} autre(s)</p>
+                    )}
+                  </div>
+                </div>
               )}
             </aside>
 
