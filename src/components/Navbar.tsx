@@ -21,16 +21,7 @@ const navItems: NavItem[] = [
       { label: "SUECO", href: "/institution/sueco" },
     ],
   },
-  {
-    label: "Consistoires & Diaspora", href: "/institution/consistoires",
-    children: [
-      { label: "Consistoires", href: "/institution/consistoires" },
-      { label: "Champs d'évangelisation", href: "/institution/champs-evangelisation" },
-      { label: "Champs de Mission", href: "/institution/champs-de-mission" },
-      { label: "Diaspora", href: "/institution/diaspora" },
-    ],
-  },
-  {
+    {
     label: "Départements", href: "/departements",
     children: [
       { label: "Dép. Syn. de l'Enseignement Protestant", href: "/departements/dgep" },
@@ -45,6 +36,16 @@ const navItems: NavItem[] = [
       { label: "AEP", href: "/departements/aep" },
     ],
   },
+  {
+    label: "Consistoires & Diaspora", href: "/institution/consistoires",
+    children: [
+      { label: "Consistoires", href: "/institution/consistoires" },
+      { label: "Champs d'évangelisation", href: "/institution/champs-evangelisation" },
+      { label: "Champs de Mission", href: "/institution/champs-de-mission" },
+      { label: "Diaspora", href: "/institution/diaspora" },
+    ],
+  },
+
   {
     label: "Partenaires", href: "/partenaires",
     children: [
