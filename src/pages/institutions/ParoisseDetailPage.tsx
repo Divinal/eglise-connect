@@ -96,7 +96,7 @@ const ParoisseDetailPage = () => {
       const { data: ann } = await supabase.from("annexes").select("*").eq("paroisse_id", uuid).order("name");
       setAnnexes(ann || []);
       const { data: annonceData } = await (supabase as any).from("announcements").select("*")
-        .eq("entity_type", "paroisse").eq("entity_id", uuid).order("created_at", { ascending: false });
+        .eq("entity_type", "paroisse").eq("entity_id", uuid).eq("status", "approved").order("created_at", { ascending: false });
       setAnnonces(annonceData || []);
 
       const { data: plan } = await (supabase as any).from("planning").select("*")

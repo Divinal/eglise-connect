@@ -73,7 +73,7 @@ const ChampsMissionDetailPage = () => {
       setMembres(grouped);
 
       const { data: ann } = await (supabase as any).from("announcements").select("*")
-        .eq("entity_type", "champs_mission").eq("entity_id", uuid)
+        .eq("entity_type", "champs_mission").eq("entity_id", uuid).eq("status", "approved")
         .order("created_at", { ascending: false });
       setAnnonces(ann || []);
       setLoading(false);

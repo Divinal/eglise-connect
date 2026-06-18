@@ -1,16 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   Shield, Users, Church, Building2, BookOpen,
   LogOut, ChevronRight, Lock, Megaphone,
-  GraduationCap, Globe, Heart, Compass, ShoppingBag
+  GraduationCap, Globe, Heart, Compass, ShoppingBag, ClipboardCheck
 } from "lucide-react";
 
-const DashboardCard = ({ icon: Icon, label, desc, color, onClick }: {
-  icon: any; label: string; desc: string; color: string; onClick: () => void;
+const DashboardCard = ({ icon: Icon, label, desc, color, onClick, badge }: {
+  icon: any; label: string; desc: string; color: string; onClick: () => void; badge?: number;
 }) => (
   <button
     onClick={onClick}
@@ -20,7 +21,12 @@ const DashboardCard = ({ icon: Icon, label, desc, color, onClick }: {
       <Icon className="h-5 w-5" />
     </div>
     <div className="flex-1 min-w-0">
-      <p className="font-semibold text-foreground text-sm">{label}</p>
+      <div className="flex items-center gap-2">
+        <p className="font-semibold text-foreground text-sm">{label}</p>
+        {!!badge && (
+          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-white">{badge}</span>
+        )}
+      </div>
       <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
     </div>
     <ChevronRight className="h-4 w-4 text-muted-foreground/40 shrink-0 mt-0.5 group-hover:text-primary transition-colors" />
@@ -36,10 +42,17 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 const AdminDashboard = () => {
   const { user, roles, loading, isAdminGeneral, signOut } = useAuth();
   const navigate = useNavigate();
+  const [pendingCount, setPendingCount] = useState(0);
 
   useEffect(() => {
     if (!loading && !user) navigate("/login");
   }, [loading, user, navigate]);
+
+  useEffect(() => {
+    if (!isAdminGeneral) return;
+    supabase.from("announcements").select("id", { count: "exact", head: true }).eq("status", "pending")
+      .then(({ count }) => setPendingCount(count || 0));
+  }, [isAdminGeneral]);
 
   if (loading) {
     return (
@@ -123,6 +136,7 @@ const AdminDashboard = () => {
               <div className="grid md:grid-cols-2 gap-4 mb-2">
                 <DashboardCard icon={Shield} label="Utilisateurs" desc="Gérer rôles, accès et blocages" color="text-red-600 bg-red-50" onClick={() => navigate("/admin/users")} />
                 <DashboardCard icon={Church} label="Consistoires" desc="Créer et gérer les consistoires" color="text-green-600 bg-green-50" onClick={() => navigate("/admin/consistoires")} />
+                <DashboardCard icon={ClipboardCheck} label="Validation des publications" desc="Vérifier et valider les annonces des départements, champs, paroisses et consistoires" color="text-amber-600 bg-amber-50" onClick={() => navigate("/admin/validation-annonces")} badge={pendingCount} />
               </div>
 
               <SectionTitle>Synode — Structures nationales</SectionTitle>

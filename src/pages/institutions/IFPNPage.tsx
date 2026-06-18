@@ -8,7 +8,7 @@ const IFPNPage = () => {
   const [membres, setMembres] = useState<any[]>([]);
 
   useEffect(() => {
-    supabase.from("announcements").select("*").eq("entity_type", "ifpn")
+    supabase.from("announcements").select("*").eq("entity_type", "ifpn").eq("status", "approved")
       .order("created_at", { ascending: false }).then(({ data }) => setAnnonces(data || []));
     (supabase.from("membres") as any).select("*").eq("entity_type", "ifpn").order("nom")
       .then(({ data }: any) => setMembres(data || []));

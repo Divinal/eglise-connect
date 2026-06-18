@@ -121,6 +121,7 @@ const DepartementPage = () => {
           .select("*")
           .eq("entity_type", "departement")
           .eq("entity_id", data.id)
+          .eq("status", "approved")
           .order("created_at", { ascending: false })
           .then(({ data: ann }) => setAnnonces(ann || []));
       });

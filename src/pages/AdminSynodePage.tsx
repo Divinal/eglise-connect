@@ -11,8 +11,12 @@ import { Textarea } from "@/components/ui/textarea";
 import MembresManager from "./MembresManager";
 import { useToast } from "@/hooks/use-toast";
 
+// Types d'entité gérés exclusivement par l'admin général : publication immédiate, sans validation
+const AUTO_APPROVED_TYPES = ["synode", "eglise_proximite", "micro_semaine"];
+
 // Composant Annonces avec upload image
 const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityId: string }) => {
+  const requiresApproval = !AUTO_APPROVED_TYPES.includes(entityType);
   const { toast } = useToast();
   const [annonces, setAnnonces] = useState<any[]>([]);
   const [fetching, setFetching] = useState(true);
@@ -80,11 +84,14 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
       entity_type: entityType,
       entity_id: entityId,
       image_url,
+      status: requiresApproval ? "pending" : "approved",
     } as any);
 
     setUploading(false);
     if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
-    toast({ title: "Annonce publiée !" });
+    toast(requiresApproval
+      ? { title: "Annonce envoyée pour validation", description: "L'administrateur général doit la valider avant publication." }
+      : { title: "Annonce publiée !" });
     setForm({ title: "", content: "", type: "annonce" });
     setImageFile(null); setImagePreview(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -188,18 +195,30 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                           a.type === "circulaire" ? "bg-blue-100 text-blue-700" :
                           a.type === "convocation" ? "bg-amber-100 text-amber-700" :
                           "bg-green-100 text-green-700"
                         }`}>{a.type}</span>
+                        {requiresApproval && a.status === "pending" && (
+                          <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-700">En attente de validation</span>
+                        )}
+                        {requiresApproval && a.status === "approved" && (
+                          <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">Publié</span>
+                        )}
+                        {requiresApproval && a.status === "rejected" && (
+                          <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-red-100 text-red-700">Rejeté</span>
+                        )}
                         <span className="text-xs text-muted-foreground">
                           {new Date(a.created_at).toLocaleDateString("fr-FR")}
                         </span>
                       </div>
                       <p className="font-medium text-sm">{a.title}</p>
                       {a.content && <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{a.content}</p>}
+                      {a.status === "rejected" && a.rejection_reason && (
+                        <p className="text-xs text-red-600 mt-1">Motif : {a.rejection_reason}</p>
+                      )}
                     </div>
                     <Button variant="ghost" size="icon" onClick={() => deleteAnnonce(a.id, a.image_url)}
                       className="h-8 w-8 text-destructive hover:bg-destructive/10 shrink-0">

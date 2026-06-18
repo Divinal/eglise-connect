@@ -8,7 +8,7 @@ const UPBPage = () => {
   const [membres, setMembres] = useState<any[]>([]);
 
   useEffect(() => {
-    supabase.from("announcements").select("*").eq("entity_type", "upb")
+    supabase.from("announcements").select("*").eq("entity_type", "upb").eq("status", "approved")
       .order("created_at", { ascending: false }).then(({ data }) => setAnnonces(data || []));
     (supabase.from("membres") as any).select("*").eq("entity_type", "upb").order("nom")
       .then(({ data }: any) => setMembres(data || []));
