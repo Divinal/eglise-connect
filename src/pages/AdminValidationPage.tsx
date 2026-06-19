@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Check, X, Pencil, Save, Trash2, Clock } from "lucide-react";
+import { ArrowLeft, Check, X, Pencil, Save, Trash2, Clock, ImagePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -37,6 +37,11 @@ const AdminValidationPage = () => {
   const [fetching, setFetching] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState({ title: "", content: "" });
+  const [editImageFile, setEditImageFile] = useState<File | null>(null);
+  const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
+  const [editImageRemoved, setEditImageRemoved] = useState(false);
+  const [savingEdit, setSavingEdit] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { if (!loading && !isAdminGeneral) navigate("/admin"); }, [loading, isAdminGeneral]);
 
@@ -73,14 +78,65 @@ const AdminValidationPage = () => {
   const startEdit = (a: any) => {
     setEditingId(a.id);
     setEditForm({ title: a.title, content: a.content || "" });
+    setEditImageFile(null);
+    setEditImagePreview(a.image_url || null);
+    setEditImageRemoved(false);
   };
 
-  const saveEdit = async (id: string) => {
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditImageFile(null);
+    setEditImagePreview(null);
+    setEditImageRemoved(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleEditImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "Image trop grande", description: "Maximum 5 MB", variant: "destructive" });
+      return;
+    }
+    setEditImageFile(file);
+    setEditImagePreview(URL.createObjectURL(file));
+    setEditImageRemoved(false);
+  };
+
+  const removeEditImage = () => {
+    setEditImageFile(null);
+    setEditImagePreview(null);
+    setEditImageRemoved(true);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const saveEdit = async (a: any) => {
+    setSavingEdit(true);
+    let image_url: string | null = a.image_url;
+    const oldPath = a.image_url ? a.image_url.split("/media/")[1] : null;
+
+    if (editImageFile) {
+      const ext = editImageFile.name.split(".").pop();
+      const fileName = `announcements/${a.entity_type}-${a.entity_id}-${Date.now()}.${ext}`;
+      const { error: uploadError } = await supabase.storage.from("media").upload(fileName, editImageFile, { upsert: true });
+      if (uploadError) {
+        toast({ title: "Erreur upload image", description: uploadError.message, variant: "destructive" });
+        setSavingEdit(false); return;
+      }
+      const { data: urlData } = supabase.storage.from("media").getPublicUrl(fileName);
+      image_url = urlData.publicUrl;
+      if (oldPath) await supabase.storage.from("media").remove([oldPath]);
+    } else if (editImageRemoved) {
+      image_url = null;
+      if (oldPath) await supabase.storage.from("media").remove([oldPath]);
+    }
+
     const { error } = await supabase.from("announcements")
-      .update({ title: editForm.title, content: editForm.content || null } as any).eq("id", id);
+      .update({ title: editForm.title, content: editForm.content || null, image_url } as any).eq("id", a.id);
+    setSavingEdit(false);
     if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
     toast({ title: "Annonce modifiée" });
-    setEditingId(null); fetchPending();
+    cancelEdit(); fetchPending();
   };
 
   const approve = async (id: string) => {
@@ -138,7 +194,7 @@ const AdminValidationPage = () => {
             <div className="space-y-4">
               {annonces.map(a => (
                 <div key={a.id} className="bg-card border border-border rounded-xl overflow-hidden">
-                  {a.image_url && <img src={a.image_url} alt={a.title} className="w-full h-44 object-cover" />}
+                  {editingId !== a.id && a.image_url && <img src={a.image_url} alt={a.title} className="w-full h-44 object-cover" />}
                   <div className="p-5">
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
                       <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-amber-100 text-amber-700 flex items-center gap-1">
@@ -154,12 +210,38 @@ const AdminValidationPage = () => {
                     </div>
 
                     {editingId === a.id ? (
-                      <div className="space-y-2 mb-3">
+                      <div className="space-y-3 mb-3">
                         <Input value={editForm.title} onChange={e => setEditForm({ ...editForm, title: e.target.value })} className="h-9 text-sm font-medium" />
                         <Textarea value={editForm.content} onChange={e => setEditForm({ ...editForm, content: e.target.value })} rows={3} className="text-sm" />
+
+                        {/* Édition de la photo */}
+                        <div className="space-y-1.5">
+                          <p className="text-xs text-muted-foreground">Photo</p>
+                          {editImagePreview ? (
+                            <div className="relative w-full">
+                              <img src={editImagePreview} alt="Aperçu" className="w-full max-h-48 object-cover rounded-lg border border-border" />
+                              <button onClick={removeEditImage}
+                                className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 text-white rounded-full p-1 transition-colors">
+                                <X className="h-4 w-4" />
+                              </button>
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() => fileInputRef.current?.click()}
+                              className="flex flex-col items-center justify-center gap-2 w-full h-28 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/40 hover:bg-muted/30 transition-colors"
+                            >
+                              <ImagePlus className="h-7 w-7 text-muted-foreground/50" />
+                              <p className="text-xs text-muted-foreground">Cliquez pour ajouter une photo</p>
+                            </div>
+                          )}
+                          <input ref={fileInputRef} type="file" accept="image/*" onChange={handleEditImageChange} className="hidden" />
+                        </div>
+
                         <div className="flex gap-2">
-                          <Button size="sm" onClick={() => saveEdit(a.id)} className="gap-1.5"><Save className="h-3.5 w-3.5" />Enregistrer</Button>
-                          <Button size="sm" variant="outline" onClick={() => setEditingId(null)}>Annuler</Button>
+                          <Button size="sm" onClick={() => saveEdit(a)} disabled={savingEdit} className="gap-1.5">
+                            <Save className="h-3.5 w-3.5" />{savingEdit ? "Enregistrement…" : "Enregistrer"}
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={cancelEdit}>Annuler</Button>
                         </div>
                       </div>
                     ) : (
