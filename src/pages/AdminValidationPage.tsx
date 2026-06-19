@@ -146,12 +146,15 @@ const AdminValidationPage = () => {
     fetchPending();
   };
 
-  const reject = async (id: string) => {
+  const reject = async (a: any) => {
     const reason = window.prompt("Motif du rejet (optionnel) :") || null;
+    const newCount = (a.rejection_count || 0) + 1;
     const { error } = await supabase.from("announcements")
-      .update({ status: "rejected", rejection_reason: reason } as any).eq("id", id);
+      .update({ status: "rejected", rejection_reason: reason, rejection_count: newCount } as any).eq("id", a.id);
     if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
-    toast({ title: "Annonce rejetée" });
+    toast(newCount >= 2
+      ? { title: "Annonce rejetée définitivement", description: "L'entité ne pourra plus la modifier." }
+      : { title: "Annonce rejetée", description: "L'entité pourra la corriger et la renvoyer." });
     fetchPending();
   };
 
@@ -259,7 +262,7 @@ const AdminValidationPage = () => {
                         <Button size="sm" variant="outline" onClick={() => startEdit(a)} className="gap-1.5">
                           <Pencil className="h-3.5 w-3.5" /> Modifier
                         </Button>
-                        <Button size="sm" variant="outline" onClick={() => reject(a.id)} className="gap-1.5 text-amber-700 border-amber-200 hover:bg-amber-50">
+                        <Button size="sm" variant="outline" onClick={() => reject(a)} className="gap-1.5 text-amber-700 border-amber-200 hover:bg-amber-50">
                           <X className="h-3.5 w-3.5" /> Rejeter
                         </Button>
                         <Button size="sm" variant="ghost" onClick={() => remove(a.id, a.image_url)} className="gap-1.5 text-destructive hover:bg-destructive/10 ml-auto">

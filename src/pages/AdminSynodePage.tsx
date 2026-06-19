@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Users, BookOpen, Building2, Shield, Megaphone, Plus, Save, Trash2, ImagePlus, X } from "lucide-react";
+import { ArrowLeft, Users, BookOpen, Building2, Shield, Megaphone, Plus, Save, Trash2, ImagePlus, X, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +24,10 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
   const [form, setForm] = useState({ title: "", content: "", type: "annonce" });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageRemoved, setImageRemoved] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchAnnonces = async () => {
@@ -48,11 +51,13 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
     }
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
+    setImageRemoved(false);
   };
 
   const removeImage = () => {
     setImageFile(null);
     setImagePreview(null);
+    setImageRemoved(true);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -60,7 +65,8 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
     if (!form.title.trim()) { toast({ title: "Titre requis", variant: "destructive" }); return; }
     setUploading(true);
 
-    let image_url: string | null = null;
+    let image_url: string | null = editingId ? originalImageUrl : null;
+    const oldPath = originalImageUrl ? originalImageUrl.split("/media/")[1] : null;
 
     // Upload image si présente
     if (imageFile) {
@@ -75,27 +81,45 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
       }
       const { data: urlData } = supabase.storage.from("media").getPublicUrl(fileName);
       image_url = urlData.publicUrl;
+      if (editingId && oldPath) await supabase.storage.from("media").remove([oldPath]);
+    } else if (imageRemoved) {
+      if (editingId && oldPath) await supabase.storage.from("media").remove([oldPath]);
+      image_url = null;
     }
 
-    const { error } = await supabase.from("announcements").insert({
-      title: form.title,
-      content: form.content || null,
-      type: form.type,
-      entity_type: entityType,
-      entity_id: entityId,
-      image_url,
-      status: requiresApproval ? "pending" : "approved",
-    } as any);
+    if (editingId) {
+      // Renvoi d'une annonce rejetée : mise à jour + repassage en attente de validation
+      const { error } = await supabase.from("announcements").update({
+        title: form.title,
+        content: form.content || null,
+        type: form.type,
+        image_url,
+        status: "pending",
+        rejection_reason: null,
+      } as any).eq("id", editingId);
 
-    setUploading(false);
-    if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
-    toast(requiresApproval
-      ? { title: "Annonce envoyée pour validation", description: "L'administrateur général doit la valider avant publication." }
-      : { title: "Annonce publiée !" });
-    setForm({ title: "", content: "", type: "annonce" });
-    setImageFile(null); setImagePreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-    setShowForm(false); fetchAnnonces();
+      setUploading(false);
+      if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      toast({ title: "Annonce renvoyée pour validation", description: "L'administrateur général va l'examiner à nouveau." });
+    } else {
+      const { error } = await supabase.from("announcements").insert({
+        title: form.title,
+        content: form.content || null,
+        type: form.type,
+        entity_type: entityType,
+        entity_id: entityId,
+        image_url,
+        status: requiresApproval ? "pending" : "approved",
+      } as any);
+
+      setUploading(false);
+      if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      toast(requiresApproval
+        ? { title: "Annonce envoyée pour validation", description: "L'administrateur général doit la valider avant publication." }
+        : { title: "Annonce publiée !" });
+    }
+
+    resetForm(); fetchAnnonces();
   };
 
   const deleteAnnonce = async (id: string, image_url?: string) => {
@@ -111,20 +135,37 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
   const resetForm = () => {
     setShowForm(false);
     setForm({ title: "", content: "", type: "annonce" });
-    setImageFile(null); setImagePreview(null);
+    setImageFile(null); setImagePreview(null); setImageRemoved(false);
+    setEditingId(null); setOriginalImageUrl(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const startEditRejected = (a: any) => {
+    setEditingId(a.id);
+    setForm({ title: a.title, content: a.content || "", type: a.type || "annonce" });
+    setImagePreview(a.image_url || null);
+    setOriginalImageUrl(a.image_url || null);
+    setImageFile(null);
+    setImageRemoved(false);
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-semibold text-lg">Actualités & Annonces</h2>
-        <Button size="sm" onClick={() => setShowForm(!showForm)} className="gap-1.5">
+        <Button size="sm" onClick={() => (showForm ? resetForm() : setShowForm(true))} className="gap-1.5">
           <Plus className="h-3.5 w-3.5" /> Publier
         </Button>
       </div>
       {showForm && (
         <div className="bg-muted/40 border border-border rounded-xl p-5 mb-5 space-y-3">
+          {editingId && (
+            <p className="text-xs font-medium text-orange-700 bg-orange-50 border border-orange-200 rounded-lg px-3 py-2">
+              Modification d'une annonce rejetée — elle sera renvoyée à l'administrateur général pour validation.
+            </p>
+          )}
           <div className="space-y-1.5">
             <Label className="text-xs">Type</Label>
             <select value={form.type} onChange={e => setForm({ ...form, type: e.target.value })}
@@ -175,7 +216,7 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
           <div className="flex gap-2 pt-1">
             <Button size="sm" onClick={handleSave} disabled={uploading} className="gap-1.5">
               <Save className="h-3.5 w-3.5" />
-              {uploading ? "Publication…" : "Publier"}
+              {uploading ? "Enregistrement…" : editingId ? "Renvoyer pour validation" : "Publier"}
             </Button>
             <Button size="sm" variant="outline" onClick={resetForm}>Annuler</Button>
           </div>
@@ -208,7 +249,11 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
                           <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">Publié</span>
                         )}
                         {requiresApproval && a.status === "rejected" && (
-                          <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-red-100 text-red-700">Rejeté</span>
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                            (a.rejection_count || 0) >= 2 ? "bg-red-100 text-red-700" : "bg-orange-100 text-orange-700"
+                          }`}>
+                            {(a.rejection_count || 0) >= 2 ? "Rejeté définitivement" : "Rejeté — à corriger"}
+                          </span>
                         )}
                         <span className="text-xs text-muted-foreground">
                           {new Date(a.created_at).toLocaleDateString("fr-FR")}
@@ -220,10 +265,18 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
                         <p className="text-xs text-red-600 mt-1">Motif : {a.rejection_reason}</p>
                       )}
                     </div>
-                    <Button variant="ghost" size="icon" onClick={() => deleteAnnonce(a.id, a.image_url)}
-                      className="h-8 w-8 text-destructive hover:bg-destructive/10 shrink-0">
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
+                    <div className="flex flex-col gap-1 shrink-0">
+                      {a.status === "rejected" && (a.rejection_count || 0) < 2 && (
+                        <Button variant="ghost" size="icon" onClick={() => startEditRejected(a)}
+                          className="h-8 w-8 hover:bg-muted" title="Modifier et renvoyer pour validation">
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                      )}
+                      <Button variant="ghost" size="icon" onClick={() => deleteAnnonce(a.id, a.image_url)}
+                        className="h-8 w-8 text-destructive hover:bg-destructive/10" title="Supprimer">
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
