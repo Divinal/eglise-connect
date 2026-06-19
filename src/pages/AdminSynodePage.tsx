@@ -3,12 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Users, BookOpen, Building2, Shield, Megaphone, Plus, Save, Trash2, ImagePlus, X, Pencil } from "lucide-react";
+import { ArrowLeft, Users, BookOpen, Building2, Shield, Megaphone, Plus, Save, Trash2, ImagePlus, X, Pencil, CalendarDays, Archive, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import MembresManager from "./MembresManager";
+import PlanningManager from "./PlanningManager";
+import ArchiveManager from "./ArchiveManager";
+import SynodePresentationManager from "./SynodePresentationManager";
 import { useToast } from "@/hooks/use-toast";
 
 // Types d'entité gérés exclusivement par l'admin général : publication immédiate, sans validation
@@ -291,15 +294,19 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
   );
 };
 
-type Tab = "bureau" | "commissions" | "organes" | "conseil" | "annonces" | "annonces_conseil";
+type Tab = "bureau" | "planning" | "archives_conseil" | "archives_synode" | "commissions" | "organes" | "conseil" | "annonces" | "annonces_conseil" | "presentation";
 
 const TABS: { key: Tab; label: string; icon: any }[] = [
-  { key: "bureau",           label: "Bureau",            icon: Users },
+  { key: "bureau",           label: "Bureau Synodal",    icon: Users },
+  { key: "planning",         label: "Planning & Activités", icon: CalendarDays },
+  { key: "archives_conseil", label: "Archives Conseil",  icon: Archive },
+  { key: "archives_synode",  label: "Archives Synode",   icon: Archive },
   { key: "commissions",      label: "Commissions",       icon: BookOpen },
   { key: "organes",          label: "Organes",           icon: Building2 },
-  { key: "conseil",          label: "Conseil",           icon: Shield },
+  { key: "conseil",          label: "Conseil (membres)", icon: Shield },
   { key: "annonces",         label: "Annonces Synode",   icon: Megaphone },
   { key: "annonces_conseil", label: "Annonces Conseil",  icon: Megaphone },
+  { key: "presentation",     label: "Présentation",      icon: FileText },
 ];
 
 // UUIDs fixes pour le Synode (entity_id est UUID dans membres ET announcements)
@@ -338,12 +345,16 @@ const SynodePage = ({ defaultTab }: { defaultTab?: Tab }) => {
             ))}
           </div>
           <div className="bg-card border border-border rounded-xl p-6">
-            {activeTab === "bureau" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="bureau" title="Bureau Synodal" />)}
+            {activeTab === "bureau" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="bureau" title="Bureau Synodal" withPhoto />)}
+            {activeTab === "planning" && (<PlanningManager entityType="synode" entityId={SYNODE_UUID} title="Planning & Activités Synodales" />)}
+            {activeTab === "archives_conseil" && (<ArchiveManager category="conseil" title="Archives du Conseil Synodal" />)}
+            {activeTab === "archives_synode" && (<ArchiveManager category="synode" title="Archives du Synode" />)}
             {activeTab === "commissions" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="organe" title="Commissions Synodales" />)}
             {activeTab === "organes" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="organe" title="Organes Synodaux" />)}
             {activeTab === "conseil" && (<MembresManager entityType="synode" entityId={SYNODE_UUID} memberType="conseil" title="Conseil Synodal" />)}
             {activeTab === "annonces" && (<AnnoncesManager entityType="synode" entityId={SYNODE_ID} />)}
             {activeTab === "annonces_conseil" && (<AnnoncesManager entityType="synode" entityId={CONSEIL_ANN_ID} />)}
+            {activeTab === "presentation" && (<SynodePresentationManager />)}
           </div>
         </div>
       </section>

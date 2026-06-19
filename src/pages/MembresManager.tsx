@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Plus, Pencil, Save, X, Trash2 } from "lucide-react";
+import { Users, Plus, Pencil, Save, X, Trash2, ImagePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
 interface Membre {
@@ -19,6 +20,8 @@ interface Membre {
   date_bapteme: string | null;
   genre: string | null;
   statut: string | null;
+  photo_url: string | null;
+  description: string | null;
   entity_id: string;
   entity_type: string;
 }
@@ -28,12 +31,14 @@ interface Props {
   entityId: string;
   memberType: "bureau" | "conseil" | "organe";
   title?: string;
+  withPhoto?: boolean; // active la photo + description (ex: Bureau Synodal)
 }
 
 const emptyForm = {
   nom: "", prenom: "", fonction: "", categorie: "titulaire",
   telephone: "", adresse: "", date_naissance: "",
   paroisse_bapteme: "", date_bapteme: "", genre: "M", statut: "actif",
+  description: "",
 };
 
 const CATEGORIES = [
@@ -42,13 +47,17 @@ const CATEGORIES = [
   { value: "delegue",   label: "Délégué" },
 ];
 
-const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
+const MembresManager = ({ entityType, entityId, memberType, title, withPhoto }: Props) => {
   const { toast } = useToast();
   const [membres, setMembres] = useState<Membre[]>([]);
   const [fetching, setFetching] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchMembres = async () => {
     setFetching(true);
@@ -65,8 +74,42 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
 
   useEffect(() => { if (entityId) fetchMembres(); }, [entityId, memberType]);
 
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "Photo trop grande", description: "Maximum 5 MB", variant: "destructive" });
+      return;
+    }
+    setPhotoFile(file);
+    setPhotoPreview(URL.createObjectURL(file));
+  };
+
+  const removePhoto = () => {
+    setPhotoFile(null);
+    setPhotoPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   const handleSave = async () => {
     if (!form.nom.trim()) { toast({ title: "Nom requis", variant: "destructive" }); return; }
+    setSaving(true);
+
+    let photo_url: string | null = editingId ? (membres.find(m => m.id === editingId)?.photo_url || null) : null;
+    if (withPhoto && photoFile) {
+      const ext = photoFile.name.split(".").pop();
+      const fileName = `membres/${entityType}-${entityId}-${Date.now()}.${ext}`;
+      const { error: uploadError } = await supabase.storage.from("media").upload(fileName, photoFile, { upsert: true });
+      if (uploadError) {
+        toast({ title: "Erreur upload photo", description: uploadError.message, variant: "destructive" });
+        setSaving(false); return;
+      }
+      const { data: urlData } = supabase.storage.from("media").getPublicUrl(fileName);
+      photo_url = urlData.publicUrl;
+    } else if (withPhoto && photoPreview === null) {
+      photo_url = null;
+    }
+
     const payload = {
       nom: form.nom,
       prenom: form.prenom || null,
@@ -79,20 +122,30 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
       date_bapteme: form.date_bapteme || null,
       genre: form.genre || null,
       statut: form.statut || "actif",
+      description: withPhoto ? (form.description || null) : undefined,
+      photo_url: withPhoto ? photo_url : undefined,
       type: memberType,
       entity_id: entityId,
       entity_type: entityType,
     };
     if (editingId) {
       const { error } = await supabase.from("membres").update(payload as any).eq("id", editingId);
+      setSaving(false);
       if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
       toast({ title: "Membre mis à jour" });
     } else {
       const { error } = await supabase.from("membres").insert(payload as any);
+      setSaving(false);
       if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
       toast({ title: "Membre ajouté !" });
     }
-    setForm(emptyForm); setShowForm(false); setEditingId(null); fetchMembres();
+    resetForm(); fetchMembres();
+  };
+
+  const resetForm = () => {
+    setShowForm(false); setEditingId(null); setForm(emptyForm);
+    setPhotoFile(null); setPhotoPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const startEdit = (m: Membre) => {
@@ -103,7 +156,10 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
       telephone: m.telephone || "", adresse: m.adresse || "",
       date_naissance: m.date_naissance || "", paroisse_bapteme: m.paroisse_bapteme || "",
       date_bapteme: m.date_bapteme || "", genre: m.genre || "M", statut: m.statut || "actif",
+      description: m.description || "",
     });
+    setPhotoFile(null);
+    setPhotoPreview(m.photo_url || null);
     setShowForm(true); window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -133,7 +189,7 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-semibold text-lg text-foreground">{title || "Membres"}</h2>
-        <Button size="sm" onClick={() => { setShowForm(true); setEditingId(null); setForm(emptyForm); }} className="gap-1.5">
+        <Button size="sm" onClick={() => { setShowForm(true); setEditingId(null); setForm(emptyForm); setPhotoFile(null); setPhotoPreview(null); }} className="gap-1.5">
           <Plus className="h-3.5 w-3.5" /> Ajouter
         </Button>
       </div>
@@ -164,6 +220,31 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
           <h3 className="font-medium text-foreground mb-3 text-sm">
             {editingId ? "Modifier le membre" : "Nouveau membre"}
           </h3>
+
+          {withPhoto && (
+            <div className="space-y-1.5 mb-3">
+              <Label className="text-xs">Photo</Label>
+              {photoPreview ? (
+                <div className="relative w-28">
+                  <img src={photoPreview} alt="Aperçu" className="w-28 h-28 object-cover rounded-xl border border-border" />
+                  <button onClick={removePhoto}
+                    className="absolute -top-2 -right-2 bg-black/60 hover:bg-black/80 text-white rounded-full p-1 transition-colors">
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex flex-col items-center justify-center gap-1.5 w-28 h-28 border-2 border-dashed border-border rounded-xl cursor-pointer hover:border-primary/40 hover:bg-muted/30 transition-colors"
+                >
+                  <ImagePlus className="h-6 w-6 text-muted-foreground/50" />
+                  <p className="text-[10px] text-muted-foreground text-center">Ajouter</p>
+                </div>
+              )}
+              <input ref={fileInputRef} type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label className="text-xs">Nom *</Label>
@@ -231,10 +312,18 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
               <Label className="text-xs">Adresse</Label>
               <Input value={form.adresse} onChange={e => setForm({ ...form, adresse: e.target.value })} placeholder="Adresse…" className="h-9 text-sm" />
             </div>
+
+            {withPhoto && (
+              <div className="space-y-1.5 md:col-span-2">
+                <Label className="text-xs">Description</Label>
+                <Textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={3}
+                  placeholder="Courte présentation du membre…" className="text-sm" />
+              </div>
+            )}
           </div>
           <div className="flex gap-2 mt-4">
-            <Button size="sm" onClick={handleSave} className="gap-1.5"><Save className="h-3.5 w-3.5" />Enregistrer</Button>
-            <Button size="sm" variant="outline" onClick={() => { setShowForm(false); setEditingId(null); setForm(emptyForm); }} className="gap-1.5"><X className="h-3.5 w-3.5" />Annuler</Button>
+            <Button size="sm" onClick={handleSave} disabled={saving} className="gap-1.5"><Save className="h-3.5 w-3.5" />{saving ? "Enregistrement…" : "Enregistrer"}</Button>
+            <Button size="sm" variant="outline" onClick={resetForm} className="gap-1.5"><X className="h-3.5 w-3.5" />Annuler</Button>
           </div>
         </div>
       )}
@@ -249,10 +338,14 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
       ) : (
         <div className="space-y-2">
           {membres.map(m => (
-            <div key={m.id} className={`flex items-center gap-3 p-4 bg-card border border-border rounded-lg ${m.statut === "refroidi" ? "opacity-60" : ""}`}>
-              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                <span className="text-xs font-semibold text-primary">{m.nom[0]}{m.prenom?.[0] || ""}</span>
-              </div>
+            <div key={m.id} className={`flex items-start gap-3 p-4 bg-card border border-border rounded-lg ${m.statut === "refroidi" ? "opacity-60" : ""}`}>
+              {withPhoto && m.photo_url ? (
+                <img src={m.photo_url} alt={m.nom} className="w-12 h-12 rounded-full object-cover shrink-0" />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <span className="text-xs font-semibold text-primary">{m.nom[0]}{m.prenom?.[0] || ""}</span>
+                </div>
+              )}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <p className="font-medium text-sm text-foreground">{m.prenom} {m.nom}</p>
@@ -267,6 +360,9 @@ const MembresManager = ({ entityType, entityId, memberType, title }: Props) => {
                   {m.telephone && <p className="text-xs text-muted-foreground">{m.telephone}</p>}
                   {m.statut === "refroidi" && <span className="text-xs text-amber-600">Refroidi</span>}
                 </div>
+                {withPhoto && m.description && (
+                  <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{m.description}</p>
+                )}
               </div>
               <div className="flex gap-1 shrink-0">
                 <Button variant="ghost" size="icon" onClick={() => startEdit(m)} className="h-8 w-8">

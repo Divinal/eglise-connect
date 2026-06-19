@@ -8,7 +8,7 @@ import heroImage from "@/assets/hero-church.jpg";
 import { useEffect, useRef, useState } from "react";
 
 const STATS = [
-  { value: 552,     suffix: "+", label: "Serviteurs" },
+  { value: 652,     suffix: "+", label: "Serviteurs" },
   { value: 1, suffix: "M+", label: "Fidèles" },
   // { value: 250,     suffix: "+", label: "Groupes chantants" },
   { value: 32,      suffix: "+", label: "Consistoires" },
@@ -346,7 +346,7 @@ const Index = () => {
             {/* Programme du Culte */}
             <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
               <Clock className="h-10 w-10 text-primary" />
-              <h3 className="font-display font-semibold text-foreground text-lg">Programme du Culte</h3>
+              <h3 className="font-display font-semibold text-foreground text-lg">Programme des Culte</h3>
               <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Culte du matin — Lun. au Sam.</li>
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Culte dominical — Dim. 9h–11h</li>
@@ -372,7 +372,7 @@ const Index = () => {
             {/* Grand Thème d'Édification */}
             <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
               <BookOpen className="h-10 w-10 text-primary" />
-              <h3 className="font-display font-semibold text-foreground text-lg">Thème d'Édification</h3>
+              <h3 className="font-display font-semibold text-foreground text-lg">Thèmes d'Édification</h3>
               <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />Croire, Espérer, Aimer</li>
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />L'Évangile : Lumière des Nations</li>
@@ -387,7 +387,7 @@ const Index = () => {
             {/* Types de Groupe */}
             <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
               <Music className="h-10 w-10 text-primary" />
-              <h3 className="font-display font-semibold text-foreground text-lg">Types de Groupe</h3>
+              <h3 className="font-display font-semibold text-foreground text-lg">Groupes de l'EEC</h3>
               <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Chorale</li>
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Kilombo</li>
