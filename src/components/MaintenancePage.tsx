@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import logo from "@/assets/eec-logo.png";
 
-const LAUNCH_DATE = new Date("2026-06-21T00:00:00");
+const LAUNCH_DATE = new Date("2026-07-21T00:00:00");
 
 function getTimeLeft() {
   const diff = LAUNCH_DATE.getTime() - Date.now();
@@ -69,7 +69,7 @@ const MaintenancePage = () => {
         <p className="text-white/50 text-sm mt-4">
           Pour toute question :{" "}
           <a href="mailto:dscom@eeccg.net" className="text-[#c9a84c] hover:underline">
-            +242 04 092 09 51 | dscom@eeccg.net
+             dscom@eeccg.net
           </a>
         </p>
       </div>

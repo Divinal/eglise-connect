@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Pages publiques
 import Index from "./pages/Index";
@@ -12,7 +12,6 @@ import DepartementsHubPage from "./pages/DepartementsHubPage";
 import PartenairesPage from "./pages/PartenairesPage";
 import PartenairePage from "./pages/PartenairePage";
 import FAQPage from "./pages/FAQPage";
-import BureauSynodalPage from "./pages/BureauSynodalPage";
 import ContactPage from "./pages/ContactPage";
 import BlogPage from "./pages/BlogPage";
 import LoginPage from "./pages/LoginPage";
@@ -21,7 +20,6 @@ import PolyticPage from './pages/PolyticPage';
 
 // Institutions publiques
 import SynodePage from "./pages/institutions/SynodePage";
-import ConseilSynodalPage from "./pages/institutions/ConseilSynodalPage";
 import ConsistoiresPage from "./pages/institutions/ConsistoiresPage";
 import ConsistoireDetailPage from "./pages/institutions/ConsistoireDetailPage";
 import ParoisseDetailPage from "./pages/institutions/ParoisseDetailPage";
@@ -111,8 +109,8 @@ const App = () => (
 
           {/* INSTITUTIONS PUBLIQUES */}
           <Route path="/institution/synode" element={<SynodePage />} />
-          <Route path="/institution/conseil-synodal" element={<ConseilSynodalPage />} />
-          <Route path="/institution/bureau-synodal" element={<BureauSynodalPage />} />
+          <Route path="/institution/conseil-synodal" element={<Navigate to="/institution/synode" replace />} />
+          <Route path="/institution/bureau-synodal" element={<Navigate to="/institution/synode" replace />} />
           <Route path="/institution/upb" element={<UPBPage />} />
           <Route path="/institution/ifpn" element={<IFPNPage />} />
           <Route path="/institution/sueco" element={<SUECOPage />} />

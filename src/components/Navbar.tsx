@@ -12,9 +12,7 @@ const navItems: NavItem[] = [
   {
     label: "Institution", href: "/institution",
     children: [
-      { label: "Synode", href: "/institution/synode" },
-      { label: "Conseil Synodal", href: "/institution/conseil-synodal" },
-      { label: "Bureau Synodal", href: "/institution/bureau-synodal" },
+      { label: "Bureau Synode", href: "/institution/synode" },
       { label: "Pastorale", href: "/institution/pastorale" },
       { label: "UPB", href: "/institution/upb" },
       { label: "IFPN", href: "/institution/ifpn" },

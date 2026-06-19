@@ -1,28 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { ChevronRight, BookOpen, Users, Building2, GraduationCap, Heart, Music2, Cross } from "lucide-react";
+import { ChevronRight, BookOpen, Users, GraduationCap, Cross } from "lucide-react";
 
 const INSTITUTIONS = [
   {
     label: "Synode",
-    desc: "Instance suprême délibérante de l'EEC",
+    desc: "Instance suprême de l'EEC — Bureau, Conseil, Organes & Commissions",
     href: "/institution/synode",
     icon: BookOpen,
     color: "bg-[#1a4d2e]/10 text-[#1a4d2e]",
-  },
-  {
-    label: "Conseil Synodal",
-    desc: "Organe exécutif élu par le Synode",
-    href: "/institution/conseil-synodal",
-    icon: Users,
-    color: "bg-blue-100 text-blue-700",
-  },
-  {
-    label: "Bureau Synodal",
-    desc: "Direction permanente de l'EEC",
-    href: "/institution/bureau-synodal",
-    icon: Building2,
-    color: "bg-indigo-100 text-indigo-700",
   },
   {
     label: "Pastorale",

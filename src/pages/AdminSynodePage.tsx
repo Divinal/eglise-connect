@@ -89,17 +89,21 @@ const AnnoncesManager = ({ entityType, entityId }: { entityType: string; entityI
 
     if (editingId) {
       // Renvoi d'une annonce rejetée : mise à jour + repassage en attente de validation
-      const { error } = await supabase.from("announcements").update({
+      const { data: updated, error } = await supabase.from("announcements").update({
         title: form.title,
         content: form.content || null,
         type: form.type,
         image_url,
         status: "pending",
         rejection_reason: null,
-      } as any).eq("id", editingId);
+      } as any).eq("id", editingId).select();
 
       setUploading(false);
       if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      if (!updated || updated.length === 0) {
+        toast({ title: "Modification refusée", description: "Vous n'avez pas les droits pour modifier cette annonce. Contactez l'administrateur général.", variant: "destructive" });
+        return;
+      }
       toast({ title: "Annonce renvoyée pour validation", description: "L'administrateur général va l'examiner à nouveau." });
     } else {
       const { error } = await supabase.from("announcements").insert({
