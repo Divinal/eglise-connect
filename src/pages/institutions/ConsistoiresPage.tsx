@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { Church, ChevronRight, Globe, MapPin, BookOpen } from "lucide-react";
+import { Church, ChevronRight, Globe, BookOpen } from "lucide-react";
 import { slugify } from "@/utils/slugify";
 
-type Tab = "consistoires" | "diaspora" | "champs-mission" | "champs-evangelisation";
+type Tab = "consistoires" | "diaspora" | "champs-evangelisation";
 
 const TABS: { key: Tab; label: string; icon: any; table: string; route: (name: string) => string }[] = [
   { key: "consistoires",         label: "Consistoires",           icon: Church,   table: "consistoires",          route: n => `/institution/consistoires/${slugify(n)}` },
   { key: "diaspora",             label: "Diaspora",               icon: Globe,    table: "diaspora",              route: n => `/institution/diaspora/${slugify(n)}` },
-  { key: "champs-mission",       label: "Champs de Mission",      icon: MapPin,   table: "champs_mission",        route: n => `/institution/champs-de-mission/${slugify(n)}` },
   { key: "champs-evangelisation",label: "Champs d'Évangélisation",icon: BookOpen, table: "champs_evangelisation", route: n => `/institution/champs-evangelisation/${slugify(n)}` },
 ];
 

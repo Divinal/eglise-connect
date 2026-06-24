@@ -183,7 +183,7 @@ const AdminConsistoiresPage = () => {
                     <Button variant="ghost" size="icon" onClick={() => startEdit(c)} className="h-8 w-8">
                       <Pencil className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => navigate(`/admin/consistoires/${c.id}/paroisses`)} className="h-8 w-8">
+                    <Button variant="ghost" size="icon" onClick={() => navigate(`/admin/consistoire/${c.id}/paroisses`)} className="h-8 w-8">
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>

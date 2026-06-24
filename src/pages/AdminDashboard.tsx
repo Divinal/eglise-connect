@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Shield, Users, Church, Building2, BookOpen,
   LogOut, ChevronRight, Lock, Megaphone,
-  GraduationCap, Globe, Heart, Compass, ShoppingBag, ClipboardCheck, HeartHandshake
+  GraduationCap, Globe, Heart, ShoppingBag, ClipboardCheck, HeartHandshake
 } from "lucide-react";
 
 const DashboardCard = ({ icon: Icon, label, desc, color, onClick, badge }: {
@@ -75,7 +75,6 @@ const AdminDashboard = () => {
     admin_consistoire: "Admin Consistoire",
     admin_paroisse: "Admin Paroisse",
     admin_diaspora:              "Admin Diaspora",
-    admin_champs_mission:        "Admin Champs de Mission",
     admin_champs_evangelisation: "Admin Champs d'Évangélisation",
     admin_pastorale:             "Admin Pastorale",
     admin_upb:                   "Admin UPB",
@@ -91,7 +90,6 @@ const AdminDashboard = () => {
     admin_consistoire:    "bg-green-100 text-green-700 border border-green-200",
     admin_paroisse:       "bg-amber-100 text-amber-700 border border-amber-200",
     admin_diaspora:              "bg-violet-100 text-violet-700 border border-violet-200",
-    admin_champs_mission:        "bg-emerald-100 text-emerald-700 border border-emerald-200",
     admin_champs_evangelisation: "bg-orange-100 text-orange-700 border border-orange-200",
     admin_pastorale:             "bg-pink-100 text-pink-700 border border-pink-200",
     admin_upb:                   "bg-cyan-100 text-cyan-700 border border-cyan-200",
@@ -150,10 +148,9 @@ const AdminDashboard = () => {
                 <DashboardCard icon={Megaphone} label="Annonces Synodales" desc="Annonces et circulaires nationales" color="text-rose-600 bg-rose-50" onClick={() => navigate("/admin/synode/annonces")} />
               </div>
 
-              <SectionTitle>Diaspora, Champs de Mission & Évangélisation</SectionTitle>
+              <SectionTitle>Diaspora & Champs d'Évangélisation</SectionTitle>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-2">
                 <DashboardCard icon={Globe} label="Diaspora" desc="Gérer les communautés diaspora" color="text-violet-600 bg-violet-50" onClick={() => navigate("/admin/diaspora")} />
-                <DashboardCard icon={Compass} label="Champs de Mission" desc="Gérer les champs de mission" color="text-emerald-600 bg-emerald-50" onClick={() => navigate("/admin/champs-mission")} />
                 <DashboardCard icon={Heart} label="Champs d'Évangélisation" desc="Gérer les champs d'évangélisation" color="text-orange-600 bg-orange-50" onClick={() => navigate("/admin/champs-evangelisation")} />
               </div>
 
@@ -222,22 +219,6 @@ const AdminDashboard = () => {
                 <DashboardCard icon={BookOpen} label="Commissions" desc="Commissions" color="text-amber-600 bg-amber-50" onClick={() => navigate(`/admin/diaspora/${r.scope_id}/commissions`)} />
                 <DashboardCard icon={Building2} label="Organes" desc="Organes" color="text-purple-600 bg-purple-50" onClick={() => navigate(`/admin/diaspora/${r.scope_id}/organes`)} />
                 <DashboardCard icon={Megaphone} label="Annonces" desc="Publier des annonces" color="text-rose-600 bg-rose-50" onClick={() => navigate(`/admin/diaspora/${r.scope_id}/annonces`)} />
-              </div>
-            </div>
-          ))}
-
-          {/* ══════════════════════════════════════
-              ADMIN CHAMPS DE MISSION
-          ══════════════════════════════════════ */}
-          {roles.filter(r => r.role === "admin_champs_mission").map((r, i) => (
-            <div key={i} className="mb-8">
-              <SectionTitle>Mon Champ de Mission</SectionTitle>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <DashboardCard icon={Users} label="Bureau" desc="Membres du bureau" color="text-emerald-600 bg-emerald-50" onClick={() => navigate(`/admin/champs-mission/${r.scope_id}/bureau`)} />
-                <DashboardCard icon={Shield} label="Conseil" desc="Conseil du champ" color="text-teal-600 bg-teal-50" onClick={() => navigate(`/admin/champs-mission/${r.scope_id}/conseil`)} />
-                <DashboardCard icon={BookOpen} label="Commissions" desc="Commissions" color="text-amber-600 bg-amber-50" onClick={() => navigate(`/admin/champs-mission/${r.scope_id}/commissions`)} />
-                <DashboardCard icon={Building2} label="Organes" desc="Organes" color="text-purple-600 bg-purple-50" onClick={() => navigate(`/admin/champs-mission/${r.scope_id}/organes`)} />
-                <DashboardCard icon={Megaphone} label="Annonces" desc="Publier des annonces" color="text-rose-600 bg-rose-50" onClick={() => navigate(`/admin/champs-mission/${r.scope_id}/annonces`)} />
               </div>
             </div>
           ))}

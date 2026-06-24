@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { Church, ArrowLeft, Plus, Pencil, Save, X, ChevronRight } from "lucide-react";
+import { Church, ArrowLeft, Plus, Pencil, Save, X, ChevronRight, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -115,6 +115,17 @@ const ConsistoireParoissesPage = () => {
 
   const toggleActive = async (p: Paroisse) => {
     await (supabase.from("paroisses") as any).update({ is_active: !p.is_active }).eq("id", p.id);
+    fetchData();
+  };
+
+  const deleteParoisse = async (p: Paroisse) => {
+    if (!confirm(`Supprimer définitivement la paroisse "${p.name}" ? Cette action retirera aussi tous ses membres, annonces, plannings, groupes et annexes liés.`)) return;
+    await (supabase as any).from("membres").delete().eq("entity_type", "paroisse").eq("entity_id", p.id);
+    await (supabase as any).from("announcements").delete().eq("entity_type", "paroisse").eq("entity_id", p.id);
+    await (supabase as any).from("planning").delete().eq("entity_type", "paroisse").eq("entity_id", p.id);
+    const { error } = await supabase.from("paroisses").delete().eq("id", p.id);
+    if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+    toast({ title: "Paroisse supprimée" });
     fetchData();
   };
 
@@ -232,6 +243,9 @@ const ConsistoireParoissesPage = () => {
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => startEdit(p)} className="h-8 w-8">
                       <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={() => deleteParoisse(p)} className="h-8 w-8 text-destructive hover:bg-destructive/10">
+                      <Trash2 className="h-4 w-4" />
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => navigate(`/admin/consistoire/${consistoireId}/paroisse/${p.id}`)} className="h-8 w-8">
                       <ChevronRight className="h-4 w-4" />

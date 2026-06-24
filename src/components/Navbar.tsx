@@ -40,7 +40,6 @@ const navItems: NavItem[] = [
     children: [
       { label: "Consistoires", href: "/institution/consistoires" },
       { label: "Champs d'évangelisation", href: "/institution/champs-evangelisation" },
-      { label: "Champs de Mission", href: "/institution/champs-de-mission" },
       { label: "Diaspora", href: "/institution/diaspora" },
     ],
   },

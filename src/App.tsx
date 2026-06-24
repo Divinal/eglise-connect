@@ -34,8 +34,6 @@ import CTPADPage from "./pages/institutions/CTPADPage";
 // Pages Consistoires & Diaspora
 import DiasporaPage from "./pages/institutions/DiasporaPage";
 import DiasporaDetailPage from "./pages/institutions/DiasporaDetailPage";
-import ChampsMissionPage from "./pages/institutions/ChampsMissionPage";
-import ChampsMissionDetailPage from "./pages/institutions/ChampsMissionDetailPage";
 import ChampsEvangelisationPage from "./pages/institutions/ChampsEvangelisationPage";
 import ChampsEvangelisationDetailPage from "./pages/institutions/ChampsEvangelisationDetailPage";
 
@@ -51,10 +49,8 @@ import AdminDepartementPage from "./pages/AdminDepartementPage";
 
 // Nouvelles pages admin Diaspora & Champs
 import AdminDiasporaPage from "./pages/AdminDiasporaPage";
-import AdminChampsMissionPage from "./pages/AdminChampsMissionPage";
 import AdminChampsEvangelisationPage from "./pages/AdminChampsEvangelisationPage";
 import DiasporaBureauPage from "./pages/DiasporaBureauPage";
-import ChampsMissionBureauPage from "./pages/ChampsMissionBureauPage";
 import ChampsEvangelisationBureauPage from "./pages/ChampsEvangelisationBureauPage";
 
 // Pages coordinateur consistoire
@@ -124,8 +120,6 @@ const App = () => (
           {/* DIASPORA & CHAMPS */}
           <Route path="/institution/diaspora" element={<DiasporaPage />} />
           <Route path="/institution/diaspora/:slug" element={<DiasporaDetailPage />} />
-          <Route path="/institution/champs-de-mission" element={<ChampsMissionPage />} />
-          <Route path="/institution/champs-de-mission/:slug" element={<ChampsMissionDetailPage />} />
           <Route path="/institution/champs-evangelisation" element={<ChampsEvangelisationPage />} />
           <Route path="/institution/champs-evangelisation/:slug" element={<ChampsEvangelisationDetailPage />} />
 
@@ -142,9 +136,6 @@ const App = () => (
           <Route path="/admin/diaspora/:id/bureau" element={<DiasporaBureauPage />} />
           <Route path="/admin/diaspora/:id/conseil" element={<DiasporaBureauPage />} />
           <Route path="/admin/diaspora/:id/annonces" element={<DiasporaBureauPage />} />
-          <Route path="/admin/champs-mission" element={<AdminChampsMissionPage />} />
-          <Route path="/admin/champs-mission/:id/bureau" element={<ChampsMissionBureauPage />} />
-          <Route path="/admin/champs-mission/:id/annonces" element={<ChampsMissionBureauPage />} />
           <Route path="/admin/champs-evangelisation" element={<AdminChampsEvangelisationPage />} />
           <Route path="/admin/champs-evangelisation/:id/bureau" element={<ChampsEvangelisationBureauPage />} />
           <Route path="/admin/champs-evangelisation/:id/annonces" element={<ChampsEvangelisationBureauPage />} />

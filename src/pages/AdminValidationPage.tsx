@@ -13,7 +13,6 @@ const ENTITY_TABLES: Record<string, { table: string; nameField: string }> = {
   consistoire: { table: "consistoires", nameField: "name" },
   paroisse: { table: "paroisses", nameField: "name" },
   diaspora: { table: "diaspora", nameField: "name" },
-  champs_mission: { table: "champs_mission", nameField: "name" },
   champs_evangelisation: { table: "champs_evangelisation", nameField: "name" },
   departement: { table: "departments", nameField: "name" },
 };
@@ -24,7 +23,7 @@ const STATIC_LABELS: Record<string, string> = {
 
 const ENTITY_TYPE_LABELS: Record<string, string> = {
   consistoire: "Consistoire", paroisse: "Paroisse", diaspora: "Diaspora",
-  champs_mission: "Champ de Mission", champs_evangelisation: "Champ d'Évangélisation",
+  champs_evangelisation: "Champ d'Évangélisation",
   departement: "Département", pastorale: "Pastorale", upb: "UPB", ifpn: "IFPN", sueco: "SUECO",
 };
 

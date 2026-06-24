@@ -24,7 +24,6 @@ const ROLES = [
   { value: "admin_paroisse",              label: "Admin Paroisse" },
   { value: "admin_departement",           label: "Admin Département" },
   { value: "admin_diaspora",              label: "Admin Diaspora" },
-  { value: "admin_champs_mission",        label: "Admin Champs de Mission" },
   { value: "admin_champs_evangelisation", label: "Admin Champs d'Évangélisation" },
   { value: "admin_pastorale",             label: "Admin Pastorale" },
   { value: "admin_upb",                   label: "Admin UPB" },
@@ -39,7 +38,6 @@ const ROLE_COLORS: Record<string,string> = {
   admin_consistoire:          "bg-green-100 text-green-700 border-green-200",
   admin_paroisse:             "bg-amber-100 text-amber-700 border-amber-200",
   admin_diaspora:             "bg-violet-100 text-violet-700 border-violet-200",
-  admin_champs_mission:       "bg-emerald-100 text-emerald-700 border-emerald-200",
   admin_champs_evangelisation:"bg-orange-100 text-orange-700 border-orange-200",
   admin_pastorale:            "bg-pink-100 text-pink-700 border-pink-200",
   admin_upb:                  "bg-cyan-100 text-cyan-700 border-cyan-200",
@@ -54,7 +52,6 @@ const ROLE_LABELS: Record<string,string> = {
   admin_consistoire:          "Admin Consistoire",
   admin_paroisse:             "Admin Paroisse",
   admin_diaspora:             "Admin Diaspora",
-  admin_champs_mission:       "Admin Champs Mission",
   admin_champs_evangelisation:"Admin Champs Évang.",
   admin_pastorale:            "Admin Pastorale",
   admin_upb:                  "Admin UPB",
@@ -73,7 +70,6 @@ const AdminUsersPage = () => {
   const [paroisses, setParoisses] = useState<Paroisse[]>([]);
   const [departementsList, setDepartementsList] = useState<EntiteSimple[]>([]);
   const [diasporaList, setDiasporaList] = useState<EntiteSimple[]>([]);
-  const [champsMissionList, setChampsMissionList] = useState<EntiteSimple[]>([]);
   const [champsEvangelisationList, setChampsEvangelisationList] = useState<EntiteSimple[]>([]);
   const [fetching, setFetching] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -85,13 +81,12 @@ const AdminUsersPage = () => {
 
   const fetchData = async () => {
     setFetching(true);
-    const [rolesRes, conRes, parRes, deptRes, diaRes, cmRes, ceRes] = await Promise.all([
+    const [rolesRes, conRes, parRes, deptRes, diaRes, ceRes] = await Promise.all([
       supabase.from("user_roles").select("id,user_id,role,scope_type,scope_id,created_at").order("created_at",{ascending:false}),
       supabase.from("consistoires").select("id,name").order("name"),
       supabase.from("paroisses").select("id,name,consistoire_id").order("name"),
       supabase.from("departments").select("id,name").order("name"),
       (supabase as any).from("diaspora").select("id,name").order("name"),
-      (supabase as any).from("champs_mission").select("id,name").order("name"),
       (supabase as any).from("champs_evangelisation").select("id,name").order("name"),
     ]);
     const blocksRes = await (supabase as any).from("access_blocks").select("user_id");
@@ -106,7 +101,6 @@ const AdminUsersPage = () => {
     setParoisses(parRes.data||[]);
     setDepartementsList(deptRes.data||[]);
     setDiasporaList(diaRes.data||[]);
-    setChampsMissionList(cmRes.data||[]);
     setChampsEvangelisationList(ceRes.data||[]);
     setFetching(false);
   };
@@ -140,7 +134,6 @@ const AdminUsersPage = () => {
       newRole === "admin_paroisse"              ? "paroisse" :
       newRole === "admin_departement"           ? "departement" :
       newRole === "admin_diaspora"              ? "diaspora" :
-      newRole === "admin_champs_mission"        ? "champs_mission" :
       newRole === "admin_champs_evangelisation" ? "champs_evangelisation" :
       null;
     const {error} = await supabase.from("user_roles").insert({
@@ -160,7 +153,6 @@ const AdminUsersPage = () => {
     const p=paroisses.find(x=>x.id===ur.scope_id); if(p) return p.name;
     const dept=departementsList.find(x=>x.id===ur.scope_id); if(dept) return dept.name;
     const d=diasporaList.find(x=>x.id===ur.scope_id); if(d) return d.name;
-    const cm=champsMissionList.find(x=>x.id===ur.scope_id); if(cm) return cm.name;
     const ce=champsEvangelisationList.find(x=>x.id===ur.scope_id); if(ce) return ce.name;
     return ur.scope_id.slice(0,8)+"…";
   };
@@ -170,7 +162,6 @@ const AdminUsersPage = () => {
     newRole === "admin_paroisse"              ? paroisses :
     newRole === "admin_departement"           ? departementsList :
     newRole === "admin_diaspora"              ? diasporaList :
-    newRole === "admin_champs_mission"        ? champsMissionList :
     newRole === "admin_champs_evangelisation" ? champsEvangelisationList :
     [];
 
@@ -179,7 +170,6 @@ const AdminUsersPage = () => {
     newRole === "admin_paroisse"              ? "Paroisse" :
     newRole === "admin_departement"           ? "Département" :
     newRole === "admin_diaspora"              ? "Diaspora" :
-    newRole === "admin_champs_mission"        ? "Champ de Mission" :
     newRole === "admin_champs_evangelisation" ? "Champ d'Évangélisation" :
     "Portée";
 
