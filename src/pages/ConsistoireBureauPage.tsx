@@ -28,7 +28,7 @@ const SecretairesManager = ({ consistoireId }: { consistoireId: string }) => {
     setParoisses(pars || []);
     const parIds = (pars || []).map((p: any) => p.id);
     if (parIds.length === 0) { setFetching(false); return; }
-    const { data: roles } = await supabase.from("user_roles").select("id,user_id,scope_id").eq("role", "secretaire_paroissial").in("scope_id", parIds);
+    const { data: roles } = await supabase.from("user_roles").select("id,user_id,scope_id").eq("role", "admin_paroisse").in("scope_id", parIds);
     const userIds = (roles || []).map((r: any) => r.user_id);
     const { data: profiles } = userIds.length > 0
       ? await supabase.from("profiles").select("user_id,email,full_name").in("user_id", userIds)
@@ -50,7 +50,7 @@ const SecretairesManager = ({ consistoireId }: { consistoireId: string }) => {
     if (!email || !scopeId) { toast({ title: "Email et paroisse requis", variant: "destructive" }); return; }
     const { data: profile } = await supabase.from("profiles").select("user_id").eq("email", email).maybeSingle();
     if (!profile) { toast({ title: "Utilisateur introuvable", description: "L'utilisateur doit créer son compte d'abord.", variant: "destructive" }); return; }
-    const { error } = await supabase.from("user_roles").insert({ user_id: profile.user_id, role: "secretaire_paroissial", scope_type: "paroisse", scope_id: scopeId });
+    const { error } = await supabase.from("user_roles").insert({ user_id: profile.user_id, role: "admin_paroisse", scope_type: "paroisse", scope_id: scopeId });
     if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
     toast({ title: "Secrétaire assigné !" });
     setEmail(""); setScopeId(""); setShowForm(false); fetchData();
@@ -124,7 +124,7 @@ const ConsistoireBureauPage = () => {
   const [activeTab, setActiveTab] = useState<Tab>("bureau");
 
   const hasAccess = isAdminGeneral || roles.some(
-    r => r.role === "coordinateur_consistoire" && r.scope_id === consistoireId
+    r => r.role === "admin_consistoire" && r.scope_id === consistoireId
   );
 
   useEffect(() => { if (!loading && !hasAccess) navigate("/admin"); }, [loading, hasAccess]);

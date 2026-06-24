@@ -34,8 +34,8 @@ const toSlug = (s: string) =>
     .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 const DEPARTEMENTS_CONGO = [
-  "Brazzaville","Pointe-Noire","Bouenza","Cuvette","Cuvette-Ouest",
-  "Kouilou","Lékoumou","Likouala","Niari","Plateaux","Pool","Sangha",
+  "Brazzaville","Pointe-Noire","Bouenza","Cuvette","Cuvette-Ouest", "Nkéni-Alima", "Djoué Léfini",
+  "Kouilou","Lékoumou","Likouala","Niari", "Congo-Oubangui", "Plateaux","Pool","Sangha",
 ];
 
 const ConsistoireParoissesPage = () => {
@@ -52,7 +52,7 @@ const ConsistoireParoissesPage = () => {
 
   // Vérifier accès
   const hasAccess = isAdminGeneral || roles.some(
-    r => r.role === "coordinateur_consistoire" && r.scope_id === consistoireId
+    r => r.role === "admin_consistoire" && r.scope_id === consistoireId
   );
 
   useEffect(() => {

@@ -29,6 +29,7 @@ import UPBPage from "./pages/institutions/UPBPage";
 import IFPNPage from "./pages/institutions/IFPNPage";
 import SUECOPage from "./pages/institutions/SUECOPage";
 import PastoralePage from "./pages/institutions/PastoralePage";
+import CTPADPage from "./pages/institutions/CTPADPage";
 
 // Pages Consistoires & Diaspora
 import DiasporaPage from "./pages/institutions/DiasporaPage";
@@ -115,6 +116,7 @@ const App = () => (
           <Route path="/institution/ifpn" element={<IFPNPage />} />
           <Route path="/institution/sueco" element={<SUECOPage />} />
           <Route path="/institution/pastorale" element={<PastoralePage />} />
+          <Route path="/institution/ctpad" element={<CTPADPage />} />
           <Route path="/institution/consistoires" element={<ConsistoiresPage />} />
           <Route path="/institution/consistoires/:slug" element={<ConsistoireDetailPage />} />
           <Route path="/paroisses/:slug" element={<ParoisseDetailPage />} />

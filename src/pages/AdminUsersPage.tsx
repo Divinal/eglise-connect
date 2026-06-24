@@ -20,8 +20,8 @@ interface Paroisse { id: string; name: string; consistoire_id: string; }
 interface EntiteSimple { id: string; name: string; }
 
 const ROLES = [
-  { value: "coordinateur_consistoire",    label: "Coordinateur de Consistoire" },
-  { value: "secretaire_paroissial",       label: "Secrétaire Paroissial" },
+  { value: "admin_consistoire",           label: "Admin Consistoire" },
+  { value: "admin_paroisse",              label: "Admin Paroisse" },
   { value: "admin_departement",           label: "Admin Département" },
   { value: "admin_diaspora",              label: "Admin Diaspora" },
   { value: "admin_champs_mission",        label: "Admin Champs de Mission" },
@@ -30,13 +30,14 @@ const ROLES = [
   { value: "admin_upb",                   label: "Admin UPB" },
   { value: "admin_ifpn",                  label: "Admin IFPN" },
   { value: "admin_sueco",                 label: "Admin SUECO" },
+  { value: "admin_ctpad",                 label: "Admin CTPAD" },
   { value: "admin_boutique",              label: "Admin Boutique" },
 ];
 const ROLE_COLORS: Record<string,string> = {
   admin_general:              "bg-red-100 text-red-700 border-red-200",
   admin_departement:          "bg-blue-100 text-blue-700 border-blue-200",
-  coordinateur_consistoire:   "bg-green-100 text-green-700 border-green-200",
-  secretaire_paroissial:      "bg-amber-100 text-amber-700 border-amber-200",
+  admin_consistoire:          "bg-green-100 text-green-700 border-green-200",
+  admin_paroisse:             "bg-amber-100 text-amber-700 border-amber-200",
   admin_diaspora:             "bg-violet-100 text-violet-700 border-violet-200",
   admin_champs_mission:       "bg-emerald-100 text-emerald-700 border-emerald-200",
   admin_champs_evangelisation:"bg-orange-100 text-orange-700 border-orange-200",
@@ -44,13 +45,14 @@ const ROLE_COLORS: Record<string,string> = {
   admin_upb:                  "bg-cyan-100 text-cyan-700 border-cyan-200",
   admin_ifpn:                 "bg-indigo-100 text-indigo-700 border-indigo-200",
   admin_sueco:                "bg-lime-100 text-lime-700 border-lime-200",
+  admin_ctpad:                "bg-fuchsia-100 text-fuchsia-700 border-fuchsia-200",
   admin_boutique:             "bg-sky-100 text-sky-700 border-sky-200",
 };
 const ROLE_LABELS: Record<string,string> = {
   admin_general:              "Admin Général",
   admin_departement:          "Admin Département",
-  coordinateur_consistoire:   "Coordinateur Consistoire",
-  secretaire_paroissial:      "Secrétaire Paroissial",
+  admin_consistoire:          "Admin Consistoire",
+  admin_paroisse:             "Admin Paroisse",
   admin_diaspora:             "Admin Diaspora",
   admin_champs_mission:       "Admin Champs Mission",
   admin_champs_evangelisation:"Admin Champs Évang.",
@@ -58,6 +60,7 @@ const ROLE_LABELS: Record<string,string> = {
   admin_upb:                  "Admin UPB",
   admin_ifpn:                 "Admin IFPN",
   admin_sueco:                "Admin SUECO",
+  admin_ctpad:                "Admin CTPAD",
   admin_boutique:             "Admin Boutique",
 };
 
@@ -133,8 +136,8 @@ const AdminUsersPage = () => {
     const {data:profile} = await supabase.from("profiles").select("user_id").eq("email",newEmail).maybeSingle();
     if(!profile){toast({title:"Utilisateur introuvable",description:"L'utilisateur doit créer son compte d'abord.",variant:"destructive"});return;}
     const scopeType =
-      newRole === "coordinateur_consistoire"    ? "consistoire" :
-      newRole === "secretaire_paroissial"       ? "paroisse" :
+      newRole === "admin_consistoire"           ? "consistoire" :
+      newRole === "admin_paroisse"              ? "paroisse" :
       newRole === "admin_departement"           ? "departement" :
       newRole === "admin_diaspora"              ? "diaspora" :
       newRole === "admin_champs_mission"        ? "champs_mission" :
@@ -142,7 +145,7 @@ const AdminUsersPage = () => {
       null;
     const {error} = await supabase.from("user_roles").insert({
       user_id: profile.user_id,
-      role: newRole as "coordinateur_consistoire"|"secretaire_paroissial"|"admin_departement"|"admin_general",
+      role: newRole as "admin_consistoire"|"admin_paroisse"|"admin_departement"|"admin_general",
       scope_type: scopeType,
       scope_id: newScopeId||null,
     });
@@ -163,8 +166,8 @@ const AdminUsersPage = () => {
   };
 
   const scopeOptions: EntiteSimple[] =
-    newRole === "coordinateur_consistoire"    ? consistoires :
-    newRole === "secretaire_paroissial"       ? paroisses :
+    newRole === "admin_consistoire"           ? consistoires :
+    newRole === "admin_paroisse"              ? paroisses :
     newRole === "admin_departement"           ? departementsList :
     newRole === "admin_diaspora"              ? diasporaList :
     newRole === "admin_champs_mission"        ? champsMissionList :
@@ -172,8 +175,8 @@ const AdminUsersPage = () => {
     [];
 
   const scopeLabel =
-    newRole === "coordinateur_consistoire"    ? "Consistoire" :
-    newRole === "secretaire_paroissial"       ? "Paroisse" :
+    newRole === "admin_consistoire"           ? "Consistoire" :
+    newRole === "admin_paroisse"              ? "Paroisse" :
     newRole === "admin_departement"           ? "Département" :
     newRole === "admin_diaspora"              ? "Diaspora" :
     newRole === "admin_champs_mission"        ? "Champ de Mission" :

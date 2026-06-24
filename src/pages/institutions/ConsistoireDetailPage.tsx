@@ -141,7 +141,7 @@ const ConsistoireDetailPage = () => {
             {consistoire.ville && <div className="flex items-center gap-1.5 text-primary-foreground/70 text-sm"><MapPin className="h-3.5 w-3.5" />{consistoire.ville}</div>}
             {consistoire.telephone && <div className="flex items-center gap-1.5 text-primary-foreground/70 text-sm"><Phone className="h-3.5 w-3.5" />{consistoire.telephone}</div>}
             {consistoire.email && <div className="flex items-center gap-1.5 text-primary-foreground/70 text-sm"><Mail className="h-3.5 w-3.5" />{consistoire.email}</div>}
-            {consistoire.responsable && <div className="flex items-center gap-1.5 text-primary-foreground/70 text-sm"><Users className="h-3.5 w-3.5" />Coordinateur : {consistoire.responsable}</div>}
+            {consistoire.responsable && <div className="flex items-center gap-1.5 text-primary-foreground/70 text-sm"><Users className="h-3.5 w-3.5" />Coordonnateur : {consistoire.responsable}</div>}
           </div>
         </div>
       </div>

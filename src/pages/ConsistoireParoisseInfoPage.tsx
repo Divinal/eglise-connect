@@ -40,7 +40,7 @@ const ConsistoireParoisseInfoPage = () => {
   const [fetching, setFetching] = useState(true);
 
   const hasAccess = isAdminGeneral || roles.some(
-    r => r.role === "coordinateur_consistoire" && r.scope_id === consistoireId
+    r => r.role === "admin_consistoire" && r.scope_id === consistoireId
   );
 
   useEffect(() => {

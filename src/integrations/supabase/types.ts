@@ -531,8 +531,9 @@ export type Database = {
       app_role:
         | "admin_general"
         | "admin_departement"
-        | "coordinateur_consistoire"
-        | "secretaire_paroissial"
+        | "admin_consistoire"
+        | "admin_paroisse"
+        | "admin_ctpad"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -663,8 +664,9 @@ export const Constants = {
       app_role: [
         "admin_general",
         "admin_departement",
-        "coordinateur_consistoire",
-        "secretaire_paroissial",
+        "admin_consistoire",
+        "admin_paroisse",
+        "admin_ctpad",
       ],
     },
   },

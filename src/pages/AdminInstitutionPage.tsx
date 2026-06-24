@@ -13,6 +13,7 @@ const INSTITUTION_CONFIG: Record<string, { label: string; uuid: string; annId: s
   upb:       { label: "UPB — Université Protestante de Brazza", uuid: "00000000-0000-0000-0000-000000000003", annId: "upb",       role: "admin_upb" },
   ifpn:      { label: "IFPN — Institut de Formation Pastorale", uuid: "00000000-0000-0000-0000-000000000004", annId: "ifpn",      role: "admin_ifpn" },
   sueco:     { label: "SUECO",                                  uuid: "00000000-0000-0000-0000-000000000005", annId: "sueco",     role: "admin_sueco" },
+  ctpad:     { label: "CTPAD — Coordination Technique de Projet et d'Appuis au Développement", uuid: "00000000-0000-0000-0000-000000000006", annId: "ctpad", role: "admin_ctpad" },
 };
 
 type Tab = "bureau" | "conseil" | "commissions" | "organes" | "annonces";

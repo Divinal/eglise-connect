@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { ChevronRight, BookOpen, Users, GraduationCap, Cross } from "lucide-react";
+import { ChevronRight, BookOpen, Users, GraduationCap, Cross, HeartHandshake } from "lucide-react";
 
 const INSTITUTIONS = [
   {
@@ -37,6 +37,13 @@ const INSTITUTIONS = [
     href: "/institution/sueco",
     icon: GraduationCap,
     color: "bg-green-100 text-green-700",
+  },
+  {
+    label: "CTPAD",
+    desc: "Coordination Technique de Projet et d'Appuis au Développement",
+    href: "/institution/ctpad",
+    icon: HeartHandshake,
+    color: "bg-fuchsia-100 text-fuchsia-700",
   },
 ];
 

@@ -17,6 +17,7 @@ const navItems: NavItem[] = [
       { label: "UPB", href: "/institution/upb" },
       { label: "IFPN", href: "/institution/ifpn" },
       { label: "SUECO", href: "/institution/sueco" },
+      { label: "CTPAD", href: "/institution/ctpad" },
     ],
   },
     {

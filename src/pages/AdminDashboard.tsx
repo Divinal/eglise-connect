@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Shield, Users, Church, Building2, BookOpen,
   LogOut, ChevronRight, Lock, Megaphone,
-  GraduationCap, Globe, Heart, Compass, ShoppingBag, ClipboardCheck
+  GraduationCap, Globe, Heart, Compass, ShoppingBag, ClipboardCheck, HeartHandshake
 } from "lucide-react";
 
 const DashboardCard = ({ icon: Icon, label, desc, color, onClick, badge }: {
@@ -72,8 +72,8 @@ const AdminDashboard = () => {
   const getRoleLabel = (role: string) => ({
     admin_general: "Administrateur Général",
     admin_departement: "Admin Département",
-    coordinateur_consistoire: "Coordinateur de Consistoire",
-    secretaire_paroissial: "Secrétaire Paroissial",
+    admin_consistoire: "Admin Consistoire",
+    admin_paroisse: "Admin Paroisse",
     admin_diaspora:              "Admin Diaspora",
     admin_champs_mission:        "Admin Champs de Mission",
     admin_champs_evangelisation: "Admin Champs d'Évangélisation",
@@ -81,14 +81,15 @@ const AdminDashboard = () => {
     admin_upb:                   "Admin UPB",
     admin_ifpn:                  "Admin IFPN",
     admin_sueco:                 "Admin SUECO",
+    admin_ctpad:                 "Admin CTPAD",
     admin_boutique:              "Admin Boutique",
   }[role] || role);
 
   const getRoleBadgeColor = (role: string) => ({
     admin_general:               "bg-red-100 text-red-700 border border-red-200",
     admin_departement:           "bg-blue-100 text-blue-700 border border-blue-200",
-    coordinateur_consistoire:    "bg-green-100 text-green-700 border border-green-200",
-    secretaire_paroissial:       "bg-amber-100 text-amber-700 border border-amber-200",
+    admin_consistoire:    "bg-green-100 text-green-700 border border-green-200",
+    admin_paroisse:       "bg-amber-100 text-amber-700 border border-amber-200",
     admin_diaspora:              "bg-violet-100 text-violet-700 border border-violet-200",
     admin_champs_mission:        "bg-emerald-100 text-emerald-700 border border-emerald-200",
     admin_champs_evangelisation: "bg-orange-100 text-orange-700 border border-orange-200",
@@ -96,6 +97,7 @@ const AdminDashboard = () => {
     admin_upb:                   "bg-cyan-100 text-cyan-700 border border-cyan-200",
     admin_ifpn:                  "bg-indigo-100 text-indigo-700 border border-indigo-200",
     admin_sueco:                 "bg-lime-100 text-lime-700 border border-lime-200",
+    admin_ctpad:                 "bg-fuchsia-100 text-fuchsia-700 border border-fuchsia-200",
     admin_boutique:              "bg-sky-100 text-sky-700 border border-sky-200",
   }[role] || "bg-gray-100 text-gray-700");
 
@@ -172,6 +174,7 @@ const AdminDashboard = () => {
                 <DashboardCard icon={GraduationCap} label="UPB" desc="Université Protestante de Brazza" color="text-cyan-600 bg-cyan-50" onClick={() => navigate("/admin/institution/upb")} />
                 <DashboardCard icon={BookOpen} label="IFPN" desc="Institut de Formation Pastorale" color="text-indigo-600 bg-indigo-50" onClick={() => navigate("/admin/institution/ifpn")} />
                 <DashboardCard icon={Building2} label="SUECO" desc="Administration du SUECO" color="text-lime-600 bg-lime-50" onClick={() => navigate("/admin/institution/sueco")} />
+                <DashboardCard icon={HeartHandshake} label="CTPAD" desc="Coordination Technique de Projet et d'Appuis au Développement" color="text-fuchsia-600 bg-fuchsia-50" onClick={() => navigate("/admin/institution/ctpad")} />
               </div>
             </>
           )}
@@ -193,7 +196,7 @@ const AdminDashboard = () => {
           {/* ══════════════════════════════════════
               COORDINATEUR CONSISTOIRE
           ══════════════════════════════════════ */}
-          {roles.filter(r => r.role === "coordinateur_consistoire").map((r, i) => (
+          {roles.filter(r => r.role === "admin_consistoire").map((r, i) => (
             <div key={i} className="mb-8">
               <SectionTitle>Mon Consistoire</SectionTitle>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -308,9 +311,22 @@ const AdminDashboard = () => {
           )}
 
           {/* ══════════════════════════════════════
+              ADMIN CTPAD
+          ══════════════════════════════════════ */}
+          {roles.some(r => r.role === "admin_ctpad") && (
+            <div className="mb-8">
+              <SectionTitle>CTPAD — Coordination Technique de Projet et d'Appuis au Développement</SectionTitle>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <DashboardCard icon={HeartHandshake} label="Bureau" desc="Membres du bureau" color="text-fuchsia-600 bg-fuchsia-50" onClick={() => navigate("/admin/institution/ctpad")} />
+                <DashboardCard icon={Megaphone} label="Annonces" desc="Publier des annonces" color="text-rose-600 bg-rose-50" onClick={() => navigate("/admin/institution/ctpad")} />
+              </div>
+            </div>
+          )}
+
+          {/* ══════════════════════════════════════
               SECRÉTAIRE PAROISSIAL
           ══════════════════════════════════════ */}
-          {roles.filter(r => r.role === "secretaire_paroissial").map((r, i) => (
+          {roles.filter(r => r.role === "admin_paroisse").map((r, i) => (
             <div key={i} className="mb-8">
               <SectionTitle>Ma Paroisse</SectionTitle>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">

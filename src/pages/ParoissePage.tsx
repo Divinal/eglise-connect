@@ -627,8 +627,8 @@ const ParoissePage = () => {
 
   const hasAccess =
     isAdminGeneral ||
-    roles.some(r => r.role === "secretaire_paroissial" && r.scope_id === paroisseId) ||
-    roles.some(r => r.role === "coordinateur_consistoire");
+    roles.some(r => r.role === "admin_paroisse" && r.scope_id === paroisseId) ||
+    roles.some(r => r.role === "admin_consistoire");
 
   useEffect(() => { if (!loading && !hasAccess) navigate("/admin"); }, [loading, hasAccess]);
 
