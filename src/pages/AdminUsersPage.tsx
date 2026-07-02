@@ -155,7 +155,7 @@ const AdminUsersPage = () => {
     const d=diasporaList.find(x=>x.id===ur.scope_id); if(d) return d.name;
     const ce=champsEvangelisationList.find(x=>x.id===ur.scope_id); if(ce) return ce.name;
     return ur.scope_id.slice(0,8)+"…";
-  };
+  }; 
 
   const scopeOptions: EntiteSimple[] =
     newRole === "admin_consistoire"           ? consistoires :
