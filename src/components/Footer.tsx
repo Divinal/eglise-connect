@@ -12,7 +12,7 @@ const Footer = () => {
   return (
     <footer className="bg-navy-dark text-primary-foreground">
       <div className="container py-10 md:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
 
           {/* Colonne 1 — À propos */}
           <div className="sm:col-span-2 lg:col-span-1">
@@ -57,7 +57,6 @@ const Footer = () => {
               <div className="space-y-0.5">
                 <h3 className="font-display text-lg md:text-xl text-gold-light mb-3 md:mb-4"> Liens de Navigation </h3>
                 <p className="text-xs font-semibold text-primary-foreground/50 uppercase tracking-wide mb-2">Navigation</p>
-                <Link to="/partenaires" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Partenaires</Link>
                 <Link to="/blog" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Blog</Link>
                 <Link to="/contact" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Contact</Link>
                 <Link to="/faq" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">FAQ</Link>
@@ -66,7 +65,20 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Colonne 3 — Contact */}
+          {/* Colonne 3 — Partenaires */}
+          <div>
+            <h3 className="font-display text-lg md:text-xl text-gold-light mb-3 md:mb-4">Partenaires</h3>
+            <div className="space-y-0.5">
+              <Link to="/partenaires" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Tous les partenaires</Link>
+              <Link to="/partenaires/cvaa" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">CVAA</Link>
+              <Link to="/partenaires/federation-epc" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Fédération des EPC</Link>
+              <Link to="/partenaires/plateforme-eeac" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Plateforme des EEAC</Link>
+              <Link to="/partenaires/conseil-oecumenisme" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Conseil Œcuménisme ECC</Link>
+              <Link to="/partenaires/partenariat-historique" className="block text-sm text-primary-foreground/70 hover:text-gold py-0.5 transition-colors">Partenariat Historique</Link>
+            </div>
+          </div>
+
+          {/* Colonne 4 — Contact */}
           <div>
             <h3 className="font-display text-lg md:text-xl text-gold-light mb-3 md:mb-4">Contact</h3>
             <div className="space-y-3">

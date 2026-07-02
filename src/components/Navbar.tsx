@@ -45,16 +45,6 @@ const navItems: NavItem[] = [
   },
 
   {
-    label: "Partenaires", href: "/partenaires",
-    children: [
-      { label: "CVAA", href: "/partenaires/cvaa" },
-      { label: "Fédération des EPC", href: "/partenaires/federation-epc" },
-      { label: "Plateforme des EEAC", href: "/partenaires/plateforme-eeac" },
-      { label: "Conseil Œcuménisme ECC", href: "/partenaires/conseil-oecumenisme" },
-      { label: "Partenariat Historique", href: "/partenaires/partenariat-historique" },
-    ],
-  },
-  {
     label: "Actualités", href: "/blog",
     children: [
       { label: "Blog", href: "/blog" },

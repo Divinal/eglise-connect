@@ -73,6 +73,7 @@ import EgliseDeProximitePage from "./pages/EgliseDeProximitePage";
 import MicroDeLaSemainePage from "./pages/MicroDeLaSemainePage";
 import EECChatPage from "./pages/EECChatPage";
 import AccessGuard from "./components/AccessGuard";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -82,6 +83,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <AccessGuard>
         <Routes>
           {/* PUBLIQUES */}
