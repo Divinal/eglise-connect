@@ -343,60 +343,68 @@ const Index = () => {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            {/* Programme du Culte */}
-            <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
-              <Clock className="h-10 w-10 text-primary" />
+            {/* Programme du Culte — Bleu */}
+            <div className="bg-card border-2 border-blue-200 border-t-4 border-t-blue-600 rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
+              <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
+                <Clock className="h-8 w-8 text-blue-600" />
+              </div>
               <h3 className="font-display font-semibold text-foreground text-lg">Programme des Culte</h3>
               <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
-                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Culte du matin — Lun. au Sam.</li>
-                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Culte dominical — Dim. 9h–11h</li>
-                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />Culte vespéral — Jeu. soir</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />Culte du matin — Lun. au Sam.</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />Culte dominical — Dim. 9h–11h</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />Culte vespéral — Jeu. soir</li>
               </ul>
-              <Link to="/programme-culte" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+              <Link to="/programme-culte" className="text-sm border border-blue-600 text-blue-600 rounded-full px-4 py-1.5 hover:bg-blue-600 hover:text-white transition-colors mt-auto">
                 En savoir plus
               </Link>
             </div>
 
-            {/* Trouver une Paroisse */}
-            <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
-              <MapPin className="h-10 w-10 text-primary" />
+            {/* Trouver une Paroisse — Blanc */}
+            <div className="bg-white border-2 border-slate-300 border-t-4 border-t-slate-400 rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
+              <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center">
+                <MapPin className="h-8 w-8 text-slate-600" />
+              </div>
               <h3 className="font-display font-semibold text-foreground text-lg">Trouver une Paroisse</h3>
               <p className="text-muted-foreground text-sm leading-relaxed flex-1">
                 Localisez la paroisse la plus proche de chez vous à Brazzaville, Pointe-Noire ou dans toute la République du Congo.
               </p>
-              <Link to="/institution/consistoires" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+              <Link to="/institution/consistoires" className="text-sm border border-slate-500 text-slate-600 rounded-full px-4 py-1.5 hover:bg-slate-600 hover:text-white transition-colors mt-auto">
                 Voir les paroisses
               </Link>
             </div>
 
-            {/* Grand Thème d'Édification */}
-            <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
-              <BookOpen className="h-10 w-10 text-primary" />
+            {/* Grand Thème d'Édification — Rouge */}
+            <div className="bg-card border-2 border-red-200 border-t-4 border-t-red-600 rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
+              <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center">
+                <BookOpen className="h-8 w-8 text-red-600" />
+              </div>
               <h3 className="font-display font-semibold text-foreground text-lg">Thèmes d'Édification</h3>
               <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
-                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />Croire, Espérer, Aimer</li>
-                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />L'Évangile : Lumière des Nations</li>
-                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />Sanctification et Témoignage</li>
-                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />Bâtir l'Église de Christ</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />Croire, Espérer, Aimer</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />L'Évangile : Lumière des Nations</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />Sanctification et Témoignage</li>
+                <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />Bâtir l'Église de Christ</li>
               </ul>
-              <Link to="/themes-edification" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+              <Link to="/themes-edification" className="text-sm border border-red-600 text-red-600 rounded-full px-4 py-1.5 hover:bg-red-600 hover:text-white transition-colors mt-auto">
                 En savoir plus
               </Link>
             </div>
 
-            {/* Types de Groupe */}
-            <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
-              <Music className="h-10 w-10 text-primary" />
+            {/* Types de Groupe — Bleu */}
+            <div className="bg-card border-2 border-blue-200 border-t-4 border-t-blue-600 rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
+              <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
+                <Music className="h-8 w-8 text-blue-600" />
+              </div>
               <h3 className="font-display font-semibold text-foreground text-lg">Groupes de l'EEC</h3>
               <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
-                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Chorale</li>
-                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Kilombo</li>
-                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />CBE</li>
-                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Ecodi</li>
-                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />EUC</li>
-                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-primary shrink-0" />Autres Groupes</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-blue-600 shrink-0" />Chorale</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-blue-600 shrink-0" />Kilombo</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-blue-600 shrink-0" />CBE</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-blue-600 shrink-0" />Ecodi</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-blue-600 shrink-0" />EUC</li>
+                <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-blue-600 shrink-0" />Autres Groupes</li>
               </ul>
-              <Link to="/types-de-groupe" className="text-sm border border-primary text-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors mt-auto">
+              <Link to="/types-de-groupe" className="text-sm border border-blue-600 text-blue-600 rounded-full px-4 py-1.5 hover:bg-blue-600 hover:text-white transition-colors mt-auto">
                 En savoir plus
               </Link>
             </div>

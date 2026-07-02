@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Church, Users, MapPin, Phone, Mail, ArrowLeft, ChevronRight, ChevronDown, CalendarDays, Clock, Hash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { slugify } from "@/utils/slugify";
+import { sortByResponsabilite } from "@/lib/sortMembres";
 
 interface Consistoire {
   id: string; name: string; ville: string | null; responsable: string | null;
@@ -87,6 +88,9 @@ const ConsistoireDetailPage = () => {
         else if (m.type === "conseil") grouped.conseil.push(m);
         else if (m.type === "organe") grouped.organes.push(m);
       });
+      grouped.bureau = sortByResponsabilite(grouped.bureau);
+      grouped.conseil = sortByResponsabilite(grouped.conseil);
+      grouped.organes = sortByResponsabilite(grouped.organes);
       setMembres(grouped);
 
       const { data: pars } = await supabase.from("paroisses")

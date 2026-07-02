@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { CalendarDays, Clock, MapPin, Archive, ChevronDown } from "lucide-react";
+import { sortByResponsabilite } from "@/lib/sortMembres";
 
 const SYNODE_UUID     = "00000000-0000-0000-0000-000000000001"; // membres + planning
 const SYNODE_ANN_ID   = "00000000-0000-0000-0000-000000000020"; // annonces synode
@@ -55,7 +56,7 @@ const SynodePage = () => {
 
       const { data: bureauData } = await (supabase.from("membres") as any).select("*")
         .eq("entity_type", "synode").eq("entity_id", SYNODE_UUID).eq("type", "bureau").order("nom");
-      setBureau(bureauData || []);
+      setBureau(sortByResponsabilite(bureauData || []));
 
       const { data: planData } = await (supabase as any).from("planning").select("*")
         .eq("entity_type", "synode").eq("entity_id", SYNODE_UUID).order("date_debut", { ascending: true });

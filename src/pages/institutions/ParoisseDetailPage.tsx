@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Church, Users, MapPin, Phone, Mail, ArrowLeft, Music, Calendar, ChevronRight, ChevronDown, CalendarDays, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { slugify } from "@/utils/slugify";
+import { sortByResponsabilite } from "@/lib/sortMembres";
 
 interface Paroisse {
   id: string; name: string; ville: string | null; departement: string | null;
@@ -87,6 +88,9 @@ const ParoisseDetailPage = () => {
         else if (m.type === "pasteur") pasts.push(m);
         else if (m.type === "serviteur") servs.push(m);
       });
+      grouped.bureau = sortByResponsabilite(grouped.bureau);
+      grouped.conseil = sortByResponsabilite(grouped.conseil);
+      grouped.organes = sortByResponsabilite(grouped.organes);
       setMembres(grouped);
       setPasteurs(pasts);
       setServiteurs(servs);

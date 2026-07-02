@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, MapPin, Phone, Mail, Users, Music, Church, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { sortByResponsabilite } from "@/lib/sortMembres";
 
 interface Membre { id: string; nom: string; prenom: string | null; fonction: string | null; }
 
@@ -66,6 +67,9 @@ const ConsistoireParoisseInfoPage = () => {
         else if (m.type === "conseil") grouped.conseil.push(m);
         else if (m.type === "organe") grouped.organes.push(m);
       });
+      grouped.bureau = sortByResponsabilite(grouped.bureau);
+      grouped.conseil = sortByResponsabilite(grouped.conseil);
+      grouped.organes = sortByResponsabilite(grouped.organes);
       setMembres(grouped);
 
       const { data: grp } = await supabase.from("groupes_chantants")

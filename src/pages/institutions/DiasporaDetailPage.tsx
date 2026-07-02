@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Globe, Users, MapPin, Phone, Mail, ArrowLeft, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { slugify } from "@/utils/slugify";
+import { sortByResponsabilite } from "@/lib/sortMembres";
 
 interface Diaspora {
   id: string; name: string; ville: string | null; responsable: string | null;
@@ -70,6 +71,9 @@ const DiasporaDetailPage = () => {
         else if (m.type === "conseil") grouped.conseil.push(m);
         else if (m.type === "organe") grouped.organes.push(m);
       });
+      grouped.bureau = sortByResponsabilite(grouped.bureau);
+      grouped.conseil = sortByResponsabilite(grouped.conseil);
+      grouped.organes = sortByResponsabilite(grouped.organes);
       setMembres(grouped);
 
       const { data: ann } = await (supabase as any).from("announcements").select("*")

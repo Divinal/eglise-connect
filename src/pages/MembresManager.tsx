@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { sortByResponsabilite } from "@/lib/sortMembres";
 
 interface Membre {
   id: string;
@@ -68,7 +69,7 @@ const MembresManager = ({ entityType, entityId, memberType, title, withPhoto }: 
       .eq("type", memberType)
       .order("nom");
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
-    else setMembres((data || []) as Membre[]);
+    else setMembres(sortByResponsabilite((data || []) as Membre[]));
     setFetching(false);
   };
 

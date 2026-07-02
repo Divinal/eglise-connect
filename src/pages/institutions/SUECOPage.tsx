@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import AnnoncesSection from "@/components/AnnoncesSection";
+import { sortByResponsabilite } from "@/lib/sortMembres";
 
 const SUECOPage = () => {
   const [annonces, setAnnonces] = useState<any[]>([]);
@@ -11,7 +12,7 @@ const SUECOPage = () => {
     supabase.from("announcements").select("*").eq("entity_type", "sueco").eq("status", "approved")
       .order("created_at", { ascending: false }).then(({ data }) => setAnnonces(data || []));
     (supabase.from("membres") as any).select("*").eq("entity_type", "sueco").order("nom")
-      .then(({ data }: any) => setMembres(data || []));
+      .then(({ data }: any) => setMembres(sortByResponsabilite(data || [])));
   }, []);
 
   return (

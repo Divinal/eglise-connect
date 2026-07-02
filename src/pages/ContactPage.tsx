@@ -80,44 +80,14 @@ const ContactPage = () => {
 
             {/* Text */}
             <div>
-              <h2 className="font-display text-2xl font-semibold text-foreground mb-4">
-                Secrétariat Permanent
-              </h2>
-              <h6 className="font-semibold text-foreground mb-1">Mission et Rôle :</h6>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Le Secrétariat Permanent de l'EEC est le cœur administratif de notre église,
-                veillant à la bonne gouvernance, à la coordination des activités et à la mise en
-                œuvre des décisions prises par les instances supérieures. Notre mission est de
-                servir les églises locales, les pasteurs et les fidèles en fournissant un soutien
-                administratif, logistique et spirituel de qualité.
-              </p>
-              <h6 className="font-semibold text-foreground mb-1">Communication et Information :</h6>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Nous diffusons les informations importantes concernant la vie de l'EEC : événements,
-                décisions, projets, etc. Nous sommes votre point de contact pour toute question
-                relative à l'EEC.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CONTACT SECTION ── */}
-      <section className="py-12">
-        <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-
-            {/* Left — Info */}
-            <div>
-              <h2 className="font-display text-2xl font-semibold text-foreground mb-3">
-                Nous Contacter
+               <h2 className="font-display text-2xl font-semibold text-foreground mb-3">
+                Secrétariat Permanent de l'ÉEC
               </h2>
               <p className="text-muted-foreground mb-8 leading-relaxed">
                 N'hésitez pas à nous contacter pour toute question ou information complémentaire.
                 Notre équipe est à votre disposition pour vous répondre dans les meilleurs délais.
               </p>
-
-              <div className="space-y-6">
+               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shrink-0">
                     <MapPin className="h-5 w-5 text-primary-foreground" />
@@ -161,6 +131,78 @@ const ContactPage = () => {
                     </p>
                   </div>
                 </div>
+              </div>
+              <br/>
+              <h6 className="font-semibold text-foreground mb-1">Communication et Information :</h6>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Nous diffusons les informations importantes concernant la vie de l'EEC : événements,
+                décisions, projets, etc. Nous sommes votre point de contact pour toute question
+                relative à l'EEC.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CONTACT SECTION ── */}
+      <section className="py-12">
+        <div className="container">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+            {/* Left — Info */}
+            <div>
+              {/* <h2 className="font-display text-2xl font-semibold text-foreground mb-3">
+                Nous Contacter
+              </h2>
+              <p className="text-muted-foreground mb-8 leading-relaxed">
+                N'hésitez pas à nous contacter pour toute question ou information complémentaire.
+                Notre équipe est à votre disposition pour vous répondre dans les meilleurs délais.
+              </p> */}
+
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shrink-0">
+                    <Phone className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">Département Communication </h5>
+                    <p className="text-muted-foreground text-sm">+242 12 345 6789</p>
+                    <p className="text-muted-foreground text-sm">dscom@eeccg.net</p>                  
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shrink-0">
+                    <Phone className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">Service des Ressources Humaines</h5>
+                    <p className="text-muted-foreground text-sm">+242 12 345 6789</p>
+                    <p className="text-muted-foreground text-sm">dshr@eeccg.net</p>
+                  </div>
+                </div>
+
+                {/* <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shrink-0">
+                    <Phone className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">Téléphone</h5>
+                    <p className="text-muted-foreground text-sm">dscom@eeccg.net</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shrink-0">
+                    <Phone className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h5 className="font-semibold text-foreground mb-1">Téléphone</h5>
+                    <p className="text-muted-foreground text-sm">
+                      Lundi - Vendredi : 9h - 17h<br />Samedi : 9h - 12h
+                    </p>
+                  </div>
+                </div> */}
               </div>
 
               {/* Réseaux sociaux */}
