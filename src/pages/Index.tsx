@@ -349,11 +349,13 @@ const Index = () => {
                 <Clock className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="font-display font-semibold text-foreground text-lg">Programme des Culte</h3>
+              <strong>  
               <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />Culte du matin — Lun. au Sam.</li>
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />Culte dominical — Dim. 9h–11h</li>
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0" />Culte vespéral — Jeu. soir</li>
               </ul>
+              </strong>
               <Link to="/programme-culte" className="text-sm border border-blue-600 text-blue-600 rounded-full px-4 py-1.5 hover:bg-blue-600 hover:text-white transition-colors mt-auto">
                 En savoir plus
               </Link>
@@ -365,9 +367,11 @@ const Index = () => {
                 <MapPin className="h-8 w-8 text-slate-600" />
               </div>
               <h3 className="font-display font-semibold text-foreground text-lg">Trouver une Paroisse</h3>
+              <strong>  
               <p className="text-muted-foreground text-sm leading-relaxed flex-1">
                 Localisez la paroisse la plus proche de chez vous à Brazzaville, Pointe-Noire ou dans toute la République du Congo.
               </p>
+              </strong>
               <Link to="/institution/consistoires" className="text-sm border border-slate-500 text-slate-600 rounded-full px-4 py-1.5 hover:bg-slate-600 hover:text-white transition-colors mt-auto">
                 Voir les paroisses
               </Link>
@@ -376,15 +380,17 @@ const Index = () => {
             {/* Grand Thème d'Édification — Rouge */}
             <div className="bg-card border-2 border-red-200 border-t-4 border-t-red-600 rounded-xl p-6 flex flex-col items-center text-center gap-4 hover:shadow-md transition-shadow">
               <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center">
-                <BookOpen className="h-8 w-8 text-red-600" />
+                <BookOpen className="h-8 w-8 text-red-300" />
               </div>
               <h3 className="font-display font-semibold text-foreground text-lg">Thèmes d'Édification</h3>
+             <strong>  
               <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />Croire, Espérer, Aimer</li>
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />L'Évangile : Lumière des Nations</li>
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />Sanctification et Témoignage</li>
                 <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />Bâtir l'Église de Christ</li>
               </ul>
+              </strong>
               <Link to="/themes-edification" className="text-sm border border-red-600 text-red-600 rounded-full px-4 py-1.5 hover:bg-red-600 hover:text-white transition-colors mt-auto">
                 En savoir plus
               </Link>
@@ -396,6 +402,7 @@ const Index = () => {
                 <Music className="h-8 w-8 text-blue-600" />
               </div>
               <h3 className="font-display font-semibold text-foreground text-lg">Groupes de l'EEC</h3>
+              <strong>  
               <ul className="text-sm text-muted-foreground space-y-1.5 flex-1 text-left w-full">
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-blue-600 shrink-0" />Chorale</li>
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-blue-600 shrink-0" />Kilombo</li>
@@ -404,6 +411,7 @@ const Index = () => {
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-blue-600 shrink-0" />EUC</li>
                 <li className="flex items-center gap-2"><Users className="h-3.5 w-3.5 text-blue-600 shrink-0" />Autres Groupes</li>
               </ul>
+              </strong>
               <Link to="/types-de-groupe" className="text-sm border border-blue-600 text-blue-600 rounded-full px-4 py-1.5 hover:bg-blue-600 hover:text-white transition-colors mt-auto">
                 En savoir plus
               </Link>
@@ -513,10 +521,10 @@ const Index = () => {
             Venez participer à nos services dominicaux et découvrir notre église
           </p>
           <Link
-            to="/contact"
+            to="/programme-culte"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-primary font-semibold text-sm hover:bg-white/90 transition-colors"
           >
-            Contactez-nous
+            programme de culte
           </Link>
         </div>
       </section>

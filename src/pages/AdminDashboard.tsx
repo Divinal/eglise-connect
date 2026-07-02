@@ -4,10 +4,11 @@ import { useAuth } from "@/hooks/useAuth";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import {
   Shield, Users, Church, Building2, BookOpen,
   LogOut, ChevronRight, Lock, Megaphone,
-  GraduationCap, Globe, Heart, ShoppingBag, ClipboardCheck, HeartHandshake
+  GraduationCap, Globe, Heart, ShoppingBag, ClipboardCheck, HeartHandshake, Mail
 } from "lucide-react";
 
 const DashboardCard = ({ icon: Icon, label, desc, color, onClick, badge }: {
@@ -42,7 +43,9 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 const AdminDashboard = () => {
   const { user, roles, loading, isAdminGeneral, signOut } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [pendingCount, setPendingCount] = useState(0);
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
 
   useEffect(() => {
     if (!loading && !user) navigate("/login");
@@ -52,6 +55,25 @@ const AdminDashboard = () => {
     if (!isAdminGeneral) return;
     supabase.from("announcements").select("id", { count: "exact", head: true }).eq("status", "pending")
       .then(({ count }) => setPendingCount(count || 0));
+  }, [isAdminGeneral]);
+
+  useEffect(() => {
+    if (!isAdminGeneral) return;
+    (supabase as any).from("contact_messages").select("id", { count: "exact", head: true }).eq("is_read", false)
+      .then(({ count }: any) => setUnreadMessagesCount(count || 0));
+
+    // Notifie en direct dès qu'un nouveau message de contact arrive
+    const channel = supabase
+      .channel("contact_messages_admin")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "contact_messages" }, (payload: any) => {
+        setUnreadMessagesCount(c => c + 1);
+        toast({
+          title: "Nouveau message de contact",
+          description: `${payload.new.prenom || ""} ${payload.new.nom} vient d'envoyer un message.`.trim(),
+        });
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
   }, [isAdminGeneral]);
 
   if (loading) {
@@ -137,6 +159,7 @@ const AdminDashboard = () => {
                 <DashboardCard icon={Shield} label="Utilisateurs" desc="Gérer rôles, accès et blocages" color="text-red-600 bg-red-50" onClick={() => navigate("/admin/users")} />
                 <DashboardCard icon={Church} label="Consistoires" desc="Créer et gérer les consistoires" color="text-green-600 bg-green-50" onClick={() => navigate("/admin/consistoires")} />
                 <DashboardCard icon={ClipboardCheck} label="Validation des publications" desc="Vérifier et valider les annonces des départements, champs, paroisses et consistoires" color="text-amber-600 bg-amber-50" onClick={() => navigate("/admin/validation-annonces")} badge={pendingCount} />
+                <DashboardCard icon={Mail} label="Messages de contact" desc="Messages envoyés depuis le formulaire de contact du site" color="text-blue-600 bg-blue-50" onClick={() => navigate("/admin/messages")} badge={unreadMessagesCount} />
               </div>
 
               <SectionTitle>Synode — Structures nationales</SectionTitle>

@@ -2,6 +2,8 @@ import Layout from "@/components/Layout";
 import { MapPin, Phone, Mail, Clock, Facebook, Twitter, Instagram, Youtube, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const faqs = [
   {
@@ -48,7 +50,40 @@ const FAQItem = ({ q, r }: { q: string; r: string }) => {
   );
 };
 
+const emptyContactForm = { nom: "", prenom: "", paroisse: "", email: "", sujet: "", message: "" };
+
 const ContactPage = () => {
+  const { toast } = useToast();
+  const [form, setForm] = useState(emptyContactForm);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  const handleChange = (field: keyof typeof emptyContactForm) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm(f => ({ ...f, [field]: e.target.value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!privacyAccepted) return;
+    setSending(true);
+    const { error } = await (supabase as any).from("contact_messages").insert({
+      nom: form.nom,
+      prenom: form.prenom || null,
+      paroisse: form.paroisse || null,
+      email: form.email,
+      sujet: form.sujet || null,
+      message: form.message,
+    });
+    setSending(false);
+    if (error) {
+      toast({ title: "Erreur", description: "Votre message n'a pas pu être envoyé. Réessayez.", variant: "destructive" });
+      return;
+    }
+    toast({ title: "Message envoyé !", description: "Merci, notre équipe vous répondra dans les meilleurs délais." });
+    setForm(emptyContactForm);
+    setPrivacyAccepted(false);
+  };
+
   return (
     <Layout>
       {/* ── BANNER ── */}
@@ -234,17 +269,14 @@ const ContactPage = () => {
               <h3 className="font-display text-xl font-semibold text-foreground mb-6">
                 Envoyez-nous un message
               </h3>
-              <form action="https://formspree.io/f/mgvavzlg" method="POST" className="space-y-4">
-                <input type="hidden" name="_next" value="https://divinal.github.io/church-portal-interaction/confirmation.html" />
-                <input type="hidden" name="_replyto" value="divinmister@gmail.com" />
-                <input type="hidden" name="_subject" value="Nouveau message depuis le site" />
-
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-foreground">Nom</label>
                     <input
                       type="text"
-                      name="Nom"
+                      value={form.nom}
+                      onChange={handleChange("nom")}
                       placeholder="Votre nom"
                       required
                       className="border border-border rounded-lg px-3 py-2.5 text-sm bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
@@ -254,7 +286,8 @@ const ContactPage = () => {
                     <label className="text-sm font-medium text-foreground">Prénom</label>
                     <input
                       type="text"
-                      name="Prenom"
+                      value={form.prenom}
+                      onChange={handleChange("prenom")}
                       placeholder="Votre prénom"
                       required
                       className="border border-border rounded-lg px-3 py-2.5 text-sm bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
@@ -267,7 +300,8 @@ const ContactPage = () => {
                     <label className="text-sm font-medium text-foreground">Paroisse</label>
                     <input
                       type="text"
-                      name="Paroisse"
+                      value={form.paroisse}
+                      onChange={handleChange("paroisse")}
                       placeholder="Votre paroisse"
                       required
                       className="border border-border rounded-lg px-3 py-2.5 text-sm bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
@@ -277,7 +311,8 @@ const ContactPage = () => {
                     <label className="text-sm font-medium text-foreground">Email</label>
                     <input
                       type="email"
-                      name="Email"
+                      value={form.email}
+                      onChange={handleChange("email")}
                       placeholder="Votre email"
                       required
                       className="border border-border rounded-lg px-3 py-2.5 text-sm bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
@@ -289,7 +324,8 @@ const ContactPage = () => {
                   <label className="text-sm font-medium text-foreground">Sujet</label>
                   <input
                     type="text"
-                    name="Sujet"
+                    value={form.sujet}
+                    onChange={handleChange("sujet")}
                     placeholder="Sujet de votre message"
                     required
                     className="border border-border rounded-lg px-3 py-2.5 text-sm bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
@@ -299,7 +335,8 @@ const ContactPage = () => {
                 <div className="flex flex-col gap-1">
                   <label className="text-sm font-medium text-foreground">Message</label>
                   <textarea
-                    name="Message"
+                    value={form.message}
+                    onChange={handleChange("message")}
                     placeholder="Votre message"
                     rows={5}
                     required
@@ -311,6 +348,8 @@ const ContactPage = () => {
                   <input
                     type="checkbox"
                     id="privacy"
+                    checked={privacyAccepted}
+                    onChange={e => setPrivacyAccepted(e.target.checked)}
                     required
                     className="mt-1 accent-primary"
                   />
@@ -324,9 +363,10 @@ const ContactPage = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-primary text-primary-foreground rounded-lg py-3 text-sm font-semibold hover:bg-primary/90 transition-colors"
+                  disabled={sending}
+                  className="w-full bg-primary text-primary-foreground rounded-lg py-3 text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-60"
                 >
-                  Envoyer
+                  {sending ? "Envoi en cours…" : "Envoyer"}
                 </button>
               </form>
             </div>

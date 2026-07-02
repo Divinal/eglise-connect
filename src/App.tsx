@@ -40,6 +40,7 @@ import ChampsEvangelisationDetailPage from "./pages/institutions/ChampsEvangelis
 // Pages admin
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminValidationPage from "./pages/AdminValidationPage";
+import AdminMessagesPage from "./pages/AdminMessagesPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminConsistoiresPage from "./pages/AdminConsistoiresPage";
 import AdminInstitutionsPage from "./pages/AdminInstitutionsPage";
@@ -128,6 +129,7 @@ const App = () => (
           {/* ADMIN GÉNÉRAL */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/validation-annonces" element={<AdminValidationPage />} />
+          <Route path="/admin/messages" element={<AdminMessagesPage />} />
           <Route path="/admin/users" element={<AdminUsersPage />} />
           <Route path="/admin/consistoires" element={<AdminConsistoiresPage />} />
           <Route path="/admin/institutions" element={<AdminInstitutionsPage />} />

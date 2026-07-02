@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Plus, Pencil, Save, X, Trash2, ImagePlus } from "lucide-react";
+import { Users, Plus, Pencil, Save, X, Trash2, ImagePlus, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,6 +25,7 @@ interface Membre {
   description: string | null;
   entity_id: string;
   entity_type: string;
+  ordre: number | null;
 }
 
 interface Props {
@@ -128,6 +129,7 @@ const MembresManager = ({ entityType, entityId, memberType, title, withPhoto }: 
       type: memberType,
       entity_id: entityId,
       entity_type: entityType,
+      ordre: editingId ? undefined : membres.length,
     };
     if (editingId) {
       const { error } = await supabase.from("membres").update(payload as any).eq("id", editingId);
@@ -167,6 +169,17 @@ const MembresManager = ({ entityType, entityId, memberType, title, withPhoto }: 
   const deleteMembre = async (id: string) => {
     await supabase.from("membres").delete().eq("id", id);
     toast({ title: "Membre supprimé" }); fetchMembres();
+  };
+
+  const moveMembre = async (index: number, direction: -1 | 1) => {
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= membres.length) return;
+    const reordered = [...membres];
+    [reordered[index], reordered[newIndex]] = [reordered[newIndex], reordered[index]];
+    setMembres(reordered);
+    await Promise.all(
+      reordered.map((m, i) => supabase.from("membres").update({ ordre: i } as any).eq("id", m.id))
+    );
   };
 
   // Résumé par catégorie
@@ -338,8 +351,18 @@ const MembresManager = ({ entityType, entityId, memberType, title, withPhoto }: 
         </div>
       ) : (
         <div className="space-y-2">
-          {membres.map(m => (
+          {membres.map((m, index) => (
             <div key={m.id} className={`flex items-start gap-3 p-4 bg-card border border-border rounded-lg ${m.statut === "refroidi" ? "opacity-60" : ""}`}>
+              <div className="flex flex-col gap-0.5 shrink-0">
+                <Button variant="ghost" size="icon" onClick={() => moveMembre(index, -1)} disabled={index === 0}
+                  className="h-6 w-6 disabled:opacity-20" title="Monter">
+                  <ArrowUp className="h-3.5 w-3.5" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => moveMembre(index, 1)} disabled={index === membres.length - 1}
+                  className="h-6 w-6 disabled:opacity-20" title="Descendre">
+                  <ArrowDown className="h-3.5 w-3.5" />
+                </Button>
+              </div>
               {withPhoto && m.photo_url ? (
                 <img src={m.photo_url} alt={m.nom} className="w-12 h-12 rounded-full object-cover shrink-0" />
               ) : (

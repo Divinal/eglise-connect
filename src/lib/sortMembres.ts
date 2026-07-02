@@ -44,10 +44,17 @@ export function roleRank(fonction: string | null | undefined): number {
   return idx === -1 ? NORMALIZED_ROLE_ORDER.length : idx;
 }
 
-export function sortByResponsabilite<T extends { fonction?: string | null; nom?: string | null }>(
-  membres: T[]
-): T[] {
+export function sortByResponsabilite<
+  T extends { fonction?: string | null; nom?: string | null; ordre?: number | null }
+>(membres: T[]): T[] {
   return [...membres].sort((a, b) => {
+    // Un ordre choisi manuellement prime toujours sur le classement automatique.
+    const oa = a.ordre ?? null;
+    const ob = b.ordre ?? null;
+    if (oa !== null && ob !== null) return oa - ob;
+    if (oa !== null) return -1;
+    if (ob !== null) return 1;
+
     const ra = roleRank(a.fonction);
     const rb = roleRank(b.fonction);
     if (ra !== rb) return ra - rb;
