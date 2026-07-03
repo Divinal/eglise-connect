@@ -76,7 +76,7 @@ const AdminMessagesPage = () => {
               <Inbox className="h-14 w-14 text-muted-foreground/30 mx-auto mb-3" />
               <p className="text-muted-foreground">Aucun message reçu pour le moment à partir des Contacts.</p>
             </div>
-          ) : (
+          ) : ( 
             <div className="space-y-3">
               {messages.map(m => (
                 <div key={m.id}
