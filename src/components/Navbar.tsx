@@ -81,9 +81,44 @@ const INSTITUTIONS_STATIQUES = [
   { name: "Consistoires", desc: "Structures régionales de l'EEC", href: "/institution/consistoires" },
 ];
 
+// Toutes les pages statiques du site, avec des mots-clés pour aider la recherche
+// à retrouver une page même si le terme tapé ne figure pas dans son titre.
+const PAGES_STATIQUES = [
+  { title: "Accueil", desc: "Page d'accueil du site", href: "/", keywords: ["accueil", "home"] },
+  { title: "Bureau Synodal", desc: "Bureau exécutif national du Synode", href: "/institution/synode", keywords: ["synode", "président", "bureau synodal"] },
+  { title: "Pastorale", desc: "Institution Pastorale de l'EEC", href: "/institution/pastorale", keywords: ["pastorale", "pasteurs"] },
+  { title: "UPB", desc: "Université Protestante de Brazzaville", href: "/institution/upb", keywords: ["upb", "université"] },
+  { title: "IFPN", desc: "Institut de Formation Pastorale de Ngouedi", href: "/institution/ifpn", keywords: ["ifpn", "formation pastorale", "ngouedi"] },
+  { title: "SUECO", desc: "SUECO", href: "/institution/sueco", keywords: ["sueco"] },
+  { title: "CTPAD", desc: "Coordination Technique de Projet et d'Appuis au Développement", href: "/institution/ctpad", keywords: ["ctpad", "développement", "projets"] },
+  { title: "Institutions", desc: "Vue d'ensemble des institutions de l'EEC", href: "/institution", keywords: ["institutions"] },
+  { title: "Départements", desc: "Vue d'ensemble des départements synodaux", href: "/departements", keywords: ["départements"] },
+  { title: "Consistoires", desc: "Liste des consistoires et paroisses", href: "/institution/consistoires", keywords: ["consistoires", "paroisses", "trouver une paroisse"] },
+  { title: "Champs d'Évangélisation", desc: "Champs d'évangélisation de l'EEC", href: "/institution/champs-evangelisation", keywords: ["champs évangélisation", "évangélisation"] },
+  { title: "Diaspora", desc: "Communautés EEC de la diaspora", href: "/institution/diaspora", keywords: ["diaspora", "étranger"] },
+  { title: "Partenaires", desc: "Nos partenaires", href: "/partenaires", keywords: ["partenaires"] },
+  { title: "CVAA", desc: "Partenaire de l'EEC", href: "/partenaires/cvaa", keywords: ["cvaa", "partenaire"] },
+  { title: "Fédération des EPC", desc: "Partenaire de l'EEC", href: "/partenaires/federation-epc", keywords: ["fédération", "epc", "partenaire"] },
+  { title: "Plateforme des EEAC", desc: "Partenaire de l'EEC", href: "/partenaires/plateforme-eeac", keywords: ["plateforme", "eeac", "partenaire"] },
+  { title: "Conseil Œcuménisme ECC", desc: "Partenaire de l'EEC", href: "/partenaires/conseil-oecumenisme", keywords: ["œcuménisme", "oecumenisme", "ecc", "partenaire"] },
+  { title: "Partenariat Historique", desc: "Partenaire de l'EEC", href: "/partenaires/partenariat-historique", keywords: ["partenariat historique", "partenaire"] },
+  { title: "Blog / Actualités", desc: "Actualités et articles de l'EEC", href: "/blog", keywords: ["blog", "actualités", "articles", "news"] },
+  { title: "Église de Proximité", desc: "Reportages sur les actions sociales", href: "/eglise-de-proximite", keywords: ["église de proximité", "actions sociales"] },
+  { title: "Micro de la Semaine", desc: "Messages et interviews", href: "/micro-de-la-semaine", keywords: ["micro de la semaine", "interviews"] },
+  { title: "Faire un Don", desc: "Soutenir financièrement l'EEC", href: "/faire-un-don", keywords: ["don", "donation", "offrande", "mobile money"] },
+  { title: "Boutique EEC", desc: "Articles et produits de l'EEC", href: "/boutique", keywords: ["boutique", "achat", "produits", "bible"] },
+  { title: "Contact", desc: "Nous contacter", href: "/contact", keywords: ["contact", "téléphone", "email", "adresse", "secrétariat"] },
+  { title: "FAQ", desc: "Questions fréquentes", href: "/faq", keywords: ["faq", "questions", "aide"] },
+  { title: "Programme des Cultes", desc: "Horaires des cultes", href: "/programme-culte", keywords: ["programme", "culte", "horaires", "dimanche"] },
+  { title: "Thèmes d'Édification", desc: "Grands thèmes spirituels de l'EEC", href: "/themes-edification", keywords: ["thèmes", "édification"] },
+  { title: "Types de Groupe", desc: "Groupes de l'EEC : Chorale, Kilombo, CBE, Ecodi, EUC…", href: "/types-de-groupe", keywords: ["groupes", "chorale", "kilombo", "cbe", "ecodi", "euc"] },
+  { title: "Politique de Confidentialité", desc: "Politique de confidentialité du site", href: "/politique-confidentialite", keywords: ["politique", "confidentialité", "vie privée"] },
+  { title: "Connexion", desc: "Se connecter à l'espace d'administration", href: "/login", keywords: ["connexion", "login", "admin", "se connecter"] },
+];
+
 interface SearchResult {
   id: string;
-  type: "departement" | "institution" | "annonce" | "paroisse" | "consistoire";
+  type: "departement" | "institution" | "annonce" | "paroisse" | "consistoire" | "page" | "diaspora" | "champ" | "produit";
   title: string;
   subtitle?: string;
   href: string;
@@ -95,6 +130,10 @@ const TYPE_LABELS: Record<string, string> = {
   annonce: "Annonce",
   paroisse: "Paroisse",
   consistoire: "Consistoire",
+  page: "Page",
+  diaspora: "Diaspora",
+  champ: "Champ d'Évangélisation",
+  produit: "Boutique",
 };
 
 const TYPE_COLORS: Record<string, string> = {
@@ -103,6 +142,10 @@ const TYPE_COLORS: Record<string, string> = {
   annonce: "bg-green-100 text-green-700",
   paroisse: "bg-amber-100 text-amber-700",
   consistoire: "bg-teal-100 text-teal-700",
+  page: "bg-slate-100 text-slate-700",
+  diaspora: "bg-violet-100 text-violet-700",
+  champ: "bg-orange-100 text-orange-700",
+  produit: "bg-sky-100 text-sky-700",
 };
 
 const SearchModal = ({ onClose }: { onClose: () => void }) => {
@@ -126,6 +169,10 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
       setLoading(true);
       const q = query.toLowerCase();
       const found: SearchResult[] = [];
+
+      PAGES_STATIQUES.filter(p =>
+        p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.keywords.some(k => k.includes(q) || q.includes(k))
+      ).forEach(p => found.push({ id: p.href, type: "page", title: p.title, subtitle: p.desc, href: p.href }));
 
       DEPARTEMENTS_STATIQUES.filter(d =>
         d.name.toLowerCase().includes(q) || d.fullName.toLowerCase().includes(q)
@@ -157,6 +204,18 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
         .select("id, name, ville").ilike("name", `%${query}%`).limit(5);
       (paroisses || []).forEach((p: any) => found.push({ id: p.id, type: "paroisse", title: p.name, subtitle: p.ville || "", href: `/institution/consistoires` }));
 
+      const { data: diasporas } = await (supabase as any).from("diaspora")
+        .select("id, name, ville").ilike("name", `%${query}%`).limit(5);
+      (diasporas || []).forEach((d: any) => found.push({ id: d.id, type: "diaspora", title: d.name, subtitle: d.ville || "", href: `/institution/diaspora` }));
+
+      const { data: champs } = await (supabase as any).from("champs_evangelisation")
+        .select("id, name, ville").ilike("name", `%${query}%`).limit(5);
+      (champs || []).forEach((c: any) => found.push({ id: c.id, type: "champ", title: c.name, subtitle: c.ville || "", href: `/institution/champs-evangelisation` }));
+
+      const { data: produits } = await (supabase as any).from("produits")
+        .select("id, nom, categorie").eq("disponible", true).ilike("nom", `%${query}%`).limit(5);
+      (produits || []).forEach((p: any) => found.push({ id: p.id, type: "produit", title: p.nom, subtitle: p.categorie || "", href: `/boutique` }));
+
       setResults(found);
       setLoading(false);
     }, 300);
@@ -172,7 +231,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
         <div className="flex items-center gap-3 px-4 py-4 border-b border-border">
           <Search className="h-5 w-5 text-muted-foreground shrink-0" />
           <input ref={inputRef} value={query} onChange={e => setQuery(e.target.value)}
-            placeholder="Rechercher un département, annonce, paroisse…"
+            placeholder="Rechercher une page, un département, une paroisse, une annonce…"
             className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-sm" />
           {loading && <Loader2 className="h-4 w-4 text-muted-foreground animate-spin shrink-0" />}
           <button onClick={onClose} className="p-1 rounded-md hover:bg-muted transition-colors">
