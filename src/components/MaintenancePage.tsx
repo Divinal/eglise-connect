@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import logo from "@/assets/eec-logo.png";
 
-const LAUNCH_DATE = new Date("2026-07-21T00:00:00");
+const LAUNCH_DATE = new Date("2026-08-25T00:00:00");
 
 function getTimeLeft() {
   const diff = LAUNCH_DATE.getTime() - Date.now();
